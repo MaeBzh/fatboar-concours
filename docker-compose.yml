@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:  
+    mariadb:
+        image: mariadb:latest
+        restart: always        
+        env_file:
+            - .env.docker
+        ports:
+            - "3306:3306"
+        volumes:
+            - mariadb:/var/lib/mysql
+        networks: 
+            - mariadb
+
+    api:
+        image: node:14
+        working_dir: /usr/src/app/fatboar-api
+        container_name: fatboar-api
+        env_file:
+            - .env.docker
+        ports:
+            - "3000:3000"
+        depends_on: 
+            - mariadb
+        volumes:
+            - ./fatboar-api:/usr/src/app/fatboar-api
+        networks:
+            - api
+            - mariadb
+        command: sh -c "npm install
+         && npm install -g @nestjs/cli ts-node \
+         && npm run start:dev"
+
+    front:
+        image: node:14
+        working_dir: /usr/src/app/fatboar-concours
+        container_name: fatboar-concours
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./fatboar-concours:/usr/src/app/fatboar-concours
+        networks:
+            - api 
+        command: sh -c "npm install && npm run serve" 
+
+networks:
+    api:
+    mariadb:
+
+volumes: 
+    mariadb:
