@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /static/
+Sitemap: http://localhost:8080/sitemap.xml
+
+#        _
+#       [ ]
+#      (   )
+#       |>|
+#    __/===\__
+#   //| o=o |\\
+# <]  | o=o |  [>
+#     \=====/
+#    / / | \ \
+#   <_________>
