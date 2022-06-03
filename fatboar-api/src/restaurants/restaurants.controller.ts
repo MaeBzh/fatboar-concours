@@ -17,7 +17,6 @@ import { Restaurant } from "./entities/restaurant.entity";
 import { RestaurantsService } from "./restaurants.service";
 
 @Controller("restaurants")
-@UseGuards(AuthGuard())
 export class RestaurantsController {
   constructor(
     private readonly restaurantsService: RestaurantsService,
@@ -25,6 +24,7 @@ export class RestaurantsController {
   ) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   @ApiCreatedResponse({
     description: "The restaurant has been successfully created.",
     type: Restaurant,
@@ -41,11 +41,13 @@ export class RestaurantsController {
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard())
   async findOne(@Param("id") id: number) {
     return await this.restaurantsService.findOne(id);
   }
 
   @Put(":id")
+  @UseGuards(AuthGuard())
   @ApiCreatedResponse({
     description: "The restaurant has been successfully updated.",
     type: UpdateResult,
@@ -60,6 +62,7 @@ export class RestaurantsController {
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuard())
   @ApiCreatedResponse({
     description: "The restaurant has been successfully deleted.",
     type: DeleteResult,
