@@ -1,3 +1,4 @@
+import { RolesService } from '../../roles/roles.service';
 import { UserRepositoryMock } from '../../users/tests/users.repository.mock';
 import { UsersService } from '../../users/users.service';
 import { DeleteResult, EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
@@ -39,13 +40,14 @@ describe('EmailingListsService', () => {
   let repo: EmailingListRepositoryMock;
   let emailingListService: EmailingListService;
   let usersService: UsersService;
+  let roleService: RolesService;
   let databaseClone;
 
 
   beforeEach(async () => {
     databaseClone = { ...database };
     repo = new EmailingListRepositoryMock(databaseClone);   
-    usersService = new UsersService(new UserRepositoryMock(databaseClone));
+    usersService = new UsersService(new UserRepositoryMock(databaseClone), roleService);
     emailingListService = new EmailingListService(repo, usersService);
   });
 
@@ -78,7 +80,8 @@ describe('EmailingListsService', () => {
   describe('create', () => {
     let createDto: CreateEmailingListDto = {
       name: 'Liste 3',
-      usersId: [1],
+      userIds: [1],
+      filters: ""
     };
     it('should return the new emailing list', async () => {
       expect(await emailingListService.create(createDto)).toBe(databaseClone.emailingLists[2]);
@@ -96,6 +99,7 @@ describe('EmailingListsService', () => {
     let updateDto: UpdateEmailingListDto = {
       name: 'Liste 4',
       usersId: [1],
+      filters: "",
     };
 
     it('should return the new emailing list', async () => {
