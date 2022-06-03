@@ -23,5 +23,4 @@ const ORMConfig: TypeOrmModuleOptions = {
     migrationsDir: join(__dirname, "database/migrations"),
   },
 };
-
 export default ORMConfig;
