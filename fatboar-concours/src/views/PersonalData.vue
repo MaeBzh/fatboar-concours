@@ -273,7 +273,7 @@ import { Component, Vue } from "vue-property-decorator";
     return {
       title: "Données personnelles",
       content:
-        "Description de quelles données personnelles sont récoltées par Fatboar et ce à quoi elles nous servent.",
+        "Description de quelles données personnelles sont récoltées par Fatboar et ce à quoi elles servent.",
     };
   },
 })

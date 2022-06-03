@@ -32,6 +32,13 @@ import FacebookLogin from "./components/auth/FacebookLogin.vue";
     VFacebookLoginScope,
     FacebookLogin,
   },
+  metaInfo() {
+    return {
+      title: "Site du jeu-concours organisé par Fatboar",
+      content:
+        "Jeu-concours organisé par les restaurants de gibier Fatboar. De nombreux cadeaux à gagner : hamburgers de gibier, entrée ou dessert, menus, réductions",
+    };
+  },
 })
 export default class App extends Vue {}
 </script>

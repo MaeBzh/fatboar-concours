@@ -104,7 +104,7 @@ import { Component, Vue } from "vue-property-decorator";
   metaInfo() {
     return {
       title: "Mentions légales",
-      content: "",
+      content: "Mentions légales concernant le site du jeu-concours organis par les restaurants de gibier Fatboar",
     };
   },
 })
