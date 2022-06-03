@@ -1,13 +1,12 @@
-import * as dotenv from "dotenv";
-import { resolve } from "path";
-dotenv.config({ path: resolve(__dirname, "../.env") });
-
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as dotenv from "dotenv";
+import * as fs from "fs";
+import { resolve } from "path";
 import { AllExceptionFilter } from "./all-exceptions.filter";
 import { AppModule } from "./app.module";
-import * as fs from "fs";
+dotenv.config({ path: resolve(__dirname, "../.env") });
 
 async function bootstrap() {
   const privateKey = fs.readFileSync(
@@ -23,12 +22,12 @@ async function bootstrap() {
     origin: process.env.CORS_ORIGIN.split(", "),
     methods: process.env.CORS_METHODS,
     allowedHeaders: process.env.CORS_ALLOWED_HEADERS,
-  }
+  };
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
   app.enableCors(corsOptions);
   app.setGlobalPrefix("api");
-  
+
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
@@ -43,7 +42,7 @@ async function bootstrap() {
         .build()
     )
   );
-  
+
   await app.listen(3000);
 }
 

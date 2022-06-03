@@ -1,22 +1,24 @@
-import { resolve } from 'path';
 import Faker from "faker";
-import {v4 as uuid} from 'uuid';
-import { define } from "typeorm-seeding";
-import { Gift } from "../../gifts/entities/gift.entity";
 import { copyFileSync } from "fs";
+import { resolve } from "path";
+import { define } from "typeorm-seeding";
+import { v4 as uuid } from "uuid";
+import { Gift } from "../../gifts/entities/gift.entity";
 
 define(Gift, (faker: typeof Faker, context: any) => {
-    const filename = context.filename;
-    const photo = `${uuid()}.png`;
+  const filename = context.filename;
+  const photo = `${uuid()}.png`;
 
-    copyFileSync( resolve(__dirname, `images/${filename}`) , resolve(__dirname, `../../../uploads/${photo}`));
+  copyFileSync(
+    resolve(__dirname, `images/${filename}`),
+    resolve(__dirname, `../../../uploads/${photo}`)
+  );
 
-    const gift = new Gift();
-    gift.name = context.name;
-    gift.photo = photo;
-    gift.filename = filename;
-    gift.icon = context.icon;
-    gift.isJackpot = context.isJackpot;
-    return gift;
-  
+  const gift = new Gift();
+  gift.name = context.name;
+  gift.photo = photo;
+  gift.filename = filename;
+  gift.icon = context.icon;
+  gift.isJackpot = context.isJackpot;
+  return gift;
 });

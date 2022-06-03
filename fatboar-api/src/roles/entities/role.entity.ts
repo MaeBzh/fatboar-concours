@@ -1,18 +1,16 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../../users/entities/user.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
-
-@Entity({name: "roles"})
+@Entity({ name: "roles" })
 export class Role {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
-  
-    @OneToMany(type => User, user => user.role, {
-        onDelete: "RESTRICT"
-    })
-    users: Promise<User[]>;   
+  @OneToMany((type) => User, (user) => user.role, {
+    onDelete: "RESTRICT",
+  })
+  users: Promise<User[]>;
 }

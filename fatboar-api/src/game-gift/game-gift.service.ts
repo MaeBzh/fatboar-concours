@@ -1,9 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import {
-  DeleteResult,
-  EntityManager, Repository
-} from "typeorm";
+import { DeleteResult, EntityManager, Repository } from "typeorm";
 import { CreateGameGiftDto } from "./dto/create-game-gift.dto";
 import { GameGift } from "./entities/game-gift.entity";
 
@@ -27,7 +24,7 @@ export class GameGiftService {
     manager?: EntityManager
   ): Promise<GameGift> {
     const repo = manager?.getRepository(GameGift) || this.gameGiftRepo;
-    const result: GameGift = await repo.save(gameGiftDto);  
+    const result: GameGift = await repo.save(gameGiftDto);
     return result;
   }
 

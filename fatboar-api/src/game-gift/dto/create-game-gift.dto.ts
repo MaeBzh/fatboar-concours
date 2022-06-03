@@ -8,8 +8,8 @@ export class CreateGameGiftDto {
   @IsNotEmpty({
     message: "You must specify a game",
   })
-  game: Partial<Game>
-  
+  game: Partial<Game>;
+
   @ApiProperty()
   @IsNotEmpty({
     message: "You must specify a gift",

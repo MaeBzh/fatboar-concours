@@ -13,8 +13,8 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiCreatedResponse } from "@nestjs/swagger";
-import { multerOptions, pdfFilter } from "src/multerconfig";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { multerOptions, pdfFilter } from "../multerconfig";
 import { CreateGameDto } from "./dto/create-game.dto";
 import { UpdateGameDto } from "./dto/update-game.dto";
 import { Game } from "./entities/game.entity";
@@ -42,16 +42,19 @@ export class GamesController {
   })
   async create(
     @UploadedFile() gameRules: Express.Multer.File,
-    @Body() createGameDto: Omit<CreateGameDto, "gameRules">
+    @Body()
+    createGameDto: Omit<CreateGameDto, "gameRules" | "gameGifts"> & {
+      gameGifts: string;
+    }
   ) {
-    createGameDto.gameGifts = JSON.parse(`${createGameDto.gameGifts}`);
     return await this.connection.transaction(async (manager: EntityManager) => {
-      createGameDto.activated = [true, "true", 1].includes(
-        createGameDto.activated
-      );
+      // because of uploading file, data are sent as multipart,
+      // so we can't received other type than string, we must JSON.parse and allow string type
       return this.gamesService.create(
         {
           ...createGameDto,
+          activated: [true, "true", 1].includes(createGameDto.activated),
+          gameGifts: JSON.parse(createGameDto.gameGifts),
           gameRules: gameRules.filename,
           filename: gameRules.originalname,
         },
@@ -97,15 +100,16 @@ export class GamesController {
   async update(
     @Param("id") id: number,
     @UploadedFile() gameRules: Express.Multer.File,
-    @Body() updateGameDto: Omit<UpdateGameDto, "gameRules">
+    @Body()
+    updateGameDto: Omit<
+      UpdateGameDto,
+      "gameRules" | "gameGifts" | "jackpotGift"
+    > & {
+      gameGifts: string;
+      jackpotGift: string;
+    }
   ) {
     return await this.connection.transaction(async (manager: EntityManager) => {
-      updateGameDto.gameGifts = JSON.parse(`${updateGameDto.gameGifts}`);
-      updateGameDto.jackpotGift = JSON.parse(`${updateGameDto.jackpotGift}`);
-      updateGameDto.activated = [true, "true", 1].includes(
-        updateGameDto.activated
-      );
-
       const data = gameRules
         ? {
             ...updateGameDto,
@@ -114,7 +118,18 @@ export class GamesController {
           }
         : updateGameDto;
 
-      return this.gamesService.update(id, data, manager);
+      // because of uploading file, data are sent as multipart,
+      // so we can't received other type than string, we must JSON.parse and allow string type
+      return this.gamesService.update(
+        id,
+        {
+          ...data,
+          activated: [true, "true", 1].includes(updateGameDto.activated),
+          gameGifts: JSON.parse(`${updateGameDto.gameGifts}`),
+          jackpotGift: JSON.parse(`${updateGameDto.jackpotGift}`),
+        },
+        manager
+      );
     });
   }
 

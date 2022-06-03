@@ -1,5 +1,5 @@
 import Faker from "faker";
-import { Gift } from "src/gifts/entities/gift.entity";
+import { Gift } from "../../gifts/entities/gift.entity";
 import { define } from "typeorm-seeding";
 import { v4 as uuid } from "uuid";
 import { Game } from "../../games/entities/game.entity";

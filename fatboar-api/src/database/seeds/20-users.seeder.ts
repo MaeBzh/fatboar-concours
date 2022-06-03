@@ -1,8 +1,7 @@
+import { Connection } from "typeorm";
+import { Factory, Seeder } from "typeorm-seeding";
 import { Role } from "../../roles/entities/role.entity";
 import { User } from "../../users/entities/user.entity";
-import { Connection } from "typeorm";
-import { Seeder, Factory } from "typeorm-seeding";
-import { MailerConfig } from "src/mailerconfig";
 import bcrypt = require("bcrypt");
 
 export default class CreateUsers implements Seeder {
@@ -23,12 +22,24 @@ export default class CreateUsers implements Seeder {
       .where("name = 'client'")
       .getOne();
 
-      const salt = await bcrypt.genSalt();
-      const password = await bcrypt.hash("@Password1234", salt);
+    const salt = await bcrypt.genSalt();
+    const password = await bcrypt.hash("@Password1234", salt);
 
-    await factory(User)({ role: admin, email: "admin@mail.com", password }).create();
-    await factory(User)({ role: employee, email: "employe@mail.com", password }).create();
-    await factory(User)({ role: client, email: "client@mail.com", password }).create();
+    await factory(User)({
+      role: admin,
+      email: "admin@mail.com",
+      password,
+    }).create();
+    await factory(User)({
+      role: employee,
+      email: "employe@mail.com",
+      password,
+    }).create();
+    await factory(User)({
+      role: client,
+      email: "client@mail.com",
+      password,
+    }).create();
     await factory(User)({ role: employee, password }).createMany(5);
     await factory(User)({ role: client, password }).createMany(10);
   }

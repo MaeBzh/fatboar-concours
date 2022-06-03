@@ -1,7 +1,7 @@
-import { MailContactDto } from "./dto/mail-contact.dto";
 import { ISendMailOptions, MailerService } from "@nestjs-modules/mailer";
 import { Injectable } from "@nestjs/common";
-import { User } from "src/users/entities/user.entity";
+import { User } from "../users/entities/user.entity";
+import { MailContactDto } from "./dto/mail-contact.dto";
 
 @Injectable()
 export class MailsService {
@@ -26,10 +26,7 @@ export class MailsService {
   }
 
   sendMailRegister(user: User, activateUrlTemplate: string) {
-    const activateUrl = activateUrlTemplate.replace(
-      "token",
-      user.accountToken
-    );
+    const activateUrl = activateUrlTemplate.replace("token", user.accountToken);
 
     this.sendMail({
       to: user.email,
@@ -39,12 +36,12 @@ export class MailsService {
     });
   }
 
-  sendMailResetPassword(user: User, resetPasswordUrlTemplate: string,) {
+  sendMailResetPassword(user: User, resetPasswordUrlTemplate: string) {
     const resetPasswordUrl = resetPasswordUrlTemplate.replace(
       "token",
       user.accountToken
     );
-  
+
     this.sendMail({
       to: user.email,
       subject: "Bienvenue", // Subject line

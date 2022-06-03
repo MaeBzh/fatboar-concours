@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { WinningTicketsModule } from "src/winning-tickets/winning-tickets.module";
+import { WinningTicketsModule } from "../winning-tickets/winning-tickets.module";
 import { GameGiftModule } from "./../game-gift/game-gift.module";
 import { GiftsModule } from "./../gifts/gifts.module";
 import { Game } from "./entities/game.entity";

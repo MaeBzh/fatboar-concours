@@ -3,4 +3,4 @@ enum TokenTypeNames {
     REFRESH = "refresh"
 }
 
-export default TokenTypeNames
+export default TokenTypeNames;

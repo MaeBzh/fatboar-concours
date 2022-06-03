@@ -1,11 +1,11 @@
-import { Token } from 'src/tokens/entities/token.entity'
-import { JwtService } from "@nestjs/jwt"
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { TokenType } from "../token-types/entities/token-type.entity"
-import { TokenTypesService } from "../token-types/token-types.service"
-import { User } from "../users/entities/user.entity"
-import { EntityManager, Repository } from "typeorm"
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { InjectRepository } from "@nestjs/typeorm";
+import { EntityManager, Repository } from "typeorm";
+import { TokenType } from "../token-types/entities/token-type.entity";
+import { TokenTypesService } from "../token-types/token-types.service";
+import { Token } from "../tokens/entities/token.entity";
+import { User } from "../users/entities/user.entity";
 
 @Injectable()
 export class TokensService {
@@ -21,35 +21,35 @@ export class TokensService {
     tokenType: TokenType,
     manager?: EntityManager
   ) {
-    const date = new Date()
+    const date = new Date();
     const expiresIn = new Date(
       date.setDate(date.getDate() + parseFloat(process.env.JWT_EXPIRES_IN))
-    )
+    );
 
-    const payload = { sub: user.id};
+    const payload = { sub: user.id };
 
-    const repo = manager?.getRepository(Token) || this.tokenRepo
+    const repo = manager?.getRepository(Token) || this.tokenRepo;
     return repo.save({
       value: this.jwtService.sign(payload),
       isRevoked: false,
       expiresIn,
       tokenType,
       user,
-    })
+    });
   }
 
   async createAccessToken(user: User, manager?: EntityManager) {
-    const accessType = await this.tokenTypeService.getAccessType()
-    return this.createToken(user, accessType, manager)
+    const accessType = await this.tokenTypeService.getAccessType();
+    return this.createToken(user, accessType, manager);
   }
 
   async createRefreshToken(user: User, manager?: EntityManager) {
-    const refreshType = await this.tokenTypeService.getRefreshType()
-    return this.createToken(user, refreshType, manager)
+    const refreshType = await this.tokenTypeService.getRefreshType();
+    return this.createToken(user, refreshType, manager);
   }
 
   findAll() {
-    return this.tokenRepo.find()
+    return this.tokenRepo.find();
   }
 
   findByValue(value: string) {
@@ -57,9 +57,9 @@ export class TokensService {
       where: {
         value,
       },
-    })
+    });
   }
-  
+
   // validateRefreshToken(token: Token) {
   //   const user = await this.usersService.findOne(token.user.id)
   //   if (token && !token.isRevoked && token.expiresIn.getTime() < (new Date()).getTime()) {

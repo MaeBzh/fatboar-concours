@@ -92,7 +92,7 @@ describe('CashRegistersService', () => {
 
     it('should return an update result', async () => {
       let expectedResult: CashRegister = await repo.preload({id: 1, ...updateDto});
- let result = await cashRegisterService.update(1, updateDto);
+      let result = await cashRegisterService.update(1, updateDto);
       expect(result.generatedMaps).toStrictEqual(expectedResult);
     })
 

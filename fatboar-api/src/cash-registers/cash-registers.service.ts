@@ -1,9 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CreateCashRegisterDto } from "../cash-registers/dto/create-cash-register.dto";
-import { UpdateCashRegisterDto } from "../cash-registers/dto/update-cash-register.dto";
-import { CashRegister } from "../cash-registers/entities/cash-register.entity";
-import { Restaurant } from "../restaurants/entities/restaurant.entity";
 import {
   DeepPartial,
   DeleteResult,
@@ -13,6 +9,10 @@ import {
   Repository,
   UpdateResult,
 } from "typeorm";
+import { CreateCashRegisterDto } from "../cash-registers/dto/create-cash-register.dto";
+import { UpdateCashRegisterDto } from "../cash-registers/dto/update-cash-register.dto";
+import { CashRegister } from "../cash-registers/entities/cash-register.entity";
+import { Restaurant } from "../restaurants/entities/restaurant.entity";
 import { RestaurantsService } from "../restaurants/restaurants.service";
 
 @Injectable()

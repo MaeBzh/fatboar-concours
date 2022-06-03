@@ -115,8 +115,8 @@ export class GamesService {
   ): Promise<UpdateResult> {
     const repo = manager?.getRepository(Game) || this.gameRepo;
 
-    const { gameGifts, ...data } = updateGameDto
-    const game = { id, ...data }
+    const { gameGifts, ...data } = updateGameDto;
+    const game = { id, ...data };
 
     // update the game
     const updateResult: Promise<UpdateResult> = repo.update(id, game);
@@ -125,9 +125,9 @@ export class GamesService {
     await this.gameGiftService.removeByGame(id);
 
     // then save the new gamegifts associated to this game
-    const gameGiftPromises = updateGameDto.gameGifts.map(async (gameGift) => {
+    const promises = updateGameDto.gameGifts.map(async (gameGift) => {
       // we save the gameGift
-      this.gameGiftService.create(
+      return this.gameGiftService.create(
         {
           game,
           gift: gameGift.gift,
@@ -136,7 +136,7 @@ export class GamesService {
         manager
       );
     });
-    const g = await this.gameRepo.find({ where: { id } });
+    await Promise.all(promises);
 
     return updateResult;
   }
