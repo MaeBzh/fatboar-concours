@@ -83,7 +83,15 @@ import { Component, Vue } from "vue-property-decorator";
 import { fr } from "date-fns/locale";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
 
-@Component
+@Component({
+  metaInfo() {
+    return {
+      title: "Page d'accueil du jeu-concours Fatboar",
+      content:
+        "Jeu-concours organisé par les restaurants de gibier Fatboar. De nombreux cadeaux à gagner : hamburgers de gibier, entrée ou dessert, menus, réductions",
+    };
+  },
+})
 export default class Home extends FileDownloadMixin {
   public initialized = false;
   public gifts = null;

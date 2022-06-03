@@ -8,7 +8,15 @@ import FileDownloadMixin from "@/mixins/file-download.mixin";
 import { Game } from "@/models";
 import { Component } from "vue-property-decorator";
 
-@Component
+@Component({
+  metaInfo() {
+    return {
+      title: "Réglement du jeu",
+      content:
+        "Réglement du jeu-concours organisé par les restaurants de burger de gibier Fatboar",
+    };
+  },
+})
 export default class GameRules extends FileDownloadMixin {
   public currentGame!: Game;
 

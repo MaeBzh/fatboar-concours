@@ -79,6 +79,13 @@ import FileDownloadMixin from "@/mixins/file-download.mixin";
     GameHistory,
     ShowGift,
   },
+  metaInfo() {
+    return {
+      title: "Page du jeu-concours",
+      content:
+        "Formulaire pour entrer les numéros gagnants obtenus en restaurant. Possibilité de gagner de nombreux cadeaux : hamburger de gibier, entrées ou dessert, menu",
+    };
+  },
 })
 export default class Game extends FileDownloadMixin {
   @Ref("form") readonly form!: ValidatorRef;

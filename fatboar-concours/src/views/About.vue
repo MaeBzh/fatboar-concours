@@ -5,8 +5,7 @@
         <h1 class="fatboar-title primary--text">Fatboar</h1>
         <h2 class="fatboar-subtitle">burger restaurant</h2>
         <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium.
+          Fatboar est le spécialiste du burger de gibier depuis plus de 20 ans.
         </p>
       </div>
     </div>
@@ -15,7 +14,7 @@
         <p class="ma-4">
           At vero eos et accusamus et iusto odio dignissimos ducimus qui
           blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-          et quas molestias excepturi sint occaecati cupiditate non provident,
+          et quas molestias hamburger de gibier cupiditate non provident,
           similique sunt in culpa qui officia deserunt mollitia animi, id est
           laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita
           distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
@@ -58,7 +57,8 @@ import { Component, Vue } from "vue-property-decorator";
   metaInfo() {
     return {
       title: "A propos du restaurant de burger Fatboar",
-      content: "L'histoire de fatboar et de son fondateur",
+      content:
+        "L'histoire de la chaîne de restaurent de burger de gibier Fatboar et de son fondateur",
     };
   },
 })
