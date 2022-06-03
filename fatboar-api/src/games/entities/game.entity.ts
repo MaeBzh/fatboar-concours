@@ -1,16 +1,13 @@
-import { Gift } from "../../gifts/entities/gift.entity";
-import { WinningTicket } from "../../winning-tickets/entities/winning-ticket.entity";
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { GameGift } from "../../game-gift/entities/game-gift.entity";
+import { Gift } from "../../gifts/entities/gift.entity";
+import { WinningTicket } from "../../winning-tickets/entities/winning-ticket.entity";
 
 @Entity({ name: "games" })
 export class Game {
@@ -37,7 +34,7 @@ export class Game {
 
   @Column()
   filename: string;
-  
+
   @Column()
   jackpotDraw: Date;
 
@@ -51,7 +48,7 @@ export class Game {
   })
   winningTickets?: WinningTicket[];
 
-  @OneToMany((type) => GameGift, (gameGift) => gameGift.game, {cascade: true})  
+  @OneToMany((type) => GameGift, (gameGift) => gameGift.game, { cascade: true })
   gameGifts: GameGift[];
 
   @ManyToOne((type) => Gift, (gift) => gift.games)

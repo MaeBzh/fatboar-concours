@@ -4,9 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { MailsService } from "src/mails/mails.service";
 import { UpdateResult } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { MailsService } from "../mails/mails.service";
 import { TokensService } from "../tokens/tokens.service";
 import { User } from "../users/entities/user.entity";
 import { UsersService } from "../users/users.service";

@@ -1,24 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
-import { EmailingListService } from './emailing-list.service';
-import { CreateEmailingListDto } from './dto/create-emailing-list.dto';
-import { UpdateEmailingListDto } from './dto/update-emailing-list.dto';
-import { ApiCreatedResponse } from '@nestjs/swagger';
-import { EmailingList } from './entities/emailing-list.entity';
-import { Connection, DeleteResult, EntityManager, UpdateResult, FindManyOptions } from 'typeorm';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiCreatedResponse } from "@nestjs/swagger";
+import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { CreateEmailingListDto } from "./dto/create-emailing-list.dto";
+import { UpdateEmailingListDto } from "./dto/update-emailing-list.dto";
+import { EmailingListService } from "./emailing-list.service";
+import { EmailingList } from "./entities/emailing-list.entity";
 
-@Controller('emailing-lists')
+@Controller("emailing-lists")
 @UseGuards(AuthGuard())
 export class EmailingListController {
   constructor(
     private readonly emailingListService: EmailingListService,
     private readonly connection: Connection
-  ) { }
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
-    description: 'The emailing list has been successfully created.',
-    type: EmailingList
+    description: "The emailing list has been successfully created.",
+    type: EmailingList,
   })
   async create(@Body() createEmailingListDto: CreateEmailingListDto) {
     return await this.connection.transaction(async (manager: EntityManager) => {
@@ -28,31 +37,38 @@ export class EmailingListController {
 
   @Get()
   async findAll() {
-    return await this.emailingListService.findAll({relations: ["users"]});
+    return await this.emailingListService.findAll({ relations: ["users"] });
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.emailingListService.findOne(id, { relations: ["users"]});
+  @Get(":id")
+  async findOne(@Param("id") id: number) {
+    return await this.emailingListService.findOne(id, { relations: ["users"] });
   }
 
-  @Put(':id')
+  @Put(":id")
   @ApiCreatedResponse({
-    description: 'The emailing list has been successfully updated.',
-    type: UpdateResult
+    description: "The emailing list has been successfully updated.",
+    type: UpdateResult,
   })
-  async update(@Param('id') id: number, @Body() updateEmailingListDto: UpdateEmailingListDto) {
+  async update(
+    @Param("id") id: number,
+    @Body() updateEmailingListDto: UpdateEmailingListDto
+  ) {
     return await this.connection.transaction(async (manager: EntityManager) => {
-      return this.emailingListService.update(id, updateEmailingListDto, manager);
+      return this.emailingListService.update(
+        id,
+        updateEmailingListDto,
+        manager
+      );
     });
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @ApiCreatedResponse({
-    description: 'The emailing list has been successfully deleted.',
-    type: DeleteResult
+    description: "The emailing list has been successfully deleted.",
+    type: DeleteResult,
   })
-  async remove(@Param('id') id: number) {
+  async remove(@Param("id") id: number) {
     return await this.connection.transaction(async (manager: EntityManager) => {
       return this.emailingListService.remove(id, manager);
     });

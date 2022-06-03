@@ -1,19 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, EntityManager, Repository, Transaction, TransactionRepository, UpdateResult } from 'typeorm';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { Restaurant } from './entities/restaurant.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DeleteResult, EntityManager, Repository, UpdateResult } from "typeorm";
+import { CreateRestaurantDto } from "./dto/create-restaurant.dto";
+import { UpdateRestaurantDto } from "./dto/update-restaurant.dto";
+import { Restaurant } from "./entities/restaurant.entity";
 
 @Injectable()
 export class RestaurantsService {
-
   constructor(
     @InjectRepository(Restaurant)
-    private restaurantsRepo: Repository<Restaurant>,
+    private restaurantsRepo: Repository<Restaurant>
   ) {}
 
-  create(createRestaurantDto: CreateRestaurantDto, manager?: EntityManager): Promise<Restaurant> {
+  create(
+    createRestaurantDto: CreateRestaurantDto,
+    manager?: EntityManager
+  ): Promise<Restaurant> {
     const repo = manager?.getRepository(Restaurant) || this.restaurantsRepo;
     return repo.save(createRestaurantDto);
   }
@@ -26,7 +28,11 @@ export class RestaurantsService {
     return this.restaurantsRepo.findOneOrFail(id);
   }
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto, manager?: EntityManager): Promise<UpdateResult> {
+  update(
+    id: number,
+    updateRestaurantDto: UpdateRestaurantDto,
+    manager?: EntityManager
+  ): Promise<UpdateResult> {
     const repo = manager?.getRepository(Restaurant) || this.restaurantsRepo;
     return repo.update(id, updateRestaurantDto);
   }

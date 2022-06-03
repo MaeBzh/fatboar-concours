@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Game } from "src/games/entities/game.entity";
-import { User } from "src/users/entities/user.entity";
+import { Game } from "../games/entities/game.entity";
+import { User } from "../users/entities/user.entity";
 import {
   DeepPartial,
   DeleteResult,

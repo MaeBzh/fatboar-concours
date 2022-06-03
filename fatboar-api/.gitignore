@@ -1,6 +1,7 @@
 # compiled output
 dist/*
 uploads/*
+target/*
 
 # dependencies
 node_modules

@@ -1,22 +1,19 @@
-import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
-import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import {
-  Request,
   Body,
   Controller,
   Delete,
   Get,
   Param,
   Post,
-  Put,
-  UseGuards,
-  UnauthorizedException,
+  Put, Request, UnauthorizedException, UseGuards
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 import { UsersService } from "./users.service";
@@ -40,9 +37,8 @@ export class UsersController {
       createUserDto.newsletter = [true, "true", 1].includes(
         createUserDto.newsletter
       );
-      const { password, accountToken, ...user } =
-        await this.usersService.create(createUserDto, manager);
-      return user;
+      const user = await this.usersService.create(createUserDto, manager);
+      return this.usersService.userWithoutSecrets(user);
     });
   }
 
@@ -79,31 +75,32 @@ export class UsersController {
   @Get()
   async findAll() {
     const users = await this.usersService.findAll();
-    return users.map(({ password, accountToken, ...user }) => user);
+    return users.map((user) => this.usersService.userWithoutSecrets(user));
   }
 
   @Get("employees")
   async findAllEmployees() {
     const employees = await this.usersService.findAllEmployees();
-    return employees.map(({ password, accountToken, ...employee }) => employee);
+    return employees.map((employee) =>
+      this.usersService.userWithoutSecrets(employee)
+    );
   }
 
   @Get("clients")
   async findAllClients() {
     const clients = await this.usersService.findAllClients();
-    return clients.map(({ password, accountToken, ...client }) => client);
+    return clients.map((client) =>
+      this.usersService.userWithoutSecrets(client)
+    );
   }
 
   @Get(["/clients/:id", "/employees/:id"])
   async findOne(@Param("id") id: number) {
-    const { password, accountToken, ...user } = await this.usersService.findOne(
-      id,
-      {
-        relations: ["winningTickets"],
-      }
-    );
+    const user = await this.usersService.findOne(id, {
+      relations: ["winningTickets"],
+    });
 
-    return user;
+    return this.usersService.userWithoutSecrets(user);
   }
 
   @Post("email")

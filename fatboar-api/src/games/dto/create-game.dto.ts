@@ -8,7 +8,7 @@ import {
   MaxLength,
   ValidateIf,
 } from "class-validator";
-import { GameGift } from "src/game-gift/entities/game-gift.entity";
+import { GameGift } from "../../game-gift/entities/game-gift.entity";
 
 export class CreateGameDto {
   @ApiProperty()
