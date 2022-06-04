@@ -235,7 +235,6 @@ export default class ProfileEdit extends Vue {
   @Ref("form") readonly form!: ValidatorRef;
   @Ref("refBirthYearPicker") refBirthYearPicker!: DatePickerRef;
   @Ref("refBirthYearMenu") refBirthYearMenu!: DatePickerMenuRef;
-  public isMobile = isMobile;
   public loading = false;
   public showDatePicker = false;
   public connectedUser: Client | null = null;
@@ -279,6 +278,10 @@ export default class ProfileEdit extends Vue {
         this.loading = false;
       }
     }
+  }
+
+  get isMobile() {
+    return isMobile();
   }
 
   getColor(disabled: boolean): string {

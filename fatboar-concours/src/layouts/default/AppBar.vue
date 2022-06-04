@@ -280,7 +280,9 @@ import { isMobile } from "@/helpers/utils";
   },
 })
 export default class AppBar extends Vue {
-  public isMobile = isMobile;
+  get isMobile() {
+    return isMobile();
+  }
 
   get authUser() {
     return this.$store.getters["authStore/getAuthUser"];

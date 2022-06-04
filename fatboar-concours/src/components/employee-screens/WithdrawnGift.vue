@@ -48,7 +48,6 @@ import { Component, Prop } from "vue-property-decorator";
 export default class WithdrawnGift extends FileDownloadMixin {
   @Prop() readonly value!: WinningTicket;
   public formatDate = formatDate;
-  public isMobile = isMobile;
 
   get winningTicket() {
     return this.value;
@@ -56,6 +55,10 @@ export default class WithdrawnGift extends FileDownloadMixin {
 
   set winningTicket(value) {
     this.winningTicket = value;
+  }
+
+  get isMobile() {
+    return isMobile();
   }
 
   get withdrawnDate() {
