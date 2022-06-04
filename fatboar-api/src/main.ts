@@ -18,11 +18,6 @@ async function bootstrap() {
     "utf8"
   );
   const httpsOptions = { key: privateKey, cert: certificate };
-  const corsOptions = {
-    origin: process.env.CORS_ORIGIN.split(", "),
-    methods: process.env.CORS_METHODS,
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS,
-  };
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
   app.enableCors();
