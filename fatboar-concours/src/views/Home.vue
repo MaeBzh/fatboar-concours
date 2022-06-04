@@ -111,7 +111,7 @@ import FileDownloadMixin from "@/mixins/file-download.mixin";
     return {
       title: "Page d'accueil du jeu-concours Fatboar",
       content:
-        "Jeu-concours organisé par Fatboar. De nombreux cadeaux à gagner",
+        "Jeu-concours organisé par les restaurants de gibier Fatboar. De nombreux cadeaux à gagner : hamburgers de gibier, entrée ou dessert, menus, réductions",
     };
   },
   components: { NoCurrentGame },

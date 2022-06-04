@@ -1,4 +1,4 @@
-import { GamesModule } from "src/games/games.module";
+import { GamesModule } from "../games/games.module";
 import { WinningTicketsCashRegisterController } from "./winning-tickets-cash-register.controller";
 import { forwardRef, Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";

@@ -1,8 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as bcrypt from "bcrypt";
-import { RegisterSocialDto } from "src/authentication/dto/registerSocial.dto";
-import { RolesService } from "src/roles/roles.service";
 import {
   DeleteResult,
   EntityManager,
@@ -10,6 +8,8 @@ import {
   Repository,
   UpdateResult,
 } from "typeorm";
+import { RegisterSocialDto } from "../authentication/dto/registerSocial.dto";
+import { RolesService } from "../roles/roles.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -41,11 +41,16 @@ export class UsersService {
     return this.repository.findOneOrFail(id, options);
   }
 
+  userWithoutSecrets(user: Partial<User>) {
+    const { password, accountToken, ...userWithoutSecrets } = user;
+    return userWithoutSecrets as User;
+  }
+
   async findByEmail(email: string): Promise<User> {
     return this.repository.findOneOrFail({
-        relations: ["role"],
-        where: { email },
-      });
+      relations: ["role"],
+      where: { email },
+    });
   }
 
   findByAccountToken(token: string): Promise<User> {

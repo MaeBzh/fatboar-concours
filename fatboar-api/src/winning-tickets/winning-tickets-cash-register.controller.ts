@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
-import { GamesService } from "src/games/games.service";
+import { GamesService } from "../games/games.service";
 import { Connection, EntityManager } from "typeorm";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";

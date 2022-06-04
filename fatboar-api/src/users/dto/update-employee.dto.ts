@@ -1,6 +1,6 @@
-import { CreateEmployeeDto } from "./create-employee.dto";
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { CreateEmployeeDto } from "./create-employee.dto";
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty()

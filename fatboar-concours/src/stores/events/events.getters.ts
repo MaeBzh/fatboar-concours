@@ -46,6 +46,11 @@ export default {
       return event.name === "badGameTicket";
     });
   },
+  getVerifyBadTicketEvent: (state) => {
+    return state.events.find((event: CustomEvent) => {
+      return event.name === "verifyBadTicket";
+    });
+  },
   getContactMailSendedEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
       return event.name === "contactMailSend";
@@ -54,6 +59,12 @@ export default {
   getThrottleEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
       return event.name === "throttle";
+    });
+  },
+
+  getProfileUpdatedEvent: (state) => {
+    return state.events.find((event: CustomEvent) => {
+      return event.name === "profileUpdated";
     });
   },
 };

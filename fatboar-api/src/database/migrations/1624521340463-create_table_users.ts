@@ -59,7 +59,7 @@ export class createTableUsersMigration1624521340463
             type: "boolean",
             default: false,
             isNullable: true,
-          },       
+          },
           {
             name: "zipcode",
             type: "varchar",

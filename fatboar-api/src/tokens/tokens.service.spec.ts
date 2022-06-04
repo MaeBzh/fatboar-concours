@@ -1,18 +1,35 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TokensService } from './tokens.service';
+import { JwtService } from "@nestjs/jwt";
+import { User } from "../users/entities/user.entity";
+import { TokenType } from "./../token-types/entities/token-type.entity";
+import { TokenTypesService } from "./../token-types/token-types.service";
+import { TokenRepositoryMock } from "./tokens.repository.mock";
+import { TokensService } from "./tokens.service";
 
-describe('TokensService', () => {
-  let service: TokensService;
+describe("TokensService", () => {
+  let tokenService: TokensService;
+  let tokenTypesService: TokenTypesService;
+  let repo: TokenRepositoryMock;
+  let jwtService: JwtService;
+
+  const database = {
+    tokens: [
+      {
+        id: 1,
+        value: "azertyui",
+        isRevoked: false,
+        expiresIn: new Date(),
+        tokenType: {} as TokenType,
+        user: {} as User,
+      },
+    ],
+  };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [TokensService],
-    }).compile();
-
-    service = module.get<TokensService>(TokensService);
+    repo = new TokenRepositoryMock(database);
+    tokenService = new TokensService(repo, tokenTypesService, jwtService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it("should be defined", () => {
+    expect(tokenService).toBeDefined();
   });
 });

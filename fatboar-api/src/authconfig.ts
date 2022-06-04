@@ -8,5 +8,4 @@ export const JwtConfig: JwtModuleOptions = {
   },
 };
 
-export const PassportConfig: IAuthModuleOptions = { defaultStrategy: 'jwt' };
-
+export const PassportConfig: IAuthModuleOptions = { defaultStrategy: "jwt" };

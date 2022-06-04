@@ -65,8 +65,16 @@ export default class EventAlert extends Vue {
     return this.$store.getters["eventStore/getBadGameTicketEvent"];
   }
 
+  get verifyBadTicketEvent() {
+    return this.$store.getters["eventStore/getVerifyBadTicketEvent"];
+  }
+
   get throttleEvent() {
     return this.$store.getters["eventStore/getThrottleEvent"];
+  }
+
+  get profileUpdatedEvent() {
+    return this.$store.getters["eventStore/getProfileUpdatedEvent"];
   }
 
   @Watch("entityDeletedEvent")
@@ -148,11 +156,29 @@ export default class EventAlert extends Vue {
     }
   }
 
+  @Watch("verifyBadTicketEvent")
+  onverifyBadTicketEventChange(event) {
+    if (event?.name) {
+      this.message =
+        "Nous n'avons trouvé aucun ticket gagnant correspondant à ce numéro et à ce montant, " +
+        "veuillez entrer un autre numéro.";
+      this.$store.commit("eventStore/remove", event);
+    }
+  }
+
   @Watch("throttleEvent")
   onThrottleEventChange(event) {
     if (event?.name) {
       this.message =
         "Vous avez dépassé le nombre de tentatives autorisées. Veuillez retenter votre chance dans 5 minutes.";
+      this.$store.commit("eventStore/remove", event);
+    }
+  }
+
+  @Watch("profileUpdatedEvent")
+  onProfileUpdatedEventChange(event) {
+    if (event?.name) {
+      this.message = "Vos informations ont été mises à jour.";
       this.$store.commit("eventStore/remove", event);
     }
   }

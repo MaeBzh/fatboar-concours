@@ -1,7 +1,7 @@
-import { Gift } from "../../gifts/entities/gift.entity";
-import { Game } from "../../games/entities/game.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
+import { Game } from "../../games/entities/game.entity";
+import { Gift } from "../../gifts/entities/gift.entity";
 
 export class GameGiftDto {
   @ApiProperty()

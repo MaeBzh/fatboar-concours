@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { VFBLoginScope as VFacebookLoginScope } from "vue-facebook-login-component";
 import { Vue, Component } from "vue-property-decorator";
 import AppBar from "@/layouts/default/AppBar.vue";
 import FooterBar from "@/layouts/default/FooterBar.vue";
@@ -29,8 +28,14 @@ import FacebookLogin from "./components/auth/FacebookLogin.vue";
     FooterBar,
     RgpdConsent,
     EventAlert,
-    VFacebookLoginScope,
     FacebookLogin,
+  },
+  metaInfo() {
+    return {
+      title: "Site du jeu-concours organisé par Fatboar",
+      content:
+        "Jeu-concours organisé par les restaurants de gibier Fatboar. De nombreux cadeaux à gagner : hamburgers de gibier, entrée ou dessert, menus, réductions",
+    };
   },
 })
 export default class App extends Vue {}

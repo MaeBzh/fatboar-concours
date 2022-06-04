@@ -13,7 +13,7 @@ import { TokensService } from "./tokens.service";
         expiresIn: process.env.JWT_EXPIRES_IN,
       },
       secretOrPrivateKey: process.env.JWT_SECRET,
-    }),    
+    }),
     TokenTypesModule,
   ],
   providers: [TokensService, JwtModule],

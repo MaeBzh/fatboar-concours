@@ -37,6 +37,13 @@ import PieChart from "../components/charts/PieChart.vue";
 
 @Component({
   components: { PieChart },
+  metaInfo() {
+    return {
+      title: "Statistiques du site fatboar",
+      content:
+        "Des statistiques d'utilisation du site fatboar-concours et du jeu et de ses utilisateurs",
+    };
+  },
 })
 export default class Charts extends Vue {
   public clientsAgesRepartition = { younger: 0, middle: 0, older: 0 };

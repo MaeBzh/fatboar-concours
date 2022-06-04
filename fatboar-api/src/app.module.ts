@@ -38,7 +38,7 @@ import { WinningTicketsModule } from "./winning-tickets/winning-tickets.module";
     TokensModule,
     TokenTypesModule,
     FileDownloaderModule,
-    MailsModule   
+    MailsModule,
   ],
 })
 export class AppModule {

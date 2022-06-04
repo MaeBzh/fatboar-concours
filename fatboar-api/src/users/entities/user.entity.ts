@@ -1,7 +1,3 @@
-import { Role } from "../../roles/entities/role.entity";
-import { EmailingList } from "../../emailing-list/entities/emailing-list.entity";
-import { Token } from "../../tokens/entities/token.entity";
-import { WinningTicket } from "../../winning-tickets/entities/winning-ticket.entity";
 import {
   Column,
   Entity,
@@ -11,7 +7,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { classToPlain } from "class-transformer";
+import { EmailingList } from "../../emailing-list/entities/emailing-list.entity";
+import { Role } from "../../roles/entities/role.entity";
+import { Token } from "../../tokens/entities/token.entity";
+import { WinningTicket } from "../../winning-tickets/entities/winning-ticket.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -78,11 +77,6 @@ export class User {
 
   @ManyToOne(() => Role, (role) => role.users, {
     onDelete: "RESTRICT",
-  
   })
-  role: Role; 
-
-  toJSON() {
-    return classToPlain(this);
-  }
+  role: Role;
 }

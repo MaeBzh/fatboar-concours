@@ -10,7 +10,6 @@ const database = {
     isJackpot: false,
     name: "burger",
     photo: "jhgfds",
-    winPercentage: 20,    
     winningTickets: Promise.resolve([])
   },
   {
@@ -62,7 +61,8 @@ describe('GiftsService', () => {
       isJackpot: false,
       name: "entrée",
       photo: "kijhg",
-      winPercentage: 40  
+      filename: "azerty",
+      icon: "mdi-star"
     };
 
     it('should return the new gift', async () => {
@@ -73,10 +73,7 @@ describe('GiftsService', () => {
   describe('update', () => {
 
     let updateDto: UpdateGiftDto = {
-      isJackpot: false,
-      name: "burger",
-      photo: "kijhg",
-      winPercentage: 30 
+      id: "1",
     };
 
     it('should return the new gift', async () => {
@@ -84,10 +81,7 @@ describe('GiftsService', () => {
     })
 
     let updateDto2: UpdateGiftDto = {
-      isJackpot: false,
-      name: "burger",
-      photo: "kijhg",
-      winPercentage: 40 
+      id: "2",
     };
 
     it('should return a entity not found error', async () => {
