@@ -15,12 +15,12 @@
     >
     </v-img>
     <div>
-      <v-card-text v-if="!!winningTicket.withdrawnOn"
+      <v-card-text v-if="winningTicket.withdrawnOn"
         >Vous avez déjà utilisé ce lot.
       </v-card-text>
       <v-card-text v-else>
         Vous pouvez dès à présent vous rendre dans votre restaurant favori muni
-        du ticket de caisse sur lequel figure le QRcode afin d'utilser votre lot
+        du ticket de caisse afin d'utiliser votre lot.
       </v-card-text>
     </div>
     <v-btn color="primary accent--text mb-4" @click.stop="$emit('input', null)"

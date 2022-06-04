@@ -8,7 +8,7 @@ import {
   EntityManager,
   FindOneOptions,
   Repository,
-  UpdateResult
+  UpdateResult,
 } from "typeorm";
 import { WinningTicket } from "../winning-tickets/entities/winning-ticket.entity";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
@@ -105,7 +105,9 @@ export class WinningTicketsService {
     manager?: EntityManager
   ): Promise<WinningTicket> {
     const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
-    await repo.update(id, await repo.preload({ id, withdrawnOn }));
+    const ticket = await repo.findOneOrFail({ id });
+    ticket.withdrawnOn = withdrawnOn;
+    const response = await repo.update(id, await repo.preload(ticket));
     return repo.findOneOrFail(id, { relations: ["gift"] });
   }
 

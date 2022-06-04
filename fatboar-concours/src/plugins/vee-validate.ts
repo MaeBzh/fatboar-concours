@@ -59,8 +59,7 @@ extend("digits", {
 
 extend("regex", {
   ...regex,
-  message:
-    "Le champ {_field_} {_value_} contient des caratères non autorisés {regex}.",
+  message: "Le champ {_field_} {_value_} contient des caratères non autorisés.",
 });
 
 extend("password", {
