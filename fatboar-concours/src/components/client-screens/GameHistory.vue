@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import { formatDate, OuiNon } from "@/helpers/utils";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
 

@@ -1,4 +1,4 @@
-import { RequestWithUser } from './../authentication/interfaces/request-with-user.interface';
+import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import {
   Body,
   Controller,

@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-card width="60%" loading="true" loader-height="4" class="pa-8 m-auto">
+  <v-container class="d-flex justify-center">
+    <v-card width="60%" loading="true" loader-height="4" class="pa-8">
       <div v-if="!winningTicket">
         <v-card-title> Vérifier un gain </v-card-title>
         <v-card-text>
@@ -10,7 +10,7 @@
                 v-slot="{ errors }"
                 name="number"
                 :rules="{
-                  digits: 10,
+                  regex: '^[0-9]+$',
                   required: true,
                 }"
               >
@@ -82,7 +82,13 @@ export default class RestaurantCreate extends Vue {
           this.ticket
         );
       } catch (error) {
-        this.$store.commit("eventStore/add", { name: "error" });
+        if (error?.status === 404) {
+          this.$store.commit("eventStore/add", { name: "verifyBadTicket" });
+        } else if (error?.status === 429) {
+          this.$store.commit("eventStore/add", { name: "throttle" });
+        } else {
+          this.$store.commit("eventStore/add", { name: "error" });
+        }
       } finally {
         this.loading = false;
       }

@@ -17,7 +17,7 @@
                   v-slot="{ errors }"
                   name="number"
                   :rules="{
-                    digits: 10,
+                    regex: '^[0-9]+$',
                     required: true,
                   }"
                 >
