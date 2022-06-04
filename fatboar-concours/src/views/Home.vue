@@ -1,35 +1,59 @@
 <template>
   <div v-if="initialized">
     <template v-if="currentGame">
-      <div class="upper-div">
-        <v-row class="d-flex justify-center mb-8">
-          <v-img
-            src="/assets/images/presentation-image.png"
-            max-height="90%"
-            max-width="70%"
-            class="mt-8"
-            alt="Un hamburger et des frites posés sur une planche en bois"
-          />
-        </v-row>
-        <v-row class="upper-description d-flex flex-column align-center">
-          <v-row class="upper-title">Grand jeu-concours</v-row>
-          <v-row class="upper-subtitle align-center">
-            <v-col class="upper-jackpot-image-left">
-              <v-img :src="jackpotImage" max-width="100px" />
-            </v-col>
-            <v-col class="upper-subtitle-text col-auto">
-              Du {{ dateBegin }} au {{ dateEnd }}
-            </v-col>
+      <template v-if="!isMobile">
+        <div class="upper-div">
+          <v-row class="upper-description d-flex flex-column align-center">
+            <v-row class="fatboar">Fatboar</v-row>
+            <v-row class="upper-title">Grand jeu-concours</v-row>
+            <v-row class="upper-subtitle align-center ma-8">
+              <v-col class="upper-jackpot-image-left">
+                <v-img :src="jackpotImage" max-width="100px" />
+              </v-col>
+              <v-col class="upper-subtitle-text col-auto">
+                Du {{ dateBegin }} au {{ dateEnd }}
+              </v-col>
 
-            <v-col upper-jackpot-image-left>
-              <v-img :src="jackpotImage" max-width="100px" />
-            </v-col>
+              <v-col upper-jackpot-image-left>
+                <v-img :src="jackpotImage" max-width="100px" />
+              </v-col>
+            </v-row>
+            <v-img
+              src="/assets/images/presentation-image.png"
+              max-height="90%"
+              max-width="70%"
+              class="mt-8"
+              alt="Un hamburger et des frites posés sur une planche en bois"
+            />
+            <v-col class="upper-text mt-8 mb-8 col-8 text-center">{{
+              currentGame.description
+            }}</v-col>
           </v-row>
-          <v-col class="upper-text mt-8 mb-8 col-8 text-center">{{
-            currentGame.description
-          }}</v-col>
-        </v-row>
-      </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="upper-div mt-4">
+          <v-row class="upper-description d-flex flex-column align-center">
+            <v-row class="upper-title-mobile">Grand jeu-concours</v-row>
+            <v-img
+              src="/assets/images/presentation-image.png"
+              max-width="100%"
+              class="mt-8"
+              alt="Un hamburger et des frites posés sur une planche en bois"
+            />
+            <v-row class="upper-subtitle-mobile align-center ma-8">
+              Du {{ dateBegin }} au {{ dateEnd }}
+            </v-row>
+            <v-row upper-jackpot-image-left>
+              <v-img :src="jackpotImage" max-width="100px" />
+            </v-row>
+
+            <v-col class="upper-text mt-8 mb-8 col-8 text-center">{{
+              currentGame.description
+            }}</v-col>
+          </v-row>
+        </div>
+      </template>
 
       <v-row class="middle-div accent pa-4 d-flex flex-column align-center">
         <v-row>
@@ -70,14 +94,28 @@
             nos nouveaux burgers, suivez-nous sur les réseaux sociaux :
           </p>
         </v-row>
-        <v-row class="bottom-social mt-4">
-          <div v-for="social in socials" :key="social.name">
+        <template v-if="!isMobile">
+          <v-row class="bottom-social mt-4">
+            <div v-for="social in socials" :key="social.name">
+              <span class="social-name">{{ social.name }}</span>
+              <v-icon class="social-icon mr-8 ml-2 primary--text">{{
+                social.icon
+              }}</v-icon>
+            </div>
+          </v-row>
+        </template>
+        <template v-else>
+          <v-row
+            v-for="social in socials"
+            :key="social.name"
+            class="bottom-social mt-4"
+          >
             <span class="social-name">{{ social.name }}</span>
             <v-icon class="social-icon mr-8 ml-2 primary--text">{{
               social.icon
             }}</v-icon>
-          </div>
-        </v-row>
+          </v-row>
+        </template>
       </div>
       <div class="d-flex flex-column align-center mt-10">
         <p>
@@ -100,11 +138,12 @@
 
 <script lang="ts">
 import { format } from "date-fns";
-import { Component, Vue } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import { fr } from "date-fns/locale";
 import { Gift } from "@/models";
 import NoCurrentGame from "../components/client-screens/NoCurrentGame.vue";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
+import { isMobile } from "@/helpers/utils";
 
 @Component({
   metaInfo() {
@@ -117,6 +156,7 @@ import FileDownloadMixin from "@/mixins/file-download.mixin";
   components: { NoCurrentGame },
 })
 export default class Home extends FileDownloadMixin {
+  public isMobile = isMobile;
   public initialized = false;
   public gifts = null;
   public jackpot = null;
@@ -205,5 +245,25 @@ export default class Home extends FileDownloadMixin {
 
 .fatboar-link {
   text-decoration: underline;
+}
+
+.fatboar {
+  font-family: "berniershade";
+  font-size: 6em;
+}
+
+.fatboar-mobile {
+  font-family: "berniershade";
+  font-size: 2em;
+}
+
+.upper-title-mobile {
+  font-weight: 900;
+  font-size: 2em;
+}
+
+.upper-subtitle-mobile {
+  font-size: 0.8em;
+  font-weight: bold;
 }
 </style>

@@ -1,7 +1,10 @@
 <template>
   <v-container>
-    <v-card :loading="loading" class="pa-8 d-flex flex-column align-center">
-      <v-card-title class="card-title pb-8">
+    <v-card
+      :loading="loading"
+      :class="['d-flex flex-column align-center', isMobile ? '' : 'pa-5']"
+    >
+      <v-card-title :class="isMobile ? 'card-title-mobile' : 'card-title pb-5'">
         Modifier vos informations
       </v-card-title>
       <v-card-text class="edit-form">
@@ -197,21 +200,21 @@
               ></v-checkbox>
             </validation-provider>
             <v-btn
-              class="ma-4"
+              :class="isMobile ? 'ma-1' : 'ma-4'"
               outlined
               color="accent primary--text"
               @click="resetConnectedUser"
               :disabled="invalid || !dirty"
             >
-              Annuler les modifications
+              {{ isMobile ? "Annuler" : "Annuler les modifications" }}
             </v-btn>
             <v-btn
-              class="ma-4"
+              :class="isMobile ? 'ma-1' : 'ma-4'"
               color="accent primary--text"
               type="submit"
               :disabled="invalid || !dirty"
             >
-              Enregistrer les modifications
+              {{ isMobile ? "Enregistrer" : "Enregistrer les modifications" }}
             </v-btn>
           </form>
         </validation-observer>
@@ -225,12 +228,14 @@ import { Client } from "@/models/client.model";
 import { Component, Vue, Ref, Watch } from "vue-property-decorator";
 import { ValidatorRef } from "@/types/validator";
 import { DatePickerMenuRef, DatePickerRef } from "@/types/datePicker";
+import { isMobile } from "@/helpers/utils";
 
 @Component
 export default class ProfileEdit extends Vue {
   @Ref("form") readonly form!: ValidatorRef;
   @Ref("refBirthYearPicker") refBirthYearPicker!: DatePickerRef;
   @Ref("refBirthYearMenu") refBirthYearMenu!: DatePickerMenuRef;
+  public isMobile = isMobile;
   public loading = false;
   public showDatePicker = false;
   public connectedUser: Client | null = null;
