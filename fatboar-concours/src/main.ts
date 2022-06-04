@@ -2,12 +2,7 @@ import App from "@/App.vue";
 import "@/components/commons";
 import { vuetify, router, store } from "@/plugins";
 import "@/resources";
-import { config as initdotEnvConfig } from "dotenv";
 import Vue from "vue";
-
-initdotEnvConfig();
-
-Vue.config.productionTip = false;
 
 new Vue({
   el: "#app",
