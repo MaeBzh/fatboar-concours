@@ -36,7 +36,6 @@ export class GameRepositoryMock extends Repository<Game> {
     //TODO add query failed exception for email already in use
     async update(search: any, updateDto: any): Promise<any> {
       let index = this.database.games.findIndex(game => game.id == search);
-      console.log({index});
       if (index >= 0) {
         return this.database.games[index] = {...updateDto};
       } else {
