@@ -72,7 +72,6 @@ import { isMobile } from "@/helpers/utils";
 export default class RestaurantCreate extends Vue {
   @Ref("form") readonly form!: ValidatorRef;
   public loading = false;
-  public isMobile = isMobile;
   public ticket = {
     number: "",
     amount: "",
@@ -100,6 +99,10 @@ export default class RestaurantCreate extends Vue {
         this.loading = false;
       }
     }
+  }
+
+  get isMobile() {
+    return isMobile();
   }
 
   resetTicket(): void {

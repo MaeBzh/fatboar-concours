@@ -1,5 +1,5 @@
 <template>
-  <v-card-text class="d-flex flex-column align-center">
+  <v-card-text v-if="tickets.length" class="d-flex flex-column align-center">
     <div class="font-weight-bold ma-4 primary--text history-title">
       Historique de vos gains
     </div>
