@@ -119,8 +119,9 @@
       </div>
       <div class="d-flex flex-column align-center mt-10">
         <p>
-          Vous pouvez également vous inscrire et vous abonner à notre
-          <a src="" class="primary--text fatboar-link">newsletter.</a>
+          Vous pouvez également vous
+          <router-link :to="{ name: login }">inscrire</router-link> et vous
+          abonner à notre newsletter.
         </p>
         <v-icon class="primary--text mb-8">mdi-food</v-icon>
       </div>
@@ -156,7 +157,6 @@ import { isMobile } from "@/helpers/utils";
   components: { NoCurrentGame },
 })
 export default class Home extends FileDownloadMixin {
-  public isMobile = isMobile;
   public initialized = false;
   public gifts = null;
   public jackpot = null;
@@ -170,6 +170,14 @@ export default class Home extends FileDownloadMixin {
 
   get authenticated() {
     return localStorage.getItem("user") ? true : false;
+  }
+
+  get isMobile() {
+    return isMobile();
+  }
+
+  get userAgent() {
+    return navigator.userAgent;
   }
 
   get currentGame() {

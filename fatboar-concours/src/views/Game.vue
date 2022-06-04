@@ -95,13 +95,16 @@ import { isMobile } from "@/helpers/utils";
 })
 export default class Game extends FileDownloadMixin {
   @Ref("form") readonly form!: ValidatorRef;
-  public isMobile = isMobile;
   public loading = false;
   public ticket = {
     number: "",
     amount: "",
   };
   public winningTicket: WinningTicket | null = null;
+
+  get isMobile() {
+    return isMobile();
+  }
 
   get tickets() {
     return this.$store.getters["ticketStore/getAll"];

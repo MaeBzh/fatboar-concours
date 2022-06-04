@@ -10,11 +10,11 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const privateKey = fs.readFileSync(
-    resolve(__dirname, "../server.key"),
+    resolve(__dirname, "../../server.key"),
     "utf8"
   );
   const certificate = fs.readFileSync(
-    resolve(__dirname, "../server.cert"),
+    resolve(__dirname, "../../server.cert"),
     "utf8"
   );
   const httpsOptions = { key: privateKey, cert: certificate };
