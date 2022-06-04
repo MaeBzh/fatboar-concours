@@ -27,7 +27,6 @@ export class RolesService {
     const response = await this.rolesRepo.findOneOrFail({
       where: { name: RoleNames.CLIENT },
     });
-    console.log({ response });
     return Promise.resolve(response);
   }
 

@@ -1,6 +1,11 @@
 <template>
-  <v-container>
-    <v-card width="60%" loading="true" loader-height="4" class="pa-8 m-auto">
+  <v-container class="d-flex justify-center">
+    <v-card
+      :width="isMobile ? '100 %' : '60%'"
+      loading="true"
+      loader-height="4"
+      class="pa-8"
+    >
       <div v-if="!winningTicket">
         <v-card-title> Vérifier un gain </v-card-title>
         <v-card-text>
@@ -10,7 +15,7 @@
                 v-slot="{ errors }"
                 name="number"
                 :rules="{
-                  digits: 10,
+                  regex: '^[0-9]+$',
                   required: true,
                 }"
               >
@@ -57,6 +62,7 @@ import { WinningTicket } from "@/models";
 import { ValidatorRef } from "@/types/validator";
 import { Component, Ref, Vue } from "vue-property-decorator";
 import WithdrawnGift from "@/components/employee-screens/WithdrawnGift.vue";
+import { isMobile } from "@/helpers/utils";
 
 @Component({
   components: {
@@ -66,6 +72,7 @@ import WithdrawnGift from "@/components/employee-screens/WithdrawnGift.vue";
 export default class RestaurantCreate extends Vue {
   @Ref("form") readonly form!: ValidatorRef;
   public loading = false;
+  public isMobile = isMobile;
   public ticket = {
     number: "",
     amount: "",
@@ -82,7 +89,13 @@ export default class RestaurantCreate extends Vue {
           this.ticket
         );
       } catch (error) {
-        this.$store.commit("eventStore/add", { name: "error" });
+        if (error?.status === 404) {
+          this.$store.commit("eventStore/add", { name: "verifyBadTicket" });
+        } else if (error?.status === 429) {
+          this.$store.commit("eventStore/add", { name: "throttle" });
+        } else {
+          this.$store.commit("eventStore/add", { name: "error" });
+        }
       } finally {
         this.loading = false;
       }

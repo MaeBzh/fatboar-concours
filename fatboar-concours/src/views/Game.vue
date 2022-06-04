@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="space-around">
-      <v-card width="70%" :loading="loading">
+      <v-card :width="isMobile ? '100%' : '70%'" :loading="loading">
         <div v-if="!winningTicket">
           <v-card-title class="accent--text primary d-flex justify-center">
             Vérifiez votre gain
@@ -17,7 +17,7 @@
                   v-slot="{ errors }"
                   name="number"
                   :rules="{
-                    digits: 10,
+                    regex: '^[0-9]+$',
                     required: true,
                   }"
                 >
@@ -26,7 +26,11 @@
                     :error-messages="errors"
                     label="Numéro gagnant"
                     color="primary"
-                    class="gift-field mb-8 px-2"
+                    :class="
+                      isMobile
+                        ? 'gift-field-mobile mb-4 px-2'
+                        : 'gift-field mb-8 px-2'
+                    "
                   ></v-text-field>
                 </validation-provider>
                 <validation-provider
@@ -40,7 +44,9 @@
                     label="Montant en € de votre ticket"
                     required
                     color="primary"
-                    class="gift-field px-2"
+                    :class="
+                      isMobile ? 'gift-field-mobile px-2' : 'gift-field px-2'
+                    "
                   ></v-text-field>
                 </validation-provider>
               </v-card-text>
@@ -68,11 +74,11 @@
 <script lang="ts">
 import { ValidatorRef } from "@/types/validator";
 import { Component, Ref } from "vue-property-decorator";
-
 import { WinningTicket } from "@/models";
 import GameHistory from "@/components/client-screens/GameHistory.vue";
 import ShowGift from "@/components/client-screens/ShowGift.vue";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
+import { isMobile } from "@/helpers/utils";
 
 @Component({
   components: {
@@ -89,6 +95,7 @@ import FileDownloadMixin from "@/mixins/file-download.mixin";
 })
 export default class Game extends FileDownloadMixin {
   @Ref("form") readonly form!: ValidatorRef;
+  public isMobile = isMobile;
   public loading = false;
   public ticket = {
     number: "",
@@ -172,5 +179,9 @@ export default class Game extends FileDownloadMixin {
 .gift-field {
   background-color: rgba(255, 255, 255, 0.7);
   min-width: 500px;
+}
+
+.gift-field-mobile {
+  background-color: rgba(255, 255, 255, 0.7);
 }
 </style>

@@ -1,4 +1,4 @@
-import { RequestWithUser } from './../authentication/interfaces/request-with-user.interface';
+import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import {
   Body,
   Controller,
@@ -64,9 +64,10 @@ export class WinningTicketsController {
   @Get("/verify-ticket/:number/:amount")
   async verifyTicket(
     @Param("number") number: number,
-    @Param("amount") amount: number
-  ): Promise<WinningTicket> {
-    return this.winningTicketsService.verifyTicket(number, amount);
+    @Param("amount") amount: number,
+    @Request() req: RequestWithUser
+  ): Promise<WinningTicket> {  
+    return this.winningTicketsService.verifyTicket(number, amount, req.user);
   }
 
   @Put(":id")

@@ -1,33 +1,44 @@
 <template>
-  <div class="d-flex flex-column align-center">
-    <v-card-title class="primary--text card-title"> cadeau gagné </v-card-title>
-    <v-card-text class="text-center">
-      {{ winningTicket.gift.name }}
-    </v-card-text>
-    <v-img
-      :src="getGiftImage(winningTicket.gift.photo)"
-      max-height="200px"
-      max-width="200px"
-      class="text-center"
-      :alt="winningTicket.gift.name"
-    >
-    </v-img>
-    <template v-if="winningTicket.withdrawnOn">
-      <p>Ce cadeau a été récupéré par le client le {{ withdrawnDate }}</p>
-    </template>
-    <template v-else>
-      <v-btn type="submit" @click="submit" color="primary accent--text mb-4"
-        >Marquer ce cadeau comme récupéré</v-btn
-      ></template
-    >
+  <v-container class="d-flex justify-center">
+    <div class="d-flex flex-column align-center">
+      <v-card-title class="primary--text card-title">
+        cadeau gagné
+      </v-card-title>
+      <v-card-text class="text-center">
+        {{ winningTicket.gift.name }}
+      </v-card-text>
+      <v-img
+        :src="getGiftImage(winningTicket.gift.photo)"
+        max-height="200px"
+        max-width="200px"
+        class="text-center"
+        :alt="winningTicket.gift.name"
+      >
+      </v-img>
+      <template v-if="winningTicket.withdrawnOn">
+        <p>Ce cadeau a été récupéré par le client le {{ withdrawnDate }}</p>
+      </template>
+      <template v-else>
+        <v-btn
+          type="submit"
+          @click="submit"
+          color="primary accent--text mb-4"
+          >{{
+            isMobile
+              ? "Marquer comme récupéré"
+              : "Marquer ce cadeau comme récupéré"
+          }}</v-btn
+        ></template
+      >
 
-    <v-btn color="primary accent--text mb-4" @click.stop="$emit('reset')"
-      >Vérifier un autre ticket</v-btn
-    >
-  </div>
+      <v-btn color="primary accent--text mb-4" @click.stop="$emit('reset')"
+        >Vérifier un autre ticket</v-btn
+      >
+    </div>
+  </v-container>
 </template>
 <script lang="ts">
-import { formatDate } from "@/helpers/utils";
+import { formatDate, isMobile } from "@/helpers/utils";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
 import { WinningTicket } from "@/models";
 import { winningTicketResource } from "@/resources";
@@ -37,6 +48,7 @@ import { Component, Prop } from "vue-property-decorator";
 export default class WithdrawnGift extends FileDownloadMixin {
   @Prop() readonly value!: WinningTicket;
   public formatDate = formatDate;
+  public isMobile = isMobile;
 
   get winningTicket() {
     return this.value;

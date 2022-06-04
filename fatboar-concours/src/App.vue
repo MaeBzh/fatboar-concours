@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <app-bar />
-    <v-main class="secondary">
+    <v-main class="secondary main">
       <v-container fluid class="secondary">
         <event-alert />
         <facebook-login :hidden="true" />
@@ -81,6 +81,11 @@ export default class App extends Vue {}
   font-weight: 400;
 }
 
+.card-title-mobile {
+  font-size: 1em !important;
+  text-transform: uppercase;
+}
+
 .fatboar-subtitle {
   font-family: "barristar";
 }
@@ -99,5 +104,9 @@ export default class App extends Vue {}
 
 .v-list--nav .v-list-item {
   padding: 0 6px !important;
+}
+
+.main {
+  color: #010326 !important;
 }
 </style>
