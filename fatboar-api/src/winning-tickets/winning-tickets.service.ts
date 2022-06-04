@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Game } from "../games/entities/game.entity";
 import { User } from "../users/entities/user.entity";
 import {
+  Brackets,
   DeepPartial,
   DeleteResult,
   EntityManager,
@@ -13,6 +14,7 @@ import {
 import { WinningTicket } from "../winning-tickets/entities/winning-ticket.entity";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { UpdateWinningTicketDto } from "./dto/update-winning-ticket.dto";
+import { Gift } from "src/gifts/entities/gift.entity";
 
 @Injectable()
 export class WinningTicketsService {
@@ -40,11 +42,24 @@ export class WinningTicketsService {
     return this.ticketsRepo.findOneOrFail(id, options);
   }
 
-  verifyTicket(number: number, amount: number): Promise<WinningTicket> {
-    return this.ticketsRepo.findOneOrFail({
-      relations: ["gift", "game"],
-      where: { number: number, amount: amount },
-    });
+  async verifyTicket(
+    number: number,
+    amount: number,
+    user: User
+  ): Promise<WinningTicket> {
+    const { id } = await this.ticketsRepo
+      .createQueryBuilder("winning-tickets")
+      .select("winning-tickets.id")
+      .where("winning-tickets.number = :number", { number })
+      .andWhere("winning-tickets.amount = :amount", { amount })
+      .andWhere(
+        new Brackets((sub) => {
+          sub.where("winning-tickets.userId IS NULL");
+          sub.orWhere("winning-tickets.userId = :userId", { userId: user.id });
+        })
+      )
+      .getOneOrFail();
+    return this.findOne(id, { relations: ["gift"] });
   }
 
   async findAllTicketsForSpecificUser(user: User): Promise<WinningTicket[]> {
