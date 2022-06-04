@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { VFBLoginScope as VFacebookLoginScope } from "vue-facebook-login-component";
 import { Vue, Component } from "vue-property-decorator";
 import AppBar from "@/layouts/default/AppBar.vue";
 import FooterBar from "@/layouts/default/FooterBar.vue";
@@ -29,7 +28,6 @@ import FacebookLogin from "./components/auth/FacebookLogin.vue";
     FooterBar,
     RgpdConsent,
     EventAlert,
-    VFacebookLoginScope,
     FacebookLogin,
   },
   metaInfo() {

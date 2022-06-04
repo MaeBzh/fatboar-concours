@@ -260,8 +260,16 @@ export default class ProfileEdit extends Vue {
               birthYear: true,
             };
           });
+        this.$store.commit("eventStore/add", {
+          name: "profileUpdated",
+        });
+        localStorage.setItem(
+          "connectedUser",
+          JSON.stringify(this.connectedUser)
+        );
+        this.$store.commit("authStore/setAuthUser", this.connectedUser);
       } catch (error) {
-        console.error(error);
+        this.$store.commit("eventStore/add", { name: "error" });
       } finally {
         this.loading = false;
       }
