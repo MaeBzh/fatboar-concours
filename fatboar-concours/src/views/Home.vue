@@ -20,8 +20,8 @@
             </v-row>
             <v-img
               src="/assets/images/presentation-image.png"
-              max-height="90%"
-              max-width="70%"
+              max-height="80%"
+              max-width="60%"
               class="mt-8"
               alt="Un hamburger et des frites posés sur une planche en bois"
             />

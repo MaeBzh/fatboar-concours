@@ -17,7 +17,7 @@
                   v-slot="{ errors }"
                   name="number"
                   :rules="{
-                    regex: '^[0-9]+$',
+                    numeric: true,
                     required: true,
                   }"
                 >
@@ -26,6 +26,7 @@
                     :error-messages="errors"
                     label="Numéro gagnant"
                     color="primary"
+                    :type="isMobile ? 'number' : 'text'"
                     :class="
                       isMobile
                         ? 'gift-field-mobile mb-4 px-2'
@@ -36,7 +37,10 @@
                 <validation-provider
                   v-slot="{ errors }"
                   name="amount"
-                  rules="required"
+                  :rules="{
+                    regex: '[+-]?([0-9]*[,])?[0-9]+',
+                    required: true,
+                  }"
                 >
                   <v-text-field
                     v-model="ticket.amount"
@@ -44,6 +48,7 @@
                     label="Montant en € de votre ticket"
                     required
                     color="primary"
+                    :type="isMobile ? 'number' : 'text'"
                     :class="
                       isMobile ? 'gift-field-mobile px-2' : 'gift-field px-2'
                     "
