@@ -12,8 +12,11 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      -name: Test
-      run: npm run tests
+      - name: Checkout  
+        uses: actions/checkout@v3
+
+      - name: Test
+        run: cd fatboar-api && npm install && npm run test
     # - name: Trigger Jenkins Job for testing
     #   uses: appleboy/jenkins-action@master
     #   with:
