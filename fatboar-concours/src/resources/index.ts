@@ -16,18 +16,15 @@ const http = axios.create({
 
 http.interceptors.request.use(
   function (config) {
-    const headers = {
-      ...(config?.headers ?? []),
-      "Access-Control-Allow-Origin": true,
-    };
-
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      const bearerToken = `Bearer ${accessToken}`;
-      headers["Authorization"] = bearerToken;
-    }
-
-    return { ...config, headers };
+    return {
+      ...config,
+      headers: {
+        ...(config.headers ?? {}),
+        Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
   },
   function (error) {
     // Do something with request error
