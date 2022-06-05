@@ -44,6 +44,17 @@ services:
             - api 
         command: sh -c "npm install && npm run prod" 
 
+    matomo:
+        image: matomo:4.10.1
+        environment:
+            - MATOMO_DATABASE_HOST=mariadb
+        env_file:
+            - .env.docker
+        depends_on:
+            - mariadb
+        networks:
+            - mariadb
+
 networks:
     api:
     mariadb:
