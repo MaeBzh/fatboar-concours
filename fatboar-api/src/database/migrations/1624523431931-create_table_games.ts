@@ -77,7 +77,7 @@ export class createTableGames1624523431931 implements MigrationInterface {
         columnNames: ["jackpotGiftId"],
         referencedColumnNames: ["id"],
         referencedTableName: "gifts",
-        onDelete: "CASCADE",
+        onDelete: "RESTRICT"
       })
     );
   }

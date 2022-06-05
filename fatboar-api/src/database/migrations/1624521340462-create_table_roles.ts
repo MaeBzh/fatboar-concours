@@ -26,6 +26,6 @@ export class createTableRolesMigration1624521340462
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("users");
+    await queryRunner.dropTable("roles");
   }
 }
