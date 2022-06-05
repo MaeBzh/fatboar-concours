@@ -37,7 +37,6 @@ async function bootstrap() {
         .build()
     )
   );
-
   await app.listen(3000);
 }
 

@@ -1,31 +1,33 @@
 import Faker from "faker";
-import { Gift } from "../../gifts/entities/gift.entity";
+import { copyFileSync } from "fs";
+import { resolve } from "path";
 import { define } from "typeorm-seeding";
 import { v4 as uuid } from "uuid";
 import { Game } from "../../games/entities/game.entity";
+import { Gift } from "../../gifts/entities/gift.entity";
 
 define(Game, (faker: typeof Faker, context: any) => {
-
   const jackpotGift: Gift = context.jackpotGift as Gift;
 
-  faker.locale = "fr";
+  const filename = "reglement-jeu-concours.pdf";
+  const gameRules = `${uuid()}.pdf`;
+
+  copyFileSync(
+    resolve(__dirname, `images/${filename}`),
+    resolve(__dirname, `../../../uploads/${gameRules}`)
+  );
 
   const game = new Game();
-  game.name = faker.commerce.productName();
-  game.description = faker.lorem.paragraph();
-  game.gameRules = `${uuid()}.png`;
-  game.filename = `${faker.lorem.word()}.png`;
+  game.name = context.name;
+  game.description = context.description;
+  game.gameRules = gameRules;
+  game.filename = filename;
   game.jackpotGift = jackpotGift;
-  if (context.activated) {
-    game.startsOn = faker.date.past();
-    game.endsOn = faker.date.future();
-    game.activated = true;
-    game.jackpotDraw = faker.date.future();
-  } else {
-    game.startsOn = faker.date.past();
-    game.endsOn = faker.date.past();
-    game.activated = false;
-    game.jackpotDraw = faker.date.past();
-  }
+
+  game.startsOn = context.startsOn;
+  game.endsOn = context.endsOn;
+  game.activated = true;
+  game.jackpotDraw = null;
+
   return game;
 });

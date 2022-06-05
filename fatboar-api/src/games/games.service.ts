@@ -1,3 +1,4 @@
+import { WinningTicket } from "./../winning-tickets/entities/winning-ticket.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
@@ -52,21 +53,32 @@ export class GamesService {
 
     const createdGameGifts = await Promise.all(gameGiftPromises);
 
-    createdGameGifts.forEach((createdGameGift) => {
+    const chunkSize = +process.env.CREATE_TICKET_BULK_SIZE ?? 10000;
+    createdGameGifts.map(async (createdGameGift) => {
       const nbTicketsToCreate =
         +createGameDto.tickets * (+createdGameGift.winPercentage / 100);
+      const chunk: WinningTicket[] = [];
+      
       for (let i = 0; i < nbTicketsToCreate; i++) {
         const number = +`${Date.now()}${i}`;
-        this.ticketsService.create(
-          {
-            number,
-            game: createdGame,
-            gift: createdGameGift.gift,
-          },
-          manager
-        );
+        chunk.push({
+          number,
+          game: createdGame,
+          gift: createdGameGift.gift,
+        } as WinningTicket);
+
+        
+        if(chunk.length >= chunkSize) {
+          await this.ticketsService.bulk(chunk.splice(0, chunkSize));
+        }
+      }
+
+      if(chunk.length) {
+        await this.ticketsService.bulk(chunk);
       }
     });
+
+    // await Promise.all(promises);
 
     return createdGame;
   }
@@ -99,6 +111,14 @@ export class GamesService {
       relations: ["gameGifts", "gameGifts.gift", "jackpotGift"],
       where: { activated: true },
     });
+  }
+
+  async getStats(id: number): Promise<{used: number, unused: number, unassigned: number}> {
+    const stats = {used: 0, unused: 0, unassigned: 0};
+    const game = await this.findOne(id);
+    if(!game) return stats;
+
+    return this.ticketsService.getGameStats(game);
   }
 
   /**

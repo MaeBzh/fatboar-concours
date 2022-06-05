@@ -75,6 +75,12 @@ export class GamesController {
   async findCurrentGame() {
     return await this.gamesService.findCurrentGame();
   }
+  
+
+  @Get(":id/stats")
+  async getGameStats(@Param("id") id: number) {
+    return await this.gamesService.getStats(id);
+  }
 
   @Get(":id")
   @UseGuards(AuthGuard())
