@@ -69,7 +69,7 @@ const routes: RouteConfig[] = [
       ...gameRoutes,
       ...emailingListRoutes,
       {
-        path: "/statistiques",
+        path: "statistiques",
         name: "charts",
         component: () => import("@/views/Charts.vue"),
       },
