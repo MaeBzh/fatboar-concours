@@ -7,6 +7,7 @@
       :loading="loading"
       :sortDesc="true"
       :drawBtn="true"
+      :deleteBtn="false"
       @draw="drawJackpot"
     >
       <template v-slot:[`item.startsOn`]="{ item }">
