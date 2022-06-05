@@ -71,7 +71,6 @@ const routes: RouteConfig[] = [
       {
         path: "/statistiques",
         name: "charts",
-        meta: { requiresAuth: true },
         component: () => import("@/views/Charts.vue"),
       },
     ],
