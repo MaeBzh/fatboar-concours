@@ -11,6 +11,8 @@
   "dependencies": {
     "@mdi/font": "^6.5.95",
     "axios": "^0.24.0",
+    "express-http-to-https": "^1.1.4",
+    "express-www-redirect": "^1.0.2",
     "chart.js": "^3.7.1",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^1.6.0",

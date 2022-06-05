@@ -37,24 +37,28 @@ services:
             - mariadb
         volumes:
             - ./fatboar-api:/usr/src/app/fatboar-api
+            - ./server.key:/usr/src/app/server.key
+            - ./server.cert:/usr/src/app/server.cert
         networks:
             - api
             - mariadb
         command: sh -c "npm install
          && npm install -g @nestjs/cli ts-node \
-         && npm run prod
+         && npm run prod"
 
     front:
         image: node:14
         working_dir: /usr/src/app/fatboar-concours
         container_name: fatboar-concours
         ports:
-            - "8080:8080"
+            - "8081:8081"
         volumes:
             - ./fatboar-concours:/usr/src/app/fatboar-concours
+            - ./server.key:/usr/src/app/server.key
+            - ./server.cert:/usr/src/app/server.cert
         networks:
             - api 
-        command: sh -c "npm install && npm run prod" 
+        command: sh -c "npm i && npm run prod" 
 
     matomo:
         image: matomo:4.10.1
