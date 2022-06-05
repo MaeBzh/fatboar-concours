@@ -35,6 +35,7 @@ export class createTableGameGift1624526758089 implements MigrationInterface {
         columnNames: ["gameId"],
         referencedColumnNames: ["id"],
         referencedTableName: "games",
+        onDelete: "CASCADE"
       })
     );
 
@@ -44,6 +45,7 @@ export class createTableGameGift1624526758089 implements MigrationInterface {
         columnNames: ["giftId"],
         referencedColumnNames: ["id"],
         referencedTableName: "gifts",
+        onDelete: "CASCADE"
       })
     );
   }
