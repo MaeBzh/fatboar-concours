@@ -93,7 +93,7 @@
             rounded
             text
             color="accent"
-            :to="{ name: 'dashboard' }"
+            :to="{ name: 'charts' }"
             >Tableau de bord
             <v-icon
               size="x-large"

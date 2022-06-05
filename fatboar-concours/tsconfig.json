@@ -26,7 +26,8 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.js",
-    "vue-shim.d.ts"
+    "vue-shim.d.ts",
+    "server.ts"
   ],
   "exclude": ["node_modules"]
 }
