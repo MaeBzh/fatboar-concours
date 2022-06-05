@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as fs from "fs";
 import { AllExceptionFilter } from "./all-exceptions.filter";
 import { AppModule } from "./app.module";
+import compression from "compression";
 
 async function bootstrap() {
   const privateKey = fs.readFileSync(
@@ -25,6 +26,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.use(compression());
 
   SwaggerModule.setup(
     "api",
