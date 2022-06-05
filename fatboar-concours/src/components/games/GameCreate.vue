@@ -179,9 +179,6 @@
         </form>
       </validation-observer>
     </v-card-text>
-    <pre>{{ canActivateImmediately }}</pre>
-    <pre>{{ totalPercentage }}</pre>
-    <pre>{{ selectedGameGifts }}</pre>
   </v-card>
 </template>
 

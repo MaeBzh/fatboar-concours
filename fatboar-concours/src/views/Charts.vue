@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card :loading="loading">
       <v-card-title class="card-title">Statistiques</v-card-title>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
@@ -34,6 +34,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import PieChart from "../components/charts/PieChart.vue";
+import { gameResource } from "@/resources";
 
 @Component({
   components: { PieChart },
@@ -52,6 +53,7 @@ export default class Charts extends Vue {
     unused: 0,
     unassigned: 0,
   };
+  public loading = false;
 
   public get currentGame() {
     return this.$store.getters["gameStore/getCurrentGame"];
@@ -115,35 +117,22 @@ export default class Charts extends Vue {
     });
   }
 
-  public setTicketsRepartition() {
-    this.tickets.forEach((ticket) => {
-      if (ticket.assignedOn === null) {
-        return this.ticketsRepartition.unassigned++;
-      } else {
-        if (ticket.withdrawnOn) {
-          return this.ticketsRepartition.used++;
-        } else {
-          return this.ticketsRepartition.unused++;
-        }
-      }
-    });
-  }
-
   async mounted() {
     try {
+      this.loading = true;
       await this.$store.dispatch("clientStore/fetchAll");
       this.setClientAges();
 
       await this.$store.dispatch("gameStore/fetchCurrentGame");
       if (this.currentGame) {
-        await this.$store.dispatch(
-          "ticketStore/fetchAllTicketsForCurrentGame",
-          this.currentGame.id
+        this.ticketsRepartition = await gameResource.getGameStats(
+          this.currentGame
         );
-        this.setTicketsRepartition();
       }
     } catch (error) {
       this.$store.commit("eventStore/add", { name: "error" });
+    } finally {
+      this.loading = false;
     }
   }
 }
