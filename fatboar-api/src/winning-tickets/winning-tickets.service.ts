@@ -8,6 +8,7 @@ import {
   DeleteResult,
   EntityManager,
   FindOneOptions,
+  InsertResult,
   Repository,
   UpdateResult,
 } from "typeorm";
@@ -23,12 +24,39 @@ export class WinningTicketsService {
     private ticketsRepo: Repository<WinningTicket>
   ) {}
 
+  async getGameStats({id}: Game, ) {
+    const used = await this.ticketsRepo.createQueryBuilder()
+    .where("assignedOn IS NOT NULL")
+    .andWhere("withdrawnOn IS NOT NULL")
+    .andWhere("gameId = :id", {id}).getCount();
+    
+    const unused = await this.ticketsRepo.createQueryBuilder()
+    .where("assignedOn IS NOT NULL")
+    .andWhere("withdrawnOn IS NULL")
+    .andWhere("gameId = :id", {id}).getCount();
+
+    const unassigned = await this.ticketsRepo.createQueryBuilder()
+    .where("assignedOn IS NULL")
+    .andWhere("withdrawnOn IS NULL")
+    .andWhere("gameId = :id", {id}).getCount();
+
+    return {used, unused, unassigned};
+
+  }
+
   async create(
     createWinningTicketDto: CreateWinningTicketDto,
     manager?: EntityManager
   ): Promise<WinningTicket> {
     const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
     return repo.save(createWinningTicketDto);
+  }
+  async bulk(
+    winningTickets: WinningTicket[],
+    manager?: EntityManager
+  ): Promise<InsertResult> {
+    const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
+    return repo.insert(winningTickets);
   }
 
   findAll(): Promise<WinningTicket[]> {
