@@ -4,6 +4,7 @@ var https = require("https");
 var fs = require("fs");
 var { redirectToHTTPS } = require("express-http-to-https");
 var { redirectNoWWWToWWW } = require("express-www-redirect");
+var compression = require("compression");
 var { resolve } = require("path");
 
 var httpsOptions = {
@@ -34,6 +35,8 @@ app.use(
 
 // 2nd call for redirected requests
 app.use(staticFileMiddleware);
+
+app.use(compression());
 
 app.all("*", (_req, res) => {
   try {
