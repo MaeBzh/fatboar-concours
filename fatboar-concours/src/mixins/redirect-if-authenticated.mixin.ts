@@ -6,7 +6,7 @@ export default class RedirectIfAuthenticatedMixin extends Vue {
     const authUser = this.$store.getters["authStore/getAuthUser"];
     if (authUser) {
       if (authUser.role.name === "admin") {
-        this.$router.push({ name: "dashboard" });
+        this.$router.push({ name: "charts" });
       } else if (authUser.role.name === "employee") {
         this.$router.push({ name: "verifyGift" });
       } else {
