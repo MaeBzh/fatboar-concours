@@ -2,6 +2,7 @@ var express = require("express");
 var history = require("connect-history-api-fallback");
 var https = require("https");
 var fs = require("fs");
+var compression = require("compression");
 const { resolve } = require("path");
 
 var httpsOptions = {
@@ -27,6 +28,8 @@ app.use(
 
 // 2nd call for redirected requests
 app.use(staticFileMiddleware);
+
+app.use(compression());
 
 app.all("*", (_req, res) => {
   try {
