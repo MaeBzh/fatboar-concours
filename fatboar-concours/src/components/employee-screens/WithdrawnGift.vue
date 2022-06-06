@@ -19,16 +19,11 @@
         <p>Ce cadeau a été récupéré par le client le {{ withdrawnDate }}</p>
       </template>
       <template v-else>
-        <v-btn
-          type="submit"
-          @click="submit"
-          color="primary accent--text mb-4"
-          >{{
-            isMobile
-              ? "Marquer comme récupéré"
-              : "Marquer ce cadeau comme récupéré"
-          }}</v-btn
-        ></template
+        <v-btn type="submit" color="primary accent--text mb-4">{{
+          isMobile
+            ? "Marquer comme récupéré"
+            : "Marquer ce cadeau comme récupéré"
+        }}</v-btn></template
       >
 
       <v-btn color="primary accent--text mb-4" @click.stop="$emit('reset')"
