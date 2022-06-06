@@ -3,7 +3,7 @@
     <v-snackbar
       :value="!!message"
       color="accent"
-      bottom
+      centered
       content-class="primary--text"
       @input="message = ''"
     >

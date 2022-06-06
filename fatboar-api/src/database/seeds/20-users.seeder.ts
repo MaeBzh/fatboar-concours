@@ -40,7 +40,10 @@ export default class CreateUsers implements Seeder {
       email: "client@mail.com",
       password,
     }).create();
-    await factory(User)({ role: employee, password }).createMany(50);
-    await factory(User)({ role: client, password }).createMany(35000);
+
+    const employees = await factory(User)({ role: employee, password }).makeMany(50);
+    const clients = await factory(User)({ role: client, password }).makeMany(35000);
+    
+    await connection.getRepository(User).insert([...employees, ...clients]);
   }
 }
