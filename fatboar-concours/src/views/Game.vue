@@ -12,57 +12,59 @@
             alt="Un hamburger et des frites posés sur une planche en bois"
           >
             <validation-observer ref="form">
-              <v-card-text class="d-flex flex-column align-center">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="number"
-                  :rules="{
-                    numeric: true,
-                    required: true,
-                  }"
-                >
-                  <v-text-field
-                    v-model="ticket.number"
-                    :error-messages="errors"
-                    label="Numéro gagnant"
-                    color="primary"
-                    :type="isMobile ? 'number' : 'text'"
-                    :class="
-                      isMobile
-                        ? 'gift-field-mobile mb-4 px-2'
-                        : 'gift-field mb-8 px-2'
-                    "
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="amount"
-                  :rules="{
-                    regex: '[+-]?([0-9]*[,])?[0-9]+',
-                    required: true,
-                  }"
-                >
-                  <v-text-field
-                    v-model="ticket.amount"
-                    :error-messages="errors"
-                    label="Montant en € de votre ticket"
-                    required
-                    color="primary"
-                    :type="isMobile ? 'number' : 'text'"
-                    :class="
-                      isMobile ? 'gift-field-mobile px-2' : 'gift-field px-2'
-                    "
-                  ></v-text-field>
-                </validation-provider>
-              </v-card-text>
-              <v-card-actions class="d-flex justify-center">
-                <v-btn type="submit" color="accent" class="primary--text"
-                  >Vérifier</v-btn
-                >
-              </v-card-actions>
-              <v-divider class="mt-4 mb-4"></v-divider>
-              <v-card-actions class="d-flex flex-column align-center">
-              </v-card-actions>
+              <form @submit.prevent="submit">
+                <v-card-text class="d-flex flex-column align-center">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="number"
+                    :rules="{
+                      numeric: true,
+                      required: true,
+                    }"
+                  >
+                    <v-text-field
+                      v-model="ticket.number"
+                      :error-messages="errors"
+                      label="Numéro gagnant"
+                      color="primary"
+                      :type="isMobile ? 'number' : 'text'"
+                      :class="
+                        isMobile
+                          ? 'gift-field-mobile mb-4 px-2'
+                          : 'gift-field mb-8 px-2'
+                      "
+                    ></v-text-field>
+                  </validation-provider>
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="amount"
+                    :rules="{
+                      regex: '[+-]?([0-9]*[,])?[0-9]+',
+                      required: true,
+                    }"
+                  >
+                    <v-text-field
+                      v-model="ticket.amount"
+                      :error-messages="errors"
+                      label="Montant en € de votre ticket"
+                      required
+                      color="primary"
+                      :type="isMobile ? 'number' : 'text'"
+                      :class="
+                        isMobile ? 'gift-field-mobile px-2' : 'gift-field px-2'
+                      "
+                    ></v-text-field>
+                  </validation-provider>
+                </v-card-text>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn type="submit" color="accent" class="primary--text"
+                    >Vérifier</v-btn
+                  >
+                </v-card-actions>
+                <v-divider class="mt-4 mb-4"></v-divider>
+                <v-card-actions class="d-flex flex-column align-center">
+                </v-card-actions>
+              </form>
             </validation-observer>
           </v-img>
         </div>
