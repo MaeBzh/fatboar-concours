@@ -73,7 +73,7 @@ export default class WithdrawnGift extends FileDownloadMixin {
 
   async submit(): Promise<void> {
     try {
-      const updatedTicket = await winningTicketResource.withdrawnTicket(
+      const updatedTicket = await winningTicketResource.updateWithdrawn(
         this.winningTicket
       );
 
