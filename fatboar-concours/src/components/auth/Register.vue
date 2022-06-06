@@ -14,6 +14,7 @@
                 v-model="client.firstname"
                 :error-messages="errors"
                 label="Prénom"
+                autofocus
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -41,7 +42,10 @@
             <validation-provider
               v-slot="{ errors }"
               name="zipcode"
-              rules="required"
+              :rules="{
+                digits: 5,
+                required: true,
+              }"
             >
               <v-text-field
                 v-model="client.zipCode"
@@ -93,7 +97,7 @@
               :rules="{
                 required: true,
                 password:
-                  '^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&?]).*$',
+                  '(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*',
               }"
             >
               <v-text-field
@@ -175,10 +179,7 @@
             </validation-provider>
 
             <v-card-actions class="d-flex justify-center">
-              <v-btn
-                class="accent primary--text"
-                @click="submit"
-                :disabled="invalid && !client.rgpd"
+              <v-btn class="accent primary--text" type="submit"
                 >Enregistrer</v-btn
               >
             </v-card-actions>
@@ -199,27 +200,26 @@ export default class Register extends Vue {
   @Ref("refBirthYearPicker") refBirthYearPicker!: DatePickerRef;
   @Ref("refBirthYearMenu") refBirthYearMenu!: DatePickerMenuRef;
   public client = {
-    firstname: "Maelenn",
-    lastname: "Picaud",
+    firstname: "",
+    lastname: "",
     birthYear: 0,
-    zipCode: "35000",
-    phone: "0987654321",
-    newsletter: true,
-    sms: true,
-    email: "mae.picaud@gmail.com",
-    password: "@Password1234",
+    zipCode: "",
+    phone: "",
+    newsletter: false,
+    sms: false,
+    email: "",
+    password: "",
     rgpdConsent: new Date(0),
   };
   public rgpd = null;
   public loading = false;
   public showDatePicker = false;
   public password = "";
-  public passwordConfirm = "@Password1234";
+  public passwordConfirm = "";
   public showPassword = false;
 
   async submit(): Promise<void> {
-    this.loading = true;
-
+    debugger;
     const isValid = await this.form.validate();
 
     if (this.rgpd) {
@@ -228,8 +228,11 @@ export default class Register extends Vue {
 
     if (isValid) {
       try {
+        this.loading = true;
         await this.$store.dispatch("authStore/register", this.client);
-        this.$store.commit("eventStore/add", { name: "userCreated" });
+        const ok = this.$store.commit("eventStore/add", {
+          name: "userCreated",
+        });
         this.$router.push({ name: "home" });
       } catch (e) {
         this.$store.commit("eventStore/add", { name: "error" });

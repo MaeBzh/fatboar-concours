@@ -15,7 +15,6 @@
               class="mr-4"
               type="button"
               :disabled="invalid"
-              @click="submit"
               :to="{ name: 'games' }"
             >
               Retour à la liste
@@ -209,7 +208,6 @@
                   class="mr-4 accent primary--text"
                   type="button"
                   :disabled="invalid"
-                  @click="submit"
                 >
                   Enregistrer
                 </v-btn>

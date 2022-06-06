@@ -3,7 +3,7 @@ import { CustomEvent } from "@/models/custom-event.model";
 export default {
   getUserCreatedEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
-      return event.name === "created";
+      return event.name === "userCreated";
     });
   },
   getRgpdAcceptedEvent: (state) => {

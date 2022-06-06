@@ -98,9 +98,13 @@
           <v-row class="bottom-social mt-4">
             <div v-for="social in socials" :key="social.name">
               <span class="social-name">{{ social.name }}</span>
-              <v-icon class="social-icon mr-8 ml-2 primary--text">{{
-                social.icon
-              }}</v-icon>
+              <v-btn
+                class="social-icon mr-8 ml-2 primary--text"
+                icon
+                :href="social.href"
+              >
+                <v-icon :href="social.href">{{ social.icon }}</v-icon>
+              </v-btn>
             </div>
           </v-row>
         </template>
@@ -111,16 +115,18 @@
             class="bottom-social mt-4"
           >
             <span class="social-name">{{ social.name }}</span>
-            <v-icon class="social-icon mr-8 ml-2 primary--text">{{
-              social.icon
-            }}</v-icon>
+            <v-btn icon :href="social.href">
+              <v-icon class="social-icon mr-8 ml-2 primary--text">{{
+                social.icon
+              }}</v-icon>
+            </v-btn>
           </v-row>
         </template>
       </div>
       <div class="d-flex flex-column align-center mt-10">
         <p>
           Vous pouvez également vous
-          <router-link :to="{ name: login }">inscrire</router-link> et vous
+          <router-link :to="{ name: 'login' }">inscrire</router-link> et vous
           abonner à notre newsletter.
         </p>
         <v-icon class="primary--text mb-8">mdi-food</v-icon>
@@ -161,9 +167,17 @@ export default class Home extends FileDownloadMixin {
   public gifts = null;
   public jackpot = null;
   public socials = [
-    { name: "Facebook", icon: "mdi-facebook" },
-    { name: "Twitter", icon: "mdi-twitter" },
-    { name: "Instagram", icon: "mdi-instagram" },
+    {
+      name: "Facebook",
+      icon: "mdi-facebook",
+      href: "https://www.facebook.com/",
+    },
+    { name: "Twitter", icon: "mdi-twitter", href: "https://www.twitter.fr/" },
+    {
+      name: "Instagram",
+      icon: "mdi-instagram",
+      href: "https://www.instagram.com/",
+    },
   ];
   public snackbar = false;
   public snackbarMessage = "";

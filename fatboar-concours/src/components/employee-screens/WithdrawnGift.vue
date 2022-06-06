@@ -19,16 +19,13 @@
         <p>Ce cadeau a été récupéré par le client le {{ withdrawnDate }}</p>
       </template>
       <template v-else>
-        <v-btn
-          type="submit"
-          @click="submit"
-          color="primary accent--text mb-4"
-          >{{
+        <form @submit.prevent="submit">
+          <v-btn type="submit" color="primary accent--text mb-4">{{
             isMobile
               ? "Marquer comme récupéré"
               : "Marquer ce cadeau comme récupéré"
-          }}</v-btn
-        ></template
+          }}</v-btn>
+        </form></template
       >
 
       <v-btn color="primary accent--text mb-4" @click.stop="$emit('reset')"
@@ -42,11 +39,13 @@ import { formatDate, isMobile } from "@/helpers/utils";
 import FileDownloadMixin from "@/mixins/file-download.mixin";
 import { WinningTicket } from "@/models";
 import { winningTicketResource } from "@/resources";
-import { Component, Prop } from "vue-property-decorator";
+import { ValidatorRef } from "@/types/validator";
+import { Component, Prop, Ref } from "vue-property-decorator";
 
 @Component
 export default class WithdrawnGift extends FileDownloadMixin {
   @Prop() readonly value!: WinningTicket;
+  @Ref("form") readonly form!: ValidatorRef;
   public formatDate = formatDate;
 
   get winningTicket() {
