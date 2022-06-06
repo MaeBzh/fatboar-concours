@@ -52,31 +52,29 @@ export class GamesService {
     });
 
     const createdGameGifts = await Promise.all(gameGiftPromises);
-
-    const chunkSize = +process.env.CREATE_TICKET_BULK_SIZE ?? 10000;
+    const chunk: WinningTicket[] = [];
+    
+    const chunkSize = +(process.env.CREATE_TICKET_BULK_SIZE ?? 10000);
     createdGameGifts.map(async (createdGameGift) => {
       const nbTicketsToCreate =
         +createGameDto.tickets * (+createdGameGift.winPercentage / 100);
-      const chunk: WinningTicket[] = [];
       
       for (let i = 0; i < nbTicketsToCreate; i++) {
-        const number = +`${Date.now()}${i}`;
         chunk.push({
-          number,
-          game: createdGame,
-          gift: createdGameGift.gift,
-        } as WinningTicket);
-
+            number: +`${Date.now()}${i}`,
+            game: createdGame,
+            gift: createdGameGift.gift,
+          } as WinningTicket);
         
         if(chunk.length >= chunkSize) {
           await this.ticketsService.bulk(chunk.splice(0, chunkSize));
         }
       }
-
-      if(chunk.length) {
-        await this.ticketsService.bulk(chunk);
-      }
     });
+
+    if(chunk.length) {
+      await this.ticketsService.bulk(chunk.splice(0, chunk.length));
+    }
 
     // await Promise.all(promises);
 
