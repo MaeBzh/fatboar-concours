@@ -1,25 +1,30 @@
-import { UsersService } from '../../users/users.service';
+import { UsersService } from "../../users/users.service";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
 export class AdminStrategy extends PassportStrategy(Strategy, "admin") {
+  constructor(private usersService: UsersService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: process.env.JWT_SECRET,
+    });
+  }
 
-    constructor(private usersService: UsersService) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET,
-        });
+  async validate(payload: any): Promise<any> {
+    try {
+      const { sub } = payload;
+
+      const user = await this.usersService.findOne(sub, {
+        relations: ["role"],
+      });
+      if (user.role.name !== "admin") throw new UnauthorizedException();
+
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException();
     }
-
-    async validate(payload: any): Promise<any> {
-        const {userId} = payload;
-        const user = await this.usersService.findOne(userId, {relations: ['role']});
-
-        if(!user || user.role.name !== "admin") throw new UnauthorizedException();
-
-        return user;
-    }
+  }
 }
