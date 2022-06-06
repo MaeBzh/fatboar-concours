@@ -56,7 +56,6 @@
           <v-btn
             type="submit"
             :disabled="invalid && validated"
-            @click="submit"
             class="accent primary--text"
             >Se connecter</v-btn
           >

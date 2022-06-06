@@ -56,11 +56,7 @@
                 </validation-provider>
               </v-card-text>
               <v-card-actions class="d-flex justify-center">
-                <v-btn
-                  type="submit"
-                  @click="submit"
-                  color="accent"
-                  class="primary--text"
+                <v-btn type="submit" color="accent" class="primary--text"
                   >Vérifier</v-btn
                 >
               </v-card-actions>

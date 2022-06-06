@@ -177,7 +177,7 @@
             <v-card-actions class="d-flex justify-center">
               <v-btn
                 class="accent primary--text"
-                @click="submit"
+                type="submit"
                 :disabled="invalid && !client.rgpd"
                 >Enregistrer</v-btn
               >
@@ -218,8 +218,7 @@ export default class Register extends Vue {
   public showPassword = false;
 
   async submit(): Promise<void> {
-    this.loading = true;
-
+    debugger;
     const isValid = await this.form.validate();
 
     if (this.rgpd) {
@@ -228,13 +227,22 @@ export default class Register extends Vue {
 
     if (isValid) {
       try {
+        console.log(1);
+        this.loading = true;
+        console.log(2);
         await this.$store.dispatch("authStore/register", this.client);
-        this.$store.commit("eventStore/add", { name: "userCreated" });
+        console.log(3);
+        const ok = this.$store.commit("eventStore/add", {
+          name: "userCreated",
+        });
+        console.log(4, { ok });
         this.$router.push({ name: "home" });
+        console.log(5);
       } catch (e) {
         this.$store.commit("eventStore/add", { name: "error" });
       } finally {
         this.loading = false;
+        console.log(6);
       }
     }
   }
