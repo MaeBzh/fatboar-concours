@@ -14,6 +14,7 @@
                 v-model="client.firstname"
                 :error-messages="errors"
                 label="Prénom"
+                autofocus
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -41,7 +42,10 @@
             <validation-provider
               v-slot="{ errors }"
               name="zipcode"
-              rules="required"
+              :rules="{
+                digits: 5,
+                required: true,
+              }"
             >
               <v-text-field
                 v-model="client.zipCode"
@@ -93,7 +97,7 @@
               :rules="{
                 required: true,
                 password:
-                  '^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&?]).*$',
+                  '(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*',
               }"
             >
               <v-text-field
