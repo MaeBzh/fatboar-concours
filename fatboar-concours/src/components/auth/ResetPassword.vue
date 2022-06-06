@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="card" max-width="30em" :loading="loading">
       <template v-if="!hasBeenReset">
-        <validation-observer ref="form" v-slot="{ invalid, validated }">
+        <validation-observer ref="form">
           <form @submit.prevent="submit">
             <v-card-title class="primary--text d-flex justify-center"
               >Réinitialiser votre mot de passe</v-card-title
@@ -71,7 +71,7 @@
             <v-card-actions class="d-flex justify-center">
               <v-btn
                 type="submit"
-                :disabled="(invalid && validated) || loading"
+                :loading="loading"
                 class="accent primary--text"
                 >Envoyer</v-btn
               >

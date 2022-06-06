@@ -4,7 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
-export class AdminStrategy extends PassportStrategy(Strategy, "admin") {
+export class ClientStrategy extends PassportStrategy(Strategy, "client") {
   constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -16,11 +16,12 @@ export class AdminStrategy extends PassportStrategy(Strategy, "admin") {
   async validate(payload: any): Promise<any> {
     try {
       const { sub } = payload;
+      console.log({payload, sub});
 
       const user = await this.usersService.findOne(sub, {
         relations: ["role"],
       });
-      if (user.role.name !== "admin") throw new UnauthorizedException();
+      if (user.role.name !== "client") throw new UnauthorizedException();
 
       return user;
     } catch (error) {

@@ -1,6 +1,8 @@
-import { Connection, createConnection, EntityManager } from "typeorm";
+import { VerifyTicketGuard } from './../guards/verify-ticket.guard';
+import { RequestWithUser } from "../../authentication/interfaces/request-with-user.interface";
+import { User } from "../../users/entities/user.entity";
+import { Connection,  EntityManager } from "typeorm";
 import { CreateWinningTicketDto } from "../dto/create-winning-ticket.dto";
-import { UpdateWinningTicketDto } from "../dto/update-winning-ticket.dto";
 import { WinningTicketsController } from "../winning-tickets.controller";
 
 const ticketsService: any = {
@@ -9,9 +11,10 @@ const ticketsService: any = {
   create: async () => {},
   update: async () => {},
   remove: async () => {},
+  verifyTicket: async () => {},
 };
 
-describe("WinningTicketsCon,troller", () => {
+describe("WinningTicketsController", () => {
   let connection = {
     transaction: async (cb) => cb({} as EntityManager),
   } as Connection;
@@ -58,7 +61,7 @@ describe("WinningTicketsCon,troller", () => {
     });
   });
 
-  describe("update", () => {
+  describe("updateUser", () => {
     it("should be called one time", async () => {
       const ticketsController = new WinningTicketsController(
         ticketsService,
@@ -67,7 +70,22 @@ describe("WinningTicketsCon,troller", () => {
 
       let ticketsServiceSpyUpdate = jest.spyOn(ticketsService, "update");
 
-      await ticketsController.update(1, new UpdateWinningTicketDto());
+      await ticketsController.updateUser(1, {number: 1, amount: 1}, {user: {} as User} as RequestWithUser);
+      expect(ticketsServiceSpyUpdate).toBeCalledTimes(1);
+      ticketsServiceSpyUpdate.mockReset();    
+    });
+  });
+
+  describe("updateWithdrawn", () => {
+    it("should be called one time", async () => {
+      const ticketsController = new WinningTicketsController(
+        ticketsService,
+        connection
+      );
+
+      let ticketsServiceSpyUpdate = jest.spyOn(ticketsService, "update");
+
+      await ticketsController.updateWithdrawn(1, {number: 1, amount: 1});
       expect(ticketsServiceSpyUpdate).toBeCalledTimes(1);
     });
   });

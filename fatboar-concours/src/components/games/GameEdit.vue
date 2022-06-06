@@ -14,7 +14,7 @@
             <v-btn
               class="mr-4"
               type="button"
-              :disabled="invalid"
+              :loading="loading"
               :to="{ name: 'games' }"
             >
               Retour à la liste
@@ -25,7 +25,7 @@
         <template v-else>
           <v-card-title> Modifier ce jeu-concours </v-card-title>
           <v-card-text>
-            <validation-observer ref="form" v-slot="{ invalid }">
+            <validation-observer ref="form">
               <form @submit.prevent="submit">
                 <validation-provider v-slot="{ errors }" name="name">
                   <v-text-field
@@ -207,7 +207,7 @@
                 <v-btn
                   class="mr-4 accent primary--text"
                   type="button"
-                  :disabled="invalid"
+                  :loading="loading"
                 >
                   Enregistrer
                 </v-btn>

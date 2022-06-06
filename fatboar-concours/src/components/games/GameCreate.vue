@@ -7,7 +7,7 @@
   >
     <v-card-title> Ajouter un jeu </v-card-title>
     <v-card-text>
-      <validation-observer ref="form" v-slot="{ invalid }">
+      <validation-observer ref="form">
         <form @submit.prevent="submit">
           <validation-provider
             v-slot="{ errors }"
@@ -172,7 +172,7 @@
             class="ma-4"
             color="primary--text accent"
             type="submit"
-            :disabled="invalid || loading"
+            :loading="loading"
           >
             Sauvegarder
           </v-btn>

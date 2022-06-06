@@ -4,7 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
-export class AdminStrategy extends PassportStrategy(Strategy, "admin") {
+export class EmployeeStrategy extends PassportStrategy(Strategy, "employee") {
   constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,7 +20,7 @@ export class AdminStrategy extends PassportStrategy(Strategy, "admin") {
       const user = await this.usersService.findOne(sub, {
         relations: ["role"],
       });
-      if (user.role.name !== "admin") throw new UnauthorizedException();
+      if (user.role.name !== "employee") throw new UnauthorizedException();
 
       return user;
     } catch (error) {

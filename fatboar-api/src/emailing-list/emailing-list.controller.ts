@@ -1,3 +1,4 @@
+import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import {
   Body,
   Controller,
@@ -17,7 +18,7 @@ import { EmailingListService } from "./emailing-list.service";
 import { EmailingList } from "./entities/emailing-list.entity";
 
 @Controller("emailing-lists")
-@UseGuards(AuthGuard())
+@UseGuards(AdminGuard)
 export class EmailingListController {
   constructor(
     private readonly emailingListService: EmailingListService,

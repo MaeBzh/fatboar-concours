@@ -3,4 +3,5 @@ export class MailContactDto {
   email: string;
   subject: string;
   content: string;
+  from: string;
 }

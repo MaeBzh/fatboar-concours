@@ -3,7 +3,7 @@
     <v-card class="card" width="60%" :loading="loading">
       <v-card-title>Nous envoyer un message </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form">
           <v-form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -22,7 +22,7 @@
               rules="required|email"
             >
               <v-text-field
-                v-model="message.email"
+                v-model="message.from"
                 :error-messages="errors"
                 label="E-mail"
               ></v-text-field>
@@ -52,7 +52,7 @@
             </validation-provider>
 
             <v-btn
-              :disabled="invalid"
+              :loading="loading"
               color="accent"
               class="mr-4 mt-4 primary--text"
               @click="sendMessage"
@@ -87,8 +87,9 @@
   </v-container>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-property-decorator";
 import { mailService } from "@/services";
+import { ValidatorRef } from "@/types/validator";
 
 @Component({
   metaInfo() {
@@ -100,31 +101,40 @@ import { mailService } from "@/services";
   },
 })
 export default class Contact extends Vue {
+  @Ref("form") readonly form!: ValidatorRef;
   public loading = false;
   public message = {
     name: "",
-    email: "",
+    from: "",
     subject: "",
     content: "",
   };
 
   async sendMessage(): Promise<void> {
-    this.loading = true;
-    try {
-      await mailService.contact(this.message);
-      this.$store.commit("eventStore/add", { name: "contactMailSended" });
-      this.message = {
-        name: "",
-        email: "",
-        subject: "",
-        content: "",
-      };
-    } catch (error) {
-      console.error(error);
-      this.$store.commit("eventStore/add", { name: "error" });
-    } finally {
-      this.loading = false;
+    const isValid = await this.form.validate();
+    if (isValid) {
+      try {
+        this.loading = true;
+        await mailService.contact(this.message);
+        this.$store.commit("eventStore/add", { name: "contactMailSent" });
+        this.reset();
+      } catch (error) {
+        console.error(error);
+        this.$store.commit("eventStore/add", { name: "error" });
+      } finally {
+        this.loading = false;
+      }
     }
+  }
+
+  reset() {
+    this.message = {
+      name: "",
+      from: "",
+      subject: "",
+      content: "",
+    };
+    this.form.reset();
   }
 }
 </script>

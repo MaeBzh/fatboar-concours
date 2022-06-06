@@ -9,7 +9,7 @@
       <div v-if="!winningTicket">
         <v-card-title> Vérifier un gain </v-card-title>
         <v-card-text>
-          <validation-observer ref="form" v-slot="{ invalid }">
+          <validation-observer ref="form">
             <form @submit.prevent="submit">
               <validation-provider
                 v-slot="{ errors }"
@@ -44,7 +44,7 @@
               <v-btn
                 class="mx-4 accent primary--text"
                 type="submit"
-                :disabled="invalid"
+                :loading="loading"
               >
                 Vérifier le gain
               </v-btn>
