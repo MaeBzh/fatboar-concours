@@ -18,7 +18,7 @@ import { AuthenticationService } from "./authentication.service";
 import { LoginDto } from "./dto/login.dto";
 import { RegisterDto } from "./dto/register.dto";
 import { RegisterSocialDto } from "./dto/registerSocial.dto";
-import { LocalAuthenticationGuard } from "./guards/local-authentication.guard";
+import { LocalGuard } from "./guards/local-authentication.guard";
 import { RequestWithUser } from "./interfaces/request-with-user.interface";
 
 @Controller("authentication")
@@ -41,7 +41,7 @@ export class AuthenticationController {
     description: "The user has been successfully login",
     type: User,
   })
-  @UseGuards(LocalAuthenticationGuard)
+  @UseGuards(LocalGuard)
   @ApiBody({ type: LoginDto })
   async login(@Request() req: RequestWithUser) {
     const { accessToken, refreshToken, user } =

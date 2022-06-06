@@ -10,9 +10,9 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiCreatedResponse } from "@nestjs/swagger";
+import { AdminGuard } from "src/authentication/guards/admin-authentication.guard";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { imageFilter, multerOptions } from "../multerconfig";
 import { CreateGiftDto } from "./dto/create-gift.dto";
@@ -21,7 +21,7 @@ import { Gift } from "./entities/gift.entity";
 import { GiftsService } from "./gifts.service";
 
 @Controller("gifts")
-@UseGuards(AuthGuard())
+@UseGuards(AdminGuard)
 export class GiftsController {
   constructor(
     private readonly giftsService: GiftsService,

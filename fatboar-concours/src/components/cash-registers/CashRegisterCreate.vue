@@ -3,7 +3,7 @@
     <v-card :loading="loading" class="pa-8">
       <v-card-title>Ajouter une caisse enregistreuse</v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form" >
           <form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -50,7 +50,7 @@
               <v-btn
                 class="mx-4 accent primary--text"
                 type="submit"
-                :disabled="invalid || loading"
+                :disabled="loading"
               >
                 Sauvegarder
               </v-btn>

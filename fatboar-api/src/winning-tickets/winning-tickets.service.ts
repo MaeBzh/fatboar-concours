@@ -68,7 +68,7 @@ export class WinningTicketsService {
 
   findOne(
     id: number,
-    options: FindOneOptions<WinningTicket>
+    options?: FindOneOptions<WinningTicket>
   ): Promise<WinningTicket> {
     return this.ticketsRepo.findOneOrFail(id, options);
   }
@@ -76,7 +76,38 @@ export class WinningTicketsService {
   async verifyTicket(
     number: number,
     amount: number,
-    user: User
+    user?: User,
+    id?: number
+  ): Promise<WinningTicket> {
+    const query = await this.ticketsRepo
+      .createQueryBuilder("winning-tickets")
+      .select("winning-tickets.id")
+      .where("winning-tickets.number = :number", { number })
+      .andWhere("winning-tickets.amount = :amount", { amount })
+      .andWhere("winning-tickets.assignedOn IS NOT NULL");
+
+      if(user) {
+        query.andWhere(
+          new Brackets((sub) => {
+            sub.where("winning-tickets.userId IS NULL");
+            sub.orWhere("winning-tickets.userId = :userId", { userId: user.id });
+          })
+        )
+      } else {
+        query.andWhere("winning-tickets.userId IS NOT NULL")
+      }
+
+      if(id) {
+        query.andWhere("winning-tickets.id = :id", { id });
+      }
+      
+      const winnningTicket = await query.getOneOrFail();
+    return this.findOne(winnningTicket.id, { relations: ["gift", "user"] });
+  }
+
+  async verifyTicketEmployee(
+    number: number,
+    amount: number,
   ): Promise<WinningTicket> {
     const { id } = await this.ticketsRepo
       .createQueryBuilder("winning-tickets")
@@ -84,13 +115,9 @@ export class WinningTicketsService {
       .where("winning-tickets.number = :number", { number })
       .andWhere("winning-tickets.amount = :amount", { amount })
       .andWhere("winning-tickets.assignedOn IS NOT NULL")
-      .andWhere(
-        new Brackets((sub) => {
-          sub.where("winning-tickets.userId IS NULL");
-          sub.orWhere("winning-tickets.userId = :userId", { userId: user.id });
-        })
-      )
+     
       .getOneOrFail();
+      
     return this.findOne(id, { relations: ["gift", "user"] });
   }
 
