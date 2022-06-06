@@ -3,7 +3,7 @@
     <v-card :loading="loading">
       <v-card-title> Modifier cet employé </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form" >
           <form v-if="!!employee" @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -49,7 +49,7 @@
               class="ma-4"
               color="accent primary--text"
               type="submit"
-              :disabled="invalid"
+              :disabled="loading"
             >
               Enregistrer les modifications
             </v-btn>
