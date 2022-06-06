@@ -81,6 +81,10 @@ export default class EventAlert extends Vue {
     return this.$store.getters["eventStore/getProfileUpdatedEvent"];
   }
 
+  get emailAlreadyExistsEvent() {
+    return this.$store.getters["eventStore/getEmailAlreadyExistsEvent"];
+  }
+
   @Watch("entityDeletedEvent")
   onDeletedEventChange(event) {
     if (event?.name) {
@@ -192,6 +196,14 @@ export default class EventAlert extends Vue {
   onProfileUpdatedEventChange(event) {
     if (event?.name) {
       this.message = "Vos informations ont été mises à jour.";
+      this.$store.commit("eventStore/remove", event);
+    }
+  }
+
+  @Watch("emailAlreadyExistsEvent")
+  onEmailAlreadyExistsEventChange(event) {
+    if (event?.name) {
+      this.message = "Cette adresse email est déjà utilisée.";
       this.$store.commit("eventStore/remove", event);
     }
   }

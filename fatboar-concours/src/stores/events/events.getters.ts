@@ -67,4 +67,10 @@ export default {
       return event.name === "profileUpdated";
     });
   },
+
+  getEmailAlreadyExistsEvent: (state) => {
+    return state.events.find((event: CustomEvent) => {
+      return event.name === "emailAlreadyExists";
+    });
+  },
 };
