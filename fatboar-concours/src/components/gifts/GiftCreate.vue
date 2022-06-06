@@ -71,7 +71,7 @@
               class="ma-4"
               color="primary--text accent"
               type="submit"
-              :disabled="loading"
+              :loading="loading"
             >
               Valider
             </v-btn>

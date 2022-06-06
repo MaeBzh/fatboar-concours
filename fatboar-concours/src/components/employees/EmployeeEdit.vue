@@ -49,7 +49,7 @@
               class="ma-4"
               color="accent primary--text"
               type="submit"
-              :disabled="loading"
+              :loading="loading"
             >
               Enregistrer les modifications
             </v-btn>

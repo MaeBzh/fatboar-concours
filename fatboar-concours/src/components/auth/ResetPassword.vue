@@ -71,7 +71,7 @@
             <v-card-actions class="d-flex justify-center">
               <v-btn
                 type="submit"
-                :disabled="loading"
+                :loading="loading"
                 class="accent primary--text"
                 >Envoyer</v-btn
               >

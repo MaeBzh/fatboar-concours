@@ -46,12 +46,12 @@ export default {
       return event.name === "badGameTicket";
     });
   },
-    getVerifyBadTicketEvent: (state) => {
+  getVerifyBadTicketEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
       return event.name === "verifyBadTicket";
     });
   },
-  getContactMailSendedEvent: (state) => {    
+  getContactMailSentEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
       return event.name === "contactMailSent";
     });

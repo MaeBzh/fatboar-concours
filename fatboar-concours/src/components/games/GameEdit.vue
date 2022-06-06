@@ -14,7 +14,7 @@
             <v-btn
               class="mr-4"
               type="button"
-              :disabled="loading"
+              :loading="loading"
               :to="{ name: 'games' }"
             >
               Retour à la liste
@@ -207,7 +207,7 @@
                 <v-btn
                   class="mr-4 accent primary--text"
                   type="button"
-                  :disabled="loading"
+                  :loading="loading"
                 >
                   Enregistrer
                 </v-btn>
