@@ -21,7 +21,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.facebook.com/">
         <v-icon
           size="x-large"
           aria-label="Facebook"
@@ -32,7 +32,7 @@
         >
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.twitter.fr/">
         <v-icon
           size="x-large"
           aria-label="Twitter"
@@ -43,7 +43,7 @@
         >
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.instagram.com/">
         <v-icon
           size="x-large"
           aria-label="Instagram"
@@ -156,7 +156,7 @@
       </v-row>
     </v-app-bar>
     <v-app-bar color="primary" dark height="60">
-      <v-btn icon>
+      <v-btn icon href="https://www.facebook.com/">
         <v-icon
           size="x-large"
           aria-label="Facebook"
@@ -167,7 +167,7 @@
         >
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.twitter.fr/">
         <v-icon
           size="x-large"
           aria-label="Twitter"
@@ -178,7 +178,7 @@
         >
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.instagram.com/">
         <v-icon
           size="x-large"
           aria-label="Instagram"
