@@ -179,10 +179,7 @@
             </validation-provider>
 
             <v-card-actions class="d-flex justify-center">
-              <v-btn
-                class="accent primary--text"
-                type="submit"
-                :disabled="invalid && !client.rgpd"
+              <v-btn class="accent primary--text" type="submit"
                 >Enregistrer</v-btn
               >
             </v-card-actions>
