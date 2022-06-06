@@ -68,7 +68,7 @@ export default class EventAlert extends Vue {
   get contactMailSentEvent() {
     return this.$store.getters["eventStore/getContactMailSentEvent"];
   }
-  
+
   get verifyBadTicketEvent() {
     return this.$store.getters["eventStore/getVerifyBadTicketEvent"];
   }

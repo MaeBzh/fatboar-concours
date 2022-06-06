@@ -2,7 +2,7 @@
   <v-container>
     <v-card :loading="loading" class="pa-8" width="80%">
       <v-card-title> Modifier cette caisse enregistreuse </v-card-title>
-      <validation-observer ref="form" >
+      <validation-observer ref="form">
         <form v-if="!!cashRegister" @submit.prevent="submit">
           <v-card-text>
             <validation-provider

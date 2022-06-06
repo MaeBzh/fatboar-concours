@@ -7,7 +7,7 @@
   >
     <v-card-title> Ajouter un jeu </v-card-title>
     <v-card-text>
-      <validation-observer ref="form" >
+      <validation-observer ref="form">
         <form @submit.prevent="submit">
           <validation-provider
             v-slot="{ errors }"

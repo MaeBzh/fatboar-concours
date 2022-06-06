@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="card" max-width="30em" :loading="loading">
       <template v-if="!hasBeenReset">
-        <validation-observer ref="form" >
+        <validation-observer ref="form">
           <form @submit.prevent="submit">
             <v-card-title class="primary--text d-flex justify-center"
               >Réinitialiser votre mot de passe</v-card-title

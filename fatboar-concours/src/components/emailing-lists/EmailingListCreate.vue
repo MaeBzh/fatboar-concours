@@ -3,7 +3,7 @@
     <v-card width="80%" loading="true" loader-height="4" class="pa-8">
       <v-card-title> Créer une nouvelle liste de diffusion </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" >
+        <validation-observer ref="form">
           <form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"

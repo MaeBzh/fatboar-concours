@@ -2,7 +2,7 @@
   <v-container>
     <v-card :loading="loading" class="pa-8" width="80%">
       <v-card-title> Modifier ce restaurant </v-card-title>
-      <validation-observer ref="form" >
+      <validation-observer ref="form">
         <form v-if="!!restaurant" @submit.prevent="submit">
           <v-card-text>
             <validation-provider
