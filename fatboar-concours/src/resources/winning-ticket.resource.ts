@@ -26,19 +26,28 @@ export class WinningTicketResource extends ApiResource<WinningTicket> {
     return data;
   }
 
-  async update({ id, user, assignedOn, amount }: WinningTicket): Promise<void> {
-    await super.update({
-      id,
-      user,
-      assignedOn,
+  async updateUser({
+    id,
+    amount,
+    number,
+  }: WinningTicket): Promise<WinningTicket> {
+    const { data } = await this.http.put(`${this.basePath}/${id}/user`, {
+      number,
       amount,
-    } as WinningTicket);
+    });
+
+    return data;
   }
 
-  async withdrawnTicket({ id }: WinningTicket): Promise<WinningTicket> {
-    const { data } = await this.http.put(
-      `${this.basePath}/withdrawnTicket/${id}`
-    );
+  async updateWithdrawn({
+    id,
+    amount,
+    number,
+  }: WinningTicket): Promise<WinningTicket> {
+    const { data } = await this.http.put(`${this.basePath}/${id}/withdrawn`, {
+      number,
+      amount,
+    });
 
     return data;
   }

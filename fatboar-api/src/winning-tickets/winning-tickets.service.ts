@@ -14,8 +14,6 @@ import {
 } from "typeorm";
 import { WinningTicket } from "../winning-tickets/entities/winning-ticket.entity";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
-import { UpdateWinningTicketDto } from "./dto/update-winning-ticket.dto";
-import { Gift } from "src/gifts/entities/gift.entity";
 
 @Injectable()
 export class WinningTicketsService {
@@ -24,24 +22,29 @@ export class WinningTicketsService {
     private ticketsRepo: Repository<WinningTicket>
   ) {}
 
-  async getGameStats({id}: Game, ) {
-    const used = await this.ticketsRepo.createQueryBuilder()
-    .where("assignedOn IS NOT NULL")
-    .andWhere("withdrawnOn IS NOT NULL")
-    .andWhere("gameId = :id", {id}).getCount();
-    
-    const unused = await this.ticketsRepo.createQueryBuilder()
-    .where("assignedOn IS NOT NULL")
-    .andWhere("withdrawnOn IS NULL")
-    .andWhere("gameId = :id", {id}).getCount();
+  async getGameStats({ id }: Game) {
+    const used = await this.ticketsRepo
+      .createQueryBuilder()
+      .where("assignedOn IS NOT NULL")
+      .andWhere("withdrawnOn IS NOT NULL")
+      .andWhere("gameId = :id", { id })
+      .getCount();
 
-    const unassigned = await this.ticketsRepo.createQueryBuilder()
-    .where("assignedOn IS NULL")
-    .andWhere("withdrawnOn IS NULL")
-    .andWhere("gameId = :id", {id}).getCount();
+    const unused = await this.ticketsRepo
+      .createQueryBuilder()
+      .where("assignedOn IS NOT NULL")
+      .andWhere("withdrawnOn IS NULL")
+      .andWhere("gameId = :id", { id })
+      .getCount();
 
-    return {used, unused, unassigned};
+    const unassigned = await this.ticketsRepo
+      .createQueryBuilder()
+      .where("assignedOn IS NULL")
+      .andWhere("withdrawnOn IS NULL")
+      .andWhere("gameId = :id", { id })
+      .getCount();
 
+    return { used, unused, unassigned };
   }
 
   async create(
@@ -80,6 +83,7 @@ export class WinningTicketsService {
       .select("winning-tickets.id")
       .where("winning-tickets.number = :number", { number })
       .andWhere("winning-tickets.amount = :amount", { amount })
+      .andWhere("winning-tickets.assignedOn IS NOT NULL")
       .andWhere(
         new Brackets((sub) => {
           sub.where("winning-tickets.userId IS NULL");
@@ -87,7 +91,7 @@ export class WinningTicketsService {
         })
       )
       .getOneOrFail();
-    return this.findOne(id, { relations: ["gift"] });
+    return this.findOne(id, { relations: ["gift", "user"] });
   }
 
   async findAllTicketsForSpecificUser(user: User): Promise<WinningTicket[]> {
@@ -122,36 +126,13 @@ export class WinningTicketsService {
 
   async update(
     id: number,
-    updateWinningTicketDto: UpdateWinningTicketDto,
-    manager?: EntityManager
-  ): Promise<UpdateResult> {
-    let { user, cashRegister, ...data } = updateWinningTicketDto;
-    const winningTicket: DeepPartial<WinningTicket> = { id: +id, ...data };
-
-    if (updateWinningTicketDto.user) {
-      winningTicket.user = user;
-    }
-
-    if (updateWinningTicketDto.cashRegister) {
-      winningTicket.cashRegister = cashRegister;
-    }
-
-    const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
-    const result = repo.update(id, await repo.preload(winningTicket));
-
-    return result;
-  }
-
-  async withdrawnTicket(
-    id: number,
-    withdrawnOn: Date,
+    data: Partial<WinningTicket>,
     manager?: EntityManager
   ): Promise<WinningTicket> {
     const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
-    const ticket = await repo.findOneOrFail({ id });
-    ticket.withdrawnOn = withdrawnOn;
-    const response = await repo.update(id, await repo.preload(ticket));
-    return repo.findOneOrFail(id, { relations: ["gift"] });
+
+    await repo.update(id, data);
+    return repo.findOneOrFail(id, { relations: ["gift", "user"] });
   }
 
   remove(id: number, manager?: EntityManager): Promise<DeleteResult> {

@@ -14,7 +14,6 @@ import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
-import { UpdateWinningTicketDto } from "./dto/update-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
@@ -59,45 +58,44 @@ export class WinningTicketsController {
   async findAllTicketsForCurrentGame(@Param("id") id: number) {
     return this.winningTicketsService.findAllTicketsForCurrentGame(id);
   }
+
   @UseGuards(ThrottlerGuard)
-  @Throttle(3, 300)
+  @Throttle(5, 300)
   @Get("/verify-ticket/:number/:amount")
   async verifyTicket(
     @Param("number") number: number,
     @Param("amount") amount: number,
     @Request() req: RequestWithUser
-  ): Promise<WinningTicket> {  
+  ): Promise<WinningTicket> {
     return this.winningTicketsService.verifyTicket(number, amount, req.user);
   }
 
-  @Put(":id")
+  @Put(":id/user")
   @ApiCreatedResponse({
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
-  async update(
+  async updateUser(
     @Param("id") id: number,
-    @Body() updateWinningTicketDto: UpdateWinningTicketDto
+    @Body() { number, amount }: Pick<WinningTicket, "number" | "amount">,
+    @Request() req: RequestWithUser
   ) {
     return this.connection.transaction(async (manager: EntityManager) => {
-      return this.winningTicketsService.update(
-        id,
-        updateWinningTicketDto,
-        manager
-      );
+      await this.winningTicketsService.verifyTicket(number, amount, req.user);
+      return this.winningTicketsService.update(id, { user: req.user }, manager);
     });
   }
 
-  @Put("withdrawnTicket/:id")
+  @Put(":id/withdrawn")
   @ApiCreatedResponse({
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
-  async withdrawnTicket(@Param("id") id: number) {
+  async updateWithdrawn(@Param("id") id: number) {
     return this.connection.transaction(async (manager: EntityManager) => {
-      return this.winningTicketsService.withdrawnTicket(
+      return this.winningTicketsService.update(
         id,
-        new Date(),
+        { withdrawnOn: new Date() },
         manager
       );
     });

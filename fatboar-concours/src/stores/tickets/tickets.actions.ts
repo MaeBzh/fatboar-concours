@@ -19,6 +19,12 @@ export default {
     commit("add", updated);
   },
 
+  async updateUser({ commit }, ticket: WinningTicket): Promise<void> {
+    const updated = await winningTicketResource.updateUser(ticket);
+    commit("remove", ticket);
+    commit("add", updated);
+  },
+
   async fetchAllTicketsForConnectedUser({ commit }): Promise<void> {
     const tickets = await winningTicketResource.getAllTicketsForConnectedUser();
     commit("set", tickets);
