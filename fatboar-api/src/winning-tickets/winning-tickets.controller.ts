@@ -18,7 +18,7 @@ import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
-import { EmployeeGuard } from "../authentication/guards/employee-authentication.guard";
+import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
 import { AuthGuard } from "@nestjs/passport";
@@ -65,7 +65,7 @@ export class WinningTicketsController {
   }
   
   @Get("/verify-ticket/:number/:amount")
-  @UseGuards(VerifyTicketGuard)
+  @UseGuards(ThrottlerGuard)
   @Throttle(5, 300)
   async verifyTicket(
     @Param("number") number: number,
