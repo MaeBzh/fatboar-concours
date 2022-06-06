@@ -8,7 +8,7 @@
     >
       <v-card-title> Ajouter un employé </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form" >
           <form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -56,7 +56,7 @@
             <v-btn
               class="accent primary--text mr-4"
               type="submit"
-              :disabled="invalid"
+              :disabled="loading"
             >
               Valider
             </v-btn>
