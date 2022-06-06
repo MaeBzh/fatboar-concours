@@ -79,11 +79,11 @@ export default class CashRegisterCreate extends Vue {
   };
 
   async submit(): Promise<void> {
-    this.loading = true;
     this.cashRegister.token = uuidv4();
 
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch(
           "cashRegisterStore/create",
