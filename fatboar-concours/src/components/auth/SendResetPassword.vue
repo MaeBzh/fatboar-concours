@@ -3,36 +3,38 @@
     <v-card class="card" max-width="30em" :loading="loading">
       <template v-if="!hasBeenSent">
         <validation-observer ref="form" v-slot="{ invalid, validated }">
-          <v-card-title class="primary--text d-flex justify-center"
-            >Réinitialiser votre mot de passe</v-card-title
-          >
-          <v-divider class="primary mb-8"></v-divider>
-          <v-card-subtitle
-            >Entrez l'adresse mail avec laquelle vous avez créer votre compte
-            pour recevoir un lien de réinitialisation.</v-card-subtitle
-          >
-          <v-card-text>
-            <validation-provider
-              v-slot="{ errors }"
-              name="email"
-              rules="required|email"
+          <form @submit.prevent="submit">
+            <v-card-title class="primary--text d-flex justify-center"
+              >Réinitialiser votre mot de passe</v-card-title
             >
-              <v-text-field
-                v-model="email"
-                :error-messages="errors"
-                label="Adresse email"
-                required
-              ></v-text-field>
-            </validation-provider>
-          </v-card-text>
-          <v-card-actions class="d-flex justify-center">
-            <v-btn
-              type="submit"
-              :disabled="(invalid && validated) || loading"
-              class="accent primary--text"
-              >Envoyer</v-btn
+            <v-divider class="primary mb-8"></v-divider>
+            <v-card-subtitle
+              >Entrez l'adresse mail avec laquelle vous avez créer votre compte
+              pour recevoir un lien de réinitialisation.</v-card-subtitle
             >
-          </v-card-actions>
+            <v-card-text>
+              <validation-provider
+                v-slot="{ errors }"
+                name="email"
+                rules="required|email"
+              >
+                <v-text-field
+                  v-model="email"
+                  :error-messages="errors"
+                  label="Adresse email"
+                  required
+                ></v-text-field>
+              </validation-provider>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn
+                type="submit"
+                :disabled="(invalid && validated) || loading"
+                class="accent primary--text"
+                >Envoyer</v-btn
+              >
+            </v-card-actions>
+          </form>
         </validation-observer>
       </template>
       <template v-else>
