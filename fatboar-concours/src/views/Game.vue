@@ -127,10 +127,9 @@ export default class Game extends FileDownloadMixin {
   }
 
   async submit(): Promise<void> {
-    this.loading = true;
-
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         const winningTicket = await this.$store.dispatch(
           "ticketStore/verifyTicket",

@@ -104,9 +104,9 @@ export default class CashRegisterEdit extends Vue {
   public cashRegister: CashRegister | null = null;
 
   async submit(): Promise<void> {
-    this.loading = true;
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch(
           "cashRegisterStore/update",
