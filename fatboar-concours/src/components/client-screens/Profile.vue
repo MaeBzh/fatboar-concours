@@ -201,15 +201,6 @@
             </validation-provider>
             <v-btn
               :class="isMobile ? 'ma-1' : 'ma-4'"
-              outlined
-              color="accent primary--text"
-              @click="resetConnectedUser"
-              :loading="loading"
-            >
-              {{ isMobile ? "Annuler" : "Annuler les modifications" }}
-            </v-btn>
-            <v-btn
-              :class="isMobile ? 'ma-1' : 'ma-4'"
               color="accent primary--text"
               type="submit"
               :loading="loading"
@@ -238,6 +229,7 @@ export default class ProfileEdit extends Vue {
   public loading = false;
   public showDatePicker = false;
   public connectedUser: Client | null = null;
+
   public disabled = {
     firstname: true,
     lastname: true,
