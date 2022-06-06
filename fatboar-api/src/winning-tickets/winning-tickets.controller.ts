@@ -62,6 +62,7 @@ export class WinningTicketsController {
   @Get("current-game/:id")
   async findAllTicketsForCurrentGame(@Param("id") id: number) {
     return this.winningTicketsService.findAllTicketsForCurrentGame(id);
+  }
 
   
   @Get("/verify-ticket/:number/:amount")

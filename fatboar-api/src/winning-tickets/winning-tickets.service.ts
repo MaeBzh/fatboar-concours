@@ -105,22 +105,6 @@ export class WinningTicketsService {
     return this.findOne(winnningTicket.id, { relations: ["gift", "user"] });
   }
 
-  async verifyTicketEmployee(
-    number: number,
-    amount: number,
-  ): Promise<WinningTicket> {
-    const { id } = await this.ticketsRepo
-      .createQueryBuilder("winning-tickets")
-      .select("winning-tickets.id")
-      .where("winning-tickets.number = :number", { number })
-      .andWhere("winning-tickets.amount = :amount", { amount })
-      .andWhere("winning-tickets.assignedOn IS NOT NULL")
-     
-      .getOneOrFail();
-      
-    return this.findOne(id, { relations: ["gift", "user"] });
-  }
-
   async findAllTicketsForSpecificUser(user: User): Promise<WinningTicket[]> {
     return this.ticketsRepo.find({
       relations: ["gift"],
