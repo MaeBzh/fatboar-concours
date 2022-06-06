@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card class="card" max-width="30em" :loading="loading">
-      <validation-observer ref="form" v-slot="{ invalid, validated }">
+      <validation-observer ref="form">
         <form @submit.prevent="submit">
           <v-card-title class="primary--text d-flex justify-center"
             >CONNEXION</v-card-title
@@ -56,7 +56,7 @@
           <v-card-actions class="d-flex justify-center">
             <v-btn
               type="submit"
-              :disabled="invalid && validated"
+              :disabled="loading"
               class="accent primary--text"
               >Se connecter</v-btn
             >
