@@ -253,7 +253,9 @@ export default class Register extends Vue {
         });
         this.$router.push({ name: "home" });
       } catch (e) {
-        this.$store.commit("eventStore/add", { name: "error" });
+        this.$store.commit("eventStore/add", {
+          name: e.status === 422 ? "emailAlreadyExists" : "error",
+        });
       } finally {
         this.loading = false;
       }
