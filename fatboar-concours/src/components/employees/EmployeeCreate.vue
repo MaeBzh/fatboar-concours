@@ -56,7 +56,7 @@
             <v-btn
               class="accent primary--text mr-4"
               type="submit"
-              :disabled="loading"
+              :loading="loading"
             >
               Valider
             </v-btn>

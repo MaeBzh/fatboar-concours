@@ -172,7 +172,7 @@
             class="ma-4"
             color="primary--text accent"
             type="submit"
-            :disabled="loading"
+            :loading="loading"
           >
             Sauvegarder
           </v-btn>

@@ -54,10 +54,7 @@
             >
           </v-card-text>
           <v-card-actions class="d-flex justify-center">
-            <v-btn
-              type="submit"
-              :disabled="loading"
-              class="accent primary--text"
+            <v-btn type="submit" :loading="loading" class="accent primary--text"
               >Se connecter</v-btn
             >
           </v-card-actions>
@@ -102,9 +99,9 @@ export default class Login extends RedirectIfAuthenticatedMixin {
   public showPassword = false;
 
   async submit(): Promise<void> {
-    this.loading = true;
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         if (this.remember) {
           this.$cookies.set(

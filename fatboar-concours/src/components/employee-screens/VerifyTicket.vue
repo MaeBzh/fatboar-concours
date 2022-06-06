@@ -44,7 +44,7 @@
               <v-btn
                 class="mx-4 accent primary--text"
                 type="submit"
-                :disabled="loading"
+                :loading="loading"
               >
                 Vérifier le gain
               </v-btn>

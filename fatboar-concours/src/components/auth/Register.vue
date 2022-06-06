@@ -194,7 +194,7 @@
             </validation-provider>
 
             <v-card-actions class="d-flex justify-center">
-              <v-btn class="accent primary--text" type="submit" :disabled="loading"
+              <v-btn class="accent primary--text" type="submit" :loading="loading"
                 >Enregistrer</v-btn
               >
             </v-card-actions>

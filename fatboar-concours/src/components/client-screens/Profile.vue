@@ -204,7 +204,7 @@
               outlined
               color="accent primary--text"
               @click="resetConnectedUser"
-              :disabled="loading"
+              :loading="loading"
             >
               {{ isMobile ? "Annuler" : "Annuler les modifications" }}
             </v-btn>
@@ -212,7 +212,7 @@
               :class="isMobile ? 'ma-1' : 'ma-4'"
               color="accent primary--text"
               type="submit"
-              :disabled="loading"
+              :loading="loading"
             >
               {{ isMobile ? "Enregistrer" : "Enregistrer les modifications" }}
             </v-btn>
