@@ -9,7 +9,7 @@
       <div v-if="!winningTicket">
         <v-card-title> Vérifier un gain </v-card-title>
         <v-card-text>
-          <validation-observer ref="form" >
+          <validation-observer ref="form">
             <form @submit.prevent="submit">
               <validation-provider
                 v-slot="{ errors }"

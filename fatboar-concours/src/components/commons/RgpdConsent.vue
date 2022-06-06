@@ -21,7 +21,12 @@ Vous pouvez vous opposer au traitement des données vous concernant et disposez 
               type="checkbox"
               required
             ></v-checkbox>
-            <v-btn class="ma-4" color="accent primary--text" type="submit" :loading="loading">
+            <v-btn
+              class="ma-4"
+              color="accent primary--text"
+              type="submit"
+              :loading="loading"
+            >
               Enregistrer
             </v-btn>
           </form>

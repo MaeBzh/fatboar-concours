@@ -3,7 +3,7 @@
     <v-card :loading="loading">
       <v-card-title> Modifier cet employé </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" >
+        <validation-observer ref="form">
           <form v-if="!!employee" @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"

@@ -3,7 +3,7 @@
     <v-card :loading="loading" class="pa-8">
       <v-card-title> Modifier ce client </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" >
+        <validation-observer ref="form">
           <form v-if="!!client" @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
