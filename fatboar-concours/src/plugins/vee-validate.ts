@@ -64,7 +64,7 @@ extend("regex", {
 
 extend("password", {
   ...regex,
-  message: `Le mot de passe doit contenir au moins 8 caratères, dont au moins : un chiffre, une majuscule, une miniscule et un caratère spécial parmi !@#$%&? et pas d'espace.`,
+  message: `Le mot de passe doit contenir au moins 8 caractères, dont au moins : un chiffre, une majuscule, une minuscule et un caratère spécial parmi !@#$%&? et pas d'espace.`,
 });
 
 extend("confirmed", {
