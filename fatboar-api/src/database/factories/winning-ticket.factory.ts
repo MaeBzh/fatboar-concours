@@ -5,7 +5,7 @@ import { WinningTicket } from "../../winning-tickets/entities/winning-ticket.ent
 define(WinningTicket, (faker: typeof Faker, context: any) => {
   const ticket = new WinningTicket();
   ticket.number = context.number;
-  ticket.amount = faker.random.number({ precision: 2 });
+  ticket.amount = faker.random.number({ precision: 2, max: 100, min: 18 });
   ticket.user = context.user;
   ticket.withdrawnOn = context.withdrawnOn;
   ticket.game = context.game;
