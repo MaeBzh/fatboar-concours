@@ -3,7 +3,7 @@
     <v-card class="card" max-width="50em" :loading="loading">
       <v-card-title class="primary--text card-title">Inscription</v-card-title>
       <v-card-text>
-        <validation-observer ref="form" >
+        <validation-observer ref="form">
           <form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -194,7 +194,10 @@
             </validation-provider>
 
             <v-card-actions class="d-flex justify-center">
-              <v-btn class="accent primary--text" type="submit" :loading="loading"
+              <v-btn
+                class="accent primary--text"
+                type="submit"
+                :loading="loading"
                 >Enregistrer</v-btn
               >
             </v-card-actions>
