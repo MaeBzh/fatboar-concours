@@ -65,8 +65,8 @@ export default class EventAlert extends Vue {
     return this.$store.getters["eventStore/getBadGameTicketEvent"];
   }
 
-  get verifyBadTicketEvent() {
-    return this.$store.getters["eventStore/getVerifyBadTicketEvent"];
+  get contactMailSentEvent() {
+    return this.$store.getters["eventStore/getContactMailSentEvent"];
   }
 
   get throttleEvent() {
@@ -141,6 +141,15 @@ export default class EventAlert extends Vue {
     if (event?.name) {
       this.message =
         "Votre compte n'est pas activé. Si vous n'avez plus le mail d'activation, veuillez nous contacter via le formulaire de contact";
+      this.$store.commit("eventStore/remove", event);
+    }
+  }
+
+  @Watch("contactMailSentEvent")
+  onContactMailSentEventChange(event) {
+    if (event?.name) {
+      this.message =
+        "Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.";
       this.$store.commit("eventStore/remove", event);
     }
   }
