@@ -13,7 +13,6 @@ import {
   Request,
   UseGuards,
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
@@ -22,6 +21,7 @@ import { WinningTicketsService } from "./winning-tickets.service";
 import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
 import { Throttle } from "@nestjs/throttler";
 import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("winning-tickets")
 @UseGuards(JwtGuard)
@@ -66,7 +66,7 @@ export class WinningTicketsController {
 
   
   @Get("/verify-ticket/:number/:amount")
-  @UseGuards(ClientGuard, VerifyTicketGuard)
+  @UseGuards(VerifyTicketGuard)
   @Throttle(5, 300)
   async verifyTicket(
     @Param("number") number: number,
