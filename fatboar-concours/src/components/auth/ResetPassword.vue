@@ -3,76 +3,80 @@
     <v-card class="card" max-width="30em" :loading="loading">
       <template v-if="!hasBeenReset">
         <validation-observer ref="form" v-slot="{ invalid, validated }">
-          <v-card-title class="primary--text d-flex justify-center"
-            >Réinitialiser votre mot de passe</v-card-title
-          >
-          <v-divider class="primary mb-8"></v-divider>
-          <v-card-subtitle>Entrez votre nouveau mot de passe.</v-card-subtitle>
-          <v-card-text>
-            <validation-provider
-              v-slot="{ errors }"
-              name="email"
-              rules="required|email"
+          <form @submit.prevent="submit">
+            <v-card-title class="primary--text d-flex justify-center"
+              >Réinitialiser votre mot de passe</v-card-title
             >
-              <v-text-field
-                v-model="resetPwdForm.email"
-                :error-messages="errors"
-                label="Adresse email"
-                required
-              ></v-text-field>
-            </validation-provider>
-
-            <validation-provider
-              v-slot="{ errors }"
-              name="password"
-              :rules="{
-                required: true,
-                password:
-                  '^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&?]).*$',
-              }"
+            <v-divider class="primary mb-8"></v-divider>
+            <v-card-subtitle
+              >Entrez votre nouveau mot de passe.</v-card-subtitle
             >
-              <v-text-field
-                v-model="resetPwdForm.password"
-                :error-messages="errors"
-                label="Mot de passe"
-                ref="password"
-                :type="showPassword ? 'text' : 'password'"
+            <v-card-text>
+              <validation-provider
+                v-slot="{ errors }"
+                name="email"
+                rules="required|email"
               >
-                <template slot="append">
-                  <v-icon @click="togglePassword"
-                    >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
-                  </v-icon>
-                </template>
-              </v-text-field>
-            </validation-provider>
+                <v-text-field
+                  v-model="resetPwdForm.email"
+                  :error-messages="errors"
+                  label="Adresse email"
+                  required
+                ></v-text-field>
+              </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
-              name="passwordConfirm"
-              rules="required|confirmed:password"
-            >
-              <v-text-field
-                v-model="resetPwdForm.passwordConfirm"
-                :error-messages="errors"
-                label="Confirmation du mot de passe"
-                :type="showPassword ? 'text' : 'password'"
+              <validation-provider
+                v-slot="{ errors }"
+                name="password"
+                :rules="{
+                  required: true,
+                  password:
+                    '^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&?]).*$',
+                }"
               >
-                <template slot="append">
-                  <v-icon @click="togglePassword"
-                    >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
-                  </v-icon>
-                </template>
-              </v-text-field>
-            </validation-provider>
-          </v-card-text>
-          <v-card-actions class="d-flex justify-center">
-            <v-btn
-              type="submit"
-              :disabled="(invalid && validated) || loading"
-              class="accent primary--text"
-              >Envoyer</v-btn
-            >
-          </v-card-actions>
+                <v-text-field
+                  v-model="resetPwdForm.password"
+                  :error-messages="errors"
+                  label="Mot de passe"
+                  ref="password"
+                  :type="showPassword ? 'text' : 'password'"
+                >
+                  <template slot="append">
+                    <v-icon @click="togglePassword"
+                      >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
+                    </v-icon>
+                  </template>
+                </v-text-field>
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="passwordConfirm"
+                rules="required|confirmed:password"
+              >
+                <v-text-field
+                  v-model="resetPwdForm.passwordConfirm"
+                  :error-messages="errors"
+                  label="Confirmation du mot de passe"
+                  :type="showPassword ? 'text' : 'password'"
+                >
+                  <template slot="append">
+                    <v-icon @click="togglePassword"
+                      >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
+                    </v-icon>
+                  </template>
+                </v-text-field>
+              </validation-provider>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn
+                type="submit"
+                :disabled="(invalid && validated) || loading"
+                class="accent primary--text"
+                >Envoyer</v-btn
+              >
+            </v-card-actions>
+          </form>
         </validation-observer>
       </template>
       <template v-else>
