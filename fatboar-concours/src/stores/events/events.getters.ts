@@ -46,14 +46,25 @@ export default {
       return event.name === "badGameTicket";
     });
   },
-  getContactMailSendedEvent: (state) => {
+    getVerifyBadTicketEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
-      return event.name === "contactMailSend";
+      return event.name === "verifyBadTicket";
+    });
+  },
+  getContactMailSendedEvent: (state) => {    
+    return state.events.find((event: CustomEvent) => {
+      return event.name === "contactMailSent";
     });
   },
   getThrottleEvent: (state) => {
     return state.events.find((event: CustomEvent) => {
       return event.name === "throttle";
+    });
+  },
+
+  getProfileUpdatedEvent: (state) => {
+    return state.events.find((event: CustomEvent) => {
+      return event.name === "profileUpdated";
     });
   },
 };

@@ -1,3 +1,6 @@
+import { ClientGuard } from "./../authentication/guards/client-authentication.guard";
+import { JwtGuard } from "./../authentication/guards/jwt-authentication.guard";
+import { AdminGuard } from "./../authentication/guards/admin-authentication.guard";
 import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import {
   Body,
@@ -15,13 +18,13 @@ import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
-import { EmployeeGuard } from "../authentication/guards/employee-authentication.guard";
-import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
+import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
+import { Throttle } from "@nestjs/throttler";
 import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
 import { AuthGuard } from "@nestjs/passport";
 
 @Controller("winning-tickets")
-@UseGuards(AuthGuard())
+@UseGuards(JwtGuard)
 export class WinningTicketsController {
   constructor(
     private readonly winningTicketsService: WinningTicketsService,
@@ -60,6 +63,7 @@ export class WinningTicketsController {
   async findAllTicketsForCurrentGame(@Param("id") id: number) {
     return this.winningTicketsService.findAllTicketsForCurrentGame(id);
   }
+
   
   @Get("/verify-ticket/:number/:amount")
   @UseGuards(VerifyTicketGuard)
@@ -69,16 +73,11 @@ export class WinningTicketsController {
     @Param("amount") amount: number,
     @Request() req: RequestWithUser
   ): Promise<WinningTicket> {
-    try{
     return this.winningTicketsService.verifyTicket(
       number, 
       amount, 
       req.user.role.name === "client" ? req.user : undefined
     );
-  } catch(err) {
-    console.error(err);
-    throw err;
-  }
   }
 
   @Put(":id/user")
@@ -86,6 +85,7 @@ export class WinningTicketsController {
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
+  @UseGuards(ClientGuard)
   async updateUser(
     @Param("id") id: number,
     @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,
@@ -107,6 +107,7 @@ export class WinningTicketsController {
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
+  @UseGuards(EmployeeGuard)
   async updateWithdrawn(
     @Param("id") id: number,
     @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,
