@@ -22,7 +22,7 @@
               rules="required|email"
             >
               <v-text-field
-                v-model="message.email"
+                v-model="message.from"
                 :error-messages="errors"
                 label="E-mail"
               ></v-text-field>
@@ -103,7 +103,7 @@ export default class Contact extends Vue {
   public loading = false;
   public message = {
     name: "",
-    email: "",
+    from: "",
     subject: "",
     content: "",
   };
@@ -112,10 +112,10 @@ export default class Contact extends Vue {
     this.loading = true;
     try {
       await mailService.contact(this.message);
-      this.$store.commit("eventStore/add", { name: "contactMailSended" });
+      this.$store.commit("eventStore/add", { name: "contactMailSent" });
       this.message = {
         name: "",
-        email: "",
+        from: "",
         subject: "",
         content: "",
       };

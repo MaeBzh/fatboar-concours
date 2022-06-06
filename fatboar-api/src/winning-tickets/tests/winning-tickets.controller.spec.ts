@@ -1,3 +1,4 @@
+import { VerifyTicketGuard } from './../guards/verify-ticket.guard';
 import { RequestWithUser } from "../../authentication/interfaces/request-with-user.interface";
 import { User } from "../../users/entities/user.entity";
 import { Connection,  EntityManager } from "typeorm";
@@ -10,6 +11,7 @@ const ticketsService: any = {
   create: async () => {},
   update: async () => {},
   remove: async () => {},
+  verifyTicket: async () => {},
 };
 
 describe("WinningTicketsController", () => {
@@ -70,6 +72,7 @@ describe("WinningTicketsController", () => {
 
       await ticketsController.updateUser(1, {number: 1, amount: 1}, {user: {} as User} as RequestWithUser);
       expect(ticketsServiceSpyUpdate).toBeCalledTimes(1);
+      ticketsServiceSpyUpdate.mockReset();    
     });
   });
 

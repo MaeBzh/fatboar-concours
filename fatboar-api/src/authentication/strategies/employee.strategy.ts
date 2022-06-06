@@ -13,7 +13,7 @@ export class EmployeeStrategy extends PassportStrategy(Strategy, "employee") {
     });
   }
 
-  async validate(payload: any): Promise<any> {
+  async validate(payload: any): Promise<any> 
     try {
       const { sub } = payload;
 

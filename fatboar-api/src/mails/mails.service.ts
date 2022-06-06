@@ -19,7 +19,8 @@ export class MailsService {
 
   sendMailContact(mailContactDto: MailContactDto) {
     return this.sendMail({
-      to: mailContactDto.email, // list of receivers
+      to: process.env.MAILER_FORCE_TO,
+      from: mailContactDto.from, // list of receivers
       subject: mailContactDto.subject, // Subject line
       text: mailContactDto.content,
     });

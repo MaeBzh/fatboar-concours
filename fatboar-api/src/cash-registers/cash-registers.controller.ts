@@ -1,3 +1,4 @@
+import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import {
   Body,
   Controller,
@@ -17,7 +18,7 @@ import { UpdateCashRegisterDto } from "../cash-registers/dto/update-cash-registe
 import { CashRegister } from "../cash-registers/entities/cash-register.entity";
 
 @Controller("cash-registers")
-@UseGuards(AuthGuard())
+@UseGuards(AdminGuard)
 export class CashRegistersController {
   constructor(
     private readonly cashRegistersService: CashRegistersService,

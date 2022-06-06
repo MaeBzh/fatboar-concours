@@ -1,6 +1,6 @@
 export type Mail = {
   name: string;
-  email: string;
+  from: string;
   subject: string;
   content: string;
 };

@@ -25,7 +25,6 @@ export class ClientStrategy extends PassportStrategy(Strategy, "client") {
 
       return user;
     } catch (error) {
-      console.log("clientStratError", {payload, error});
       throw new UnauthorizedException();
     }
   }

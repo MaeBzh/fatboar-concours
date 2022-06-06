@@ -39,6 +39,21 @@
                 label="Adresse email"
               ></v-text-field>
             </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="phone"
+              :rules="{
+                digits: 10,
+                regex: '^(01|02|03|04|05|06|07|09)\\d{8}$',
+              }"
+            >
+              <v-text-field
+                v-model="client.phone"
+                :error-messages="errors"
+                label="Téléphone"
+              ></v-text-field>
+            </validation-provider>
             <validation-provider
               v-slot="{ errors }"
               name="zipcode"
