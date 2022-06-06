@@ -1,4 +1,3 @@
-import { AdminGuard } from 'src/authentication/guards/admin-authentication.guard';
 import {
   Body,
   Controller,
