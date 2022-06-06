@@ -69,7 +69,6 @@
             <v-btn
               type="submit"
               :disabled="(invalid && validated) || loading"
-              @click="submit"
               class="accent primary--text"
               >Envoyer</v-btn
             >
