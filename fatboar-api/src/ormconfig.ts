@@ -4,7 +4,7 @@ import { join } from "path";
 const ORMConfig: TypeOrmModuleOptions = {
   type: "mysql",
   synchronize: false,
-  logging: ["error"],
+  logging: process.env.NODE_ENV === "production" ? ["error"] : "all",
   entities: [
     join(__dirname, "**/*.entity.js"),
     join(__dirname, "**/*.entity.ts"),

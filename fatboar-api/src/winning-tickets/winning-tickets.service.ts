@@ -79,7 +79,7 @@ export class WinningTicketsService {
     user?: User,
     id?: number
   ): Promise<WinningTicket> {
-    const query = await this.ticketsRepo
+    const query = this.ticketsRepo
       .createQueryBuilder("winning-tickets")
       .select("winning-tickets.id")
       .where("winning-tickets.number = :number", { number })
@@ -96,13 +96,13 @@ export class WinningTicketsService {
       } else {
         query.andWhere("winning-tickets.userId IS NOT NULL")
       }
-
       if(id) {
         query.andWhere("winning-tickets.id = :id", { id });
       }
-      
-      const winnningTicket = await query.getOneOrFail();
-    return this.findOne(winnningTicket.id, { relations: ["gift", "user"] });
+
+      const winningTicket = await query.getOneOrFail();
+
+    return this.findOne(winningTicket.id, { relations: ["gift", "user"] });
   }
 
   async verifyTicketEmployee(
