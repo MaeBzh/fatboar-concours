@@ -199,22 +199,22 @@ export default class Register extends Vue {
   @Ref("refBirthYearPicker") refBirthYearPicker!: DatePickerRef;
   @Ref("refBirthYearMenu") refBirthYearMenu!: DatePickerMenuRef;
   public client = {
-    firstname: "Maelenn",
-    lastname: "Picaud",
+    firstname: "",
+    lastname: "",
     birthYear: 0,
-    zipCode: "35000",
-    phone: "0987654321",
-    newsletter: true,
-    sms: true,
-    email: "mae.picaud@gmail.com",
-    password: "@Password1234",
+    zipCode: "",
+    phone: "",
+    newsletter: false,
+    sms: false,
+    email: "",
+    password: "",
     rgpdConsent: new Date(0),
   };
   public rgpd = null;
   public loading = false;
   public showDatePicker = false;
   public password = "";
-  public passwordConfirm = "@Password1234";
+  public passwordConfirm = "";
   public showPassword = false;
 
   async submit(): Promise<void> {
