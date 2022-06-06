@@ -13,14 +13,15 @@ import {
   Request,
   UseGuards,
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
-import { Throttle } from "@nestjs/throttler";
+import { EmployeeGuard } from "../authentication/guards/employee-authentication.guard";
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("winning-tickets")
 @UseGuards(JwtGuard)
@@ -71,11 +72,16 @@ export class WinningTicketsController {
     @Param("amount") amount: number,
     @Request() req: RequestWithUser
   ): Promise<WinningTicket> {
+    try{
     return this.winningTicketsService.verifyTicket(
       number, 
       amount, 
       req.user.role.name === "client" ? req.user : undefined
     );
+  } catch(err) {
+    console.error(err);
+    throw err;
+  }
   }
 
   @Put(":id/user")

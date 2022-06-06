@@ -14,14 +14,17 @@ export class EmployeeStrategy extends PassportStrategy(Strategy, "employee") {
   }
 
   async validate(payload: any): Promise<any> {
-    const { userId } = payload;
-    const user = await this.usersService.findOne(userId, {
-      relations: ["role"],
-    });
+    try {
+      const { sub } = payload;
 
-    if (!user || user.role.name !== "employee")
+      const user = await this.usersService.findOne(sub, {
+        relations: ["role"],
+      });
+      if (user.role.name !== "employee") throw new UnauthorizedException();
+
+      return user;
+    } catch (error) {
       throw new UnauthorizedException();
-
-    return user;
+    }
   }
 }
