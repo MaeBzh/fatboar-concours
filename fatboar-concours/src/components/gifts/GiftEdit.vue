@@ -2,7 +2,7 @@
   <v-container>
     <v-card :loading="loading" class="pa-8" width="80%">
       <v-card-title> Modifier ce cadeau </v-card-title>
-      <validation-observer ref="form" v-slot="{ invalid }">
+      <validation-observer ref="form" >
         <form v-if="!!gift" @submit.prevent="submit">
           <v-card-text>
             <validation-provider
@@ -101,7 +101,7 @@
             <v-btn
               class="mr-4 accent primary--text"
               type="submit"
-              :disabled="invalid || loading"
+              :disabled="loading"
             >
               Enregistrer les modifications
             </v-btn>

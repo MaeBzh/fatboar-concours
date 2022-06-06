@@ -3,7 +3,7 @@
     <v-card class="card" width="60%" :loading="loading">
       <v-card-title>Nous envoyer un message </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form" >
           <v-form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -22,7 +22,7 @@
               rules="required|email"
             >
               <v-text-field
-                v-model="message.email"
+                v-model="message.from"
                 :error-messages="errors"
                 label="E-mail"
               ></v-text-field>
@@ -52,7 +52,7 @@
             </validation-provider>
 
             <v-btn
-              :disabled="invalid"
+              :disabled="loading"
               color="accent"
               class="mr-4 mt-4 primary--text"
               @click="sendMessage"
@@ -103,7 +103,7 @@ export default class Contact extends Vue {
   public loading = false;
   public message = {
     name: "",
-    email: "",
+    from: "",
     subject: "",
     content: "",
   };
@@ -112,10 +112,10 @@ export default class Contact extends Vue {
     this.loading = true;
     try {
       await mailService.contact(this.message);
-      this.$store.commit("eventStore/add", { name: "contactMailSended" });
+      this.$store.commit("eventStore/add", { name: "contactMailSent" });
       this.message = {
         name: "",
-        email: "",
+        from: "",
         subject: "",
         content: "",
       };

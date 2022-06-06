@@ -57,7 +57,11 @@
                   </validation-provider>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-center">
-                  <v-btn type="submit" color="accent" class="primary--text"
+                  <v-btn
+                    type="submit"
+                    color="accent"
+                    class="primary--text"
+                    :loading="loading"
                     >Vérifier</v-btn
                   >
                 </v-card-actions>
@@ -133,13 +137,8 @@ export default class Game extends FileDownloadMixin {
           this.ticket
         );
 
-        if (winningTicket && !winningTicket.userId) {
-          const user = this.$store.getters["authStore/getAuthUser"];
-          const updatedTicket = {
-            ...winningTicket,
-            user,
-          };
-          await this.$store.dispatch("ticketStore/update", updatedTicket);
+        if (winningTicket && !winningTicket.user) {
+          await this.$store.dispatch("ticketStore/updateUser", winningTicket);
         }
 
         this.winningTicket = winningTicket;

@@ -20,7 +20,7 @@
       </template>
       <template v-else>
         <form @submit.prevent="submit">
-          <v-btn type="submit" color="primary accent--text mb-4">{{
+          <v-btn type="submit" color="primary accent--text mb-4" :disabled="loading">{{
             isMobile
               ? "Marquer comme récupéré"
               : "Marquer ce cadeau comme récupéré"
@@ -73,7 +73,7 @@ export default class WithdrawnGift extends FileDownloadMixin {
 
   async submit(): Promise<void> {
     try {
-      const updatedTicket = await winningTicketResource.withdrawnTicket(
+      const updatedTicket = await winningTicketResource.updateWithdrawn(
         this.winningTicket
       );
 

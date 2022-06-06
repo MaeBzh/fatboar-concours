@@ -8,7 +8,7 @@
         Modifier vos informations
       </v-card-title>
       <v-card-text class="edit-form">
-        <validation-observer ref="form" v-slot="{ invalid, dirty }">
+        <validation-observer ref="form">
           <form v-if="!!connectedUser" @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -204,7 +204,7 @@
               outlined
               color="accent primary--text"
               @click="resetConnectedUser"
-              :disabled="invalid || !dirty"
+              :disabled="loading"
             >
               {{ isMobile ? "Annuler" : "Annuler les modifications" }}
             </v-btn>
@@ -212,7 +212,7 @@
               :class="isMobile ? 'ma-1' : 'ma-4'"
               color="accent primary--text"
               type="submit"
-              :disabled="invalid || !dirty"
+              :disabled="loading"
             >
               {{ isMobile ? "Enregistrer" : "Enregistrer les modifications" }}
             </v-btn>
