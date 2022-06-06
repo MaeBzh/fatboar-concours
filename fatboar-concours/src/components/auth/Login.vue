@@ -2,78 +2,80 @@
   <v-container>
     <v-card class="card" max-width="30em" :loading="loading">
       <validation-observer ref="form" v-slot="{ invalid, validated }">
-        <v-card-title class="primary--text d-flex justify-center"
-          >CONNEXION</v-card-title
-        >
-        <v-divider class="primary mb-8"></v-divider>
-        <v-card-text>
-          <validation-provider
-            v-slot="{ errors }"
-            name="email"
-            rules="required|email"
+        <form @submit.prevent="submit">
+          <v-card-title class="primary--text d-flex justify-center"
+            >CONNEXION</v-card-title
           >
-            <v-text-field
-              v-model="login.email"
-              :error-messages="errors"
-              label="Adresse email"
-              required
-            ></v-text-field>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            name="password"
-            rules="required"
-          >
-            <v-text-field
-              :type="showPassword ? 'text' : 'password'"
-              v-model="login.password"
-              :error-messages="errors"
-              label="Mot de passe"
-              required
+          <v-divider class="primary mb-8"></v-divider>
+          <v-card-text>
+            <validation-provider
+              v-slot="{ errors }"
+              name="email"
+              rules="required|email"
             >
-              <template slot="append">
-                <v-icon @click="togglePassword"
-                  >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
-                </v-icon>
-              </template></v-text-field
+              <v-text-field
+                v-model="login.email"
+                :error-messages="errors"
+                label="Adresse email"
+                required
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="password"
+              rules="required"
             >
-          </validation-provider>
+              <v-text-field
+                :type="showPassword ? 'text' : 'password'"
+                v-model="login.password"
+                :error-messages="errors"
+                label="Mot de passe"
+                required
+              >
+                <template slot="append">
+                  <v-icon @click="togglePassword"
+                    >{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
+                  </v-icon>
+                </template></v-text-field
+              >
+            </validation-provider>
 
-          <v-checkbox
-            label="Se rappeler de moi"
-            name="remember"
-            color="accent"
-            v-model="remember"
-          >
-          </v-checkbox>
+            <v-checkbox
+              label="Se rappeler de moi"
+              name="remember"
+              color="accent"
+              v-model="remember"
+            >
+            </v-checkbox>
+            <v-card-text class="d-flex justify-center"
+              ><router-link text :to="{ name: 'sendResetPassword' }"
+                >Mot de passe oublié ?</router-link
+              ></v-card-text
+            >
+          </v-card-text>
+          <v-card-actions class="d-flex justify-center">
+            <v-btn
+              type="submit"
+              :disabled="invalid && validated"
+              class="accent primary--text"
+              >Se connecter</v-btn
+            >
+          </v-card-actions>
+          <v-card-text class="d-flex justify-center">ou</v-card-text>
+          <v-card-actions class="d-flex flex-column align-center">
+            <facebook-login class="ma-2" />
+            <google-login-button class="ma-2" />
+          </v-card-actions>
+          <v-divider class="mt-4 mb-4"></v-divider>
           <v-card-text class="d-flex justify-center"
-            ><router-link text :to="{ name: 'sendResetPassword' }"
-              >Mot de passe oublié ?</router-link
-            ></v-card-text
+            >Pas encore de compte ?</v-card-text
           >
-        </v-card-text>
-        <v-card-actions class="d-flex justify-center">
-          <v-btn
-            type="submit"
-            :disabled="invalid && validated"
-            class="accent primary--text"
-            >Se connecter</v-btn
-          >
-        </v-card-actions>
-        <v-card-text class="d-flex justify-center">ou</v-card-text>
-        <v-card-actions class="d-flex flex-column align-center">
-          <facebook-login class="ma-2" />
-          <google-login-button class="ma-2" />
-        </v-card-actions>
-        <v-divider class="mt-4 mb-4"></v-divider>
-        <v-card-text class="d-flex justify-center"
-          >Pas encore de compte ?</v-card-text
-        >
-        <v-card-actions class="d-flex justify-center">
-          <v-btn :to="{ name: 'register' }" class="accent primary--text"
-            >Créer un compte</v-btn
-          >
-        </v-card-actions>
+          <v-card-actions class="d-flex justify-center">
+            <v-btn :to="{ name: 'register' }" class="accent primary--text"
+              >Créer un compte</v-btn
+            >
+          </v-card-actions>
+        </form>
       </validation-observer>
     </v-card>
   </v-container>
