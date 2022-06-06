@@ -3,7 +3,7 @@
     <v-card class="card" width="60%" :loading="loading">
       <v-card-title>Nous envoyer un message </v-card-title>
       <v-card-text>
-        <validation-observer ref="form" v-slot="{ invalid }">
+        <validation-observer ref="form" >
           <v-form @submit.prevent="submit">
             <validation-provider
               v-slot="{ errors }"
@@ -52,7 +52,7 @@
             </validation-provider>
 
             <v-btn
-              :disabled="invalid"
+              :disabled="loading"
               color="accent"
               class="mr-4 mt-4 primary--text"
               @click="sendMessage"
