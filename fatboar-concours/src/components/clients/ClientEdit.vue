@@ -156,9 +156,9 @@ export default class ClientEdit extends Vue {
   public client: Client | null = null;
 
   async submit() {
-    this.loading = true;
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch("clientStore/update", this.client);
         this.$store.commit("eventStore/add", {

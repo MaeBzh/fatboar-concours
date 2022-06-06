@@ -22,7 +22,7 @@ define(User, (faker: typeof Faker, context: any) => {
     user.zipcode = faker.address.zipCode();
     user.newsletter = faker.helpers.randomize([true, false]);
     user.sms = faker.helpers.randomize([true, false]);
-    user.phone = faker.phone.phoneNumber();
+    user.phone = faker.phone.phoneNumber().replace('+33', '0').replace(' ', '');
     user.rgpdConsent = faker.date.recent();
   }
   return user;

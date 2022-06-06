@@ -266,9 +266,9 @@ export default class GameCreate extends Vue {
 
   async submit(): Promise<void> {
     this.verifyPercentage();
-    this.loading = true;
     const isValid = await this.form.validate();
     if (isValid && this.totalPercentage === 100 && this.verifiedPercentage) {
+      this.loading = true;
       try {
         this.game.gameGifts = this.selectedGameGifts;
         await this.$store.dispatch("gameStore/create", this.game);
