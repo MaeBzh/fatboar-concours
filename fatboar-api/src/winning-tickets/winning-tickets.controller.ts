@@ -1,3 +1,6 @@
+import { ClientGuard } from "./../authentication/guards/client-authentication.guard";
+import { JwtGuard } from "./../authentication/guards/jwt-authentication.guard";
+import { AdminGuard } from "./../authentication/guards/admin-authentication.guard";
 import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import {
   Body,
@@ -16,11 +19,12 @@ import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
+import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
 import { Throttle } from "@nestjs/throttler";
 import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
 
 @Controller("winning-tickets")
-@UseGuards(AuthGuard())
+@UseGuards(JwtGuard)
 export class WinningTicketsController {
   constructor(
     private readonly winningTicketsService: WinningTicketsService,
@@ -58,10 +62,10 @@ export class WinningTicketsController {
   @Get("current-game/:id")
   async findAllTicketsForCurrentGame(@Param("id") id: number) {
     return this.winningTicketsService.findAllTicketsForCurrentGame(id);
-  }
+
   
   @Get("/verify-ticket/:number/:amount")
-  @UseGuards(VerifyTicketGuard)
+  @UseGuards(ClientGuard, VerifyTicketGuard)
   @Throttle(5, 300)
   async verifyTicket(
     @Param("number") number: number,
@@ -80,6 +84,7 @@ export class WinningTicketsController {
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
+  @UseGuards(ClientGuard)
   async updateUser(
     @Param("id") id: number,
     @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,
@@ -101,6 +106,7 @@ export class WinningTicketsController {
     description: "The winning ticket has been successfully updated.",
     type: UpdateResult,
   })
+  @UseGuards(EmployeeGuard)
   async updateWithdrawn(
     @Param("id") id: number,
     @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,

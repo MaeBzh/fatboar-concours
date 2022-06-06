@@ -6,10 +6,10 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
+  UseGuards
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
+import { AdminGuard } from "src/authentication/guards/admin-authentication.guard";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
 import { CreateRestaurantDto } from "./dto/create-restaurant.dto";
 import { UpdateRestaurantDto } from "./dto/update-restaurant.dto";
@@ -17,7 +17,7 @@ import { Restaurant } from "./entities/restaurant.entity";
 import { RestaurantsService } from "./restaurants.service";
 
 @Controller("restaurants")
-@UseGuards(AuthGuard())
+@UseGuards(AdminGuard)
 export class RestaurantsController {
   constructor(
     private readonly restaurantsService: RestaurantsService,

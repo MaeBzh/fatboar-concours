@@ -7,9 +7,9 @@ import {
   Post,
   Put, Request, UnauthorizedException, UseGuards
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -19,7 +19,7 @@ import { User } from "./entities/user.entity";
 import { UsersService } from "./users.service";
 
 @Controller("users")
-@UseGuards(AuthGuard())
+@UseGuards(AdminGuard)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
