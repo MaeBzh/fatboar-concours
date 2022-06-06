@@ -61,24 +61,23 @@ export default class CreateGames implements Seeder {
       .where({ role: roleClient })
       .getMany();
     const cashRegisters = await connection
-    .getRepository(CashRegister)
-    .createQueryBuilder()
-    .getMany();
-    
-    console.log('')
+      .getRepository(CashRegister)
+      .createQueryBuilder()
+      .getMany();
+
     const promises2 = createdGameGifts.map(async (createdGameGift) => {
-      
       const nbTicketsToCreate =
         +TICKETS_NUMBER * (+createdGameGift.winPercentage / 100);
-        console.log(`Creating ${nbTicketsToCreate} tickets for ${createdGameGift.gift.name}`)
-      
+      console.log(
+        `Creating ${nbTicketsToCreate} tickets for ${createdGameGift.gift.name}`
+      );
+
       const chunk: WinningTicket[] = [];
       for (let i = 0; i < nbTicketsToCreate; i++) {
-
         const cashRegister =
-        Math.random() > 0.5
-          ? cashRegisters[Math.floor(Math.random() * cashRegisters.length)]
-          : null;
+          Math.random() > 0.5
+            ? cashRegisters[Math.floor(Math.random() * cashRegisters.length)]
+            : null;
 
         const user =
           cashRegister && Math.random() > 0.5
@@ -96,13 +95,15 @@ export default class CreateGames implements Seeder {
             withdrawnOn: user ? "2022-06-05 00:00:00.000" : null,
           }).make()
         );
-        
-        if(chunk.length >= CHUNK_SIZE) {
-          await connection.getRepository(WinningTicket).insert(chunk.splice(0, CHUNK_SIZE));
+
+        if (chunk.length >= CHUNK_SIZE) {
+          await connection
+            .getRepository(WinningTicket)
+            .insert(chunk.splice(0, CHUNK_SIZE));
         }
       }
 
-      if(chunk.length) {
+      if (chunk.length) {
         await connection.getRepository(WinningTicket).insert(chunk);
       }
     });

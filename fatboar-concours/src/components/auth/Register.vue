@@ -228,22 +228,16 @@ export default class Register extends Vue {
 
     if (isValid) {
       try {
-        console.log(1);
         this.loading = true;
-        console.log(2);
         await this.$store.dispatch("authStore/register", this.client);
-        console.log(3);
         const ok = this.$store.commit("eventStore/add", {
           name: "userCreated",
         });
-        console.log(4, { ok });
         this.$router.push({ name: "home" });
-        console.log(5);
       } catch (e) {
         this.$store.commit("eventStore/add", { name: "error" });
       } finally {
         this.loading = false;
-        console.log(6);
       }
     }
   }
