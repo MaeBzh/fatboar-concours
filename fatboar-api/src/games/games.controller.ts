@@ -1,3 +1,5 @@
+import { JwtGuard } from './../authentication/guards/jwt-authentication.guard';
+import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import {
   Body,
   Controller,
@@ -28,7 +30,7 @@ export class GamesController {
   ) {}
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AdminGuard)
   @ApiConsumes("multipart/form-data")
   @UseInterceptors(
     FileInterceptor("gameRules", {
@@ -64,7 +66,7 @@ export class GamesController {
   }
 
   @Get()
-  @UseGuards(AuthGuard())
+  @UseGuards(AdminGuard)
   async findAll() {
     return await this.gamesService.findAll({
       relations: ["gameGifts", "gameGifts.gift", "jackpotGift"],
@@ -78,12 +80,13 @@ export class GamesController {
   
 
   @Get(":id/stats")
+  @UseGuards(AdminGuard)
   async getGameStats(@Param("id") id: number) {
     return await this.gamesService.getStats(id);
   }
 
   @Get(":id")
-  @UseGuards(AuthGuard())
+  @UseGuards(AdminGuard)
   async findOne(@Param("id") id: number) {
     return await this.gamesService.findOne(id, {
       relations: ["gameGifts", "gameGifts.gift", "jackpotGift"],
@@ -91,7 +94,7 @@ export class GamesController {
   }
 
   @Put(":id")
-  @UseGuards(AuthGuard())
+  @UseGuards(AdminGuard)
   @ApiConsumes("multipart/form-data")
   @UseInterceptors(
     FileInterceptor("gameRules", {
@@ -140,7 +143,7 @@ export class GamesController {
   }
 
   @Delete(":id")
-  @UseGuards(AuthGuard())
+  @UseGuards(AdminGuard)
   @ApiCreatedResponse({
     description: "The game has been successfully deleted.",
     type: DeleteResult,
