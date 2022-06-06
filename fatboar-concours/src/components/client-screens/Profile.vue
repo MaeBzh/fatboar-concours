@@ -182,7 +182,7 @@
             </validation-provider>
             <validation-provider v-slot="{ errors }" name="newsletter">
               <v-checkbox
-                :checked="connectedUser.newsletter"
+                v-model="connectedUser.newsletter"
                 :error-messages="errors"
                 label="Abonné à la newsletter"
                 color="accent"
@@ -192,7 +192,7 @@
 
             <validation-provider v-slot="{ errors }" name="sms">
               <v-checkbox
-                :checked="connectedUser.sms"
+                v-model="connectedUser.sms"
                 :error-messages="errors"
                 color="accent"
                 label="Abonné aux notifications SMS"
