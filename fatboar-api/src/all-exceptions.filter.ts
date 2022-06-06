@@ -25,7 +25,10 @@ export class AllExceptionFilter implements ExceptionFilter {
         status = HttpStatus.NOT_FOUND;
       } else if (
         QueryFailedError.name.includes(exception?.name) &&
-        exception?.message.includes("Duplicate")
+        (
+          exception?.message.includes("Duplicate") || 
+          exception?.sqlMessage.includes("Duplicate")
+        )
       ) {
         status = HttpStatus.UNPROCESSABLE_ENTITY;
       } else if (NotFoundException.name.includes(exception?.name)) {
@@ -40,9 +43,10 @@ export class AllExceptionFilter implements ExceptionFilter {
         status = HttpStatus.INTERNAL_SERVER_ERROR;
       }
     }
-
+    
     response.status(status).json({
-      ...exception,
+      status,
+      message: exception?.message ?? "Something went wrong.",
       timestamp: new Date().toISOString(),
       path: request.url,
     });

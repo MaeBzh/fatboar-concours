@@ -106,9 +106,9 @@ export default class GiftCreate extends Vue {
   }
 
   async submit(): Promise<void> {
-    this.loading = true;
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch("giftStore/create", this.gift);
         this.$store.commit("eventStore/add", {

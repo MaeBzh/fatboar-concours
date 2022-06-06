@@ -89,11 +89,10 @@ export default class EmployeeCreate extends Vue {
   public loading = false;
 
   async submit(): Promise<void> {
-    this.loading = true;
-
     const isValid = this.form.validate();
 
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch("employeeStore/create", this.employee);
         this.$store.commit("eventStore/add", {

@@ -63,10 +63,9 @@ export default class RestaurantCreate extends Vue {
   };
 
   async submit(): Promise<void> {
-    this.loading = true;
-
     const isValid = await this.form.validate();
     if (isValid) {
+      this.loading = true;
       try {
         await this.$store.dispatch("restaurantStore/create", this.restaurant);
         this.$store.commit("eventStore/add", {
