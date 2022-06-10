@@ -13,9 +13,17 @@ const usersService: any = {
   userWithoutSecrets: (u) => u,
 };
 
+const req = {
+  user: {
+    role: {
+      name: "admin",
+    },
+  },
+} as RequestWithUser;
+
 describe("UsersController", () => {
   let connection = {
-    transaction: async cb => cb({} as EntityManager),
+    transaction: async (cb) => cb({} as EntityManager),
   } as Connection;
 
   describe("findAll", () => {
@@ -35,7 +43,7 @@ describe("UsersController", () => {
 
       let userServiceSpyFindOne = jest.spyOn(usersService, "findOne");
 
-      await usersController.findEmployee(1);
+      await usersController.findEmployee(1, req);
       expect(userServiceSpyFindOne).toBeCalledTimes(1);
     });
   });
@@ -57,9 +65,7 @@ describe("UsersController", () => {
 
       let userServiceSpyUpdate = jest.spyOn(usersService, "update");
 
-      await usersController.update(1, new UpdateUserDto(), {
-        user: { id: 1 },
-      } as RequestWithUser);
+      await usersController.update(1, new UpdateUserDto(), req);
       expect(userServiceSpyUpdate).toBeCalledTimes(1);
     });
   });
