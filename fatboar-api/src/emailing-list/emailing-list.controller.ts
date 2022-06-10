@@ -1,4 +1,3 @@
-import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import {
   Body,
   Controller,
@@ -7,11 +6,11 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
+  UseGuards
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
 import { CreateEmailingListDto } from "./dto/create-emailing-list.dto";
 import { UpdateEmailingListDto } from "./dto/update-emailing-list.dto";
 import { EmailingListService } from "./emailing-list.service";
