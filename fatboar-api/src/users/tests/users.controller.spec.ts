@@ -29,13 +29,13 @@ describe("UsersController", () => {
     });
   });
 
-  describe("findOne", () => {
+  describe("findEmployee", () => {
     it("should be called one time", async () => {
       const usersController = new UsersController(usersService, connection);
 
       let userServiceSpyFindOne = jest.spyOn(usersService, "findOne");
 
-      await usersController.findOne(1);
+      await usersController.findEmployee(1);
       expect(userServiceSpyFindOne).toBeCalledTimes(1);
     });
   });
