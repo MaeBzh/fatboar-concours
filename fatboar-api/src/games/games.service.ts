@@ -53,26 +53,26 @@ export class GamesService {
 
     const createdGameGifts = await Promise.all(gameGiftPromises);
     const chunk: WinningTicket[] = [];
-    
+
     const chunkSize = +(process.env.CREATE_TICKET_BULK_SIZE ?? 10000);
     createdGameGifts.map(async (createdGameGift) => {
       const nbTicketsToCreate =
         +createGameDto.tickets * (+createdGameGift.winPercentage / 100);
-      
+
       for (let i = 0; i < nbTicketsToCreate; i++) {
         chunk.push({
-            number: +`${Date.now()}${i}`,
-            game: createdGame,
-            gift: createdGameGift.gift,
-          } as WinningTicket);
-        
-        if(chunk.length >= chunkSize) {
+          number: +`${Date.now()}${i}`,
+          game: createdGame,
+          gift: createdGameGift.gift,
+        } as WinningTicket);
+
+        if (chunk.length >= chunkSize) {
           await this.ticketsService.bulk(chunk.splice(0, chunkSize));
         }
       }
     });
 
-    if(chunk.length) {
+    if (chunk.length) {
       await this.ticketsService.bulk(chunk.splice(0, chunk.length));
     }
 
@@ -111,12 +111,53 @@ export class GamesService {
     });
   }
 
-  async getStats(id: number): Promise<{used: number, unused: number, unassigned: number}> {
-    const stats = {used: 0, unused: 0, unassigned: 0};
+  async getStats(
+    id: number
+  ): Promise<{ used: number; unused: number; unassigned: number }> {
+    const stats = { used: 0, unused: 0, unassigned: 0 };
     const game = await this.findOne(id);
-    if(!game) return stats;
+    if (!game) return stats;
 
     return this.ticketsService.getGameStats(game);
+  }
+
+  async ticketsToCsv(id: number): Promise<Buffer> {
+    const wonTickets = await this.ticketsService.findWonTicketsForCurrentGame(id);
+
+    const tickets = wonTickets.map((ticket) => {
+        return {
+          numéro: ticket.number,
+          prénom: ticket.user.firstname,
+          nom: ticket.user.lastname,
+          email: ticket.user.email,
+          jeu: id,
+        };
+      });
+
+    const headers = ["numéro", "nom", "prénom", "email", "jeu"];
+    return this.convertToCSV(tickets, headers);
+  }
+
+  async convertToCSV(objArray, headerList): Promise<Buffer> {
+    const array =
+      typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
+    let str = "";
+    let row = "S.No,";
+    for (const index in headerList) {
+      row += headerList[index] + ",";
+    }
+    row = row.slice(0, -1);
+    str += row + "\r\n";
+    for (let i = 0; i < array.length; i++) {
+      let line = i + 1 + "";
+      for (const index in headerList) {
+        const head = headerList[index];
+        line += "," + array[i][head];
+      }
+      str += line + "\r\n";
+    }
+
+    return Buffer.from(str, 'utf-8');
   }
 
   /**

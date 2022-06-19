@@ -9,6 +9,8 @@ import {
   EntityManager,
   FindOneOptions,
   InsertResult,
+  IsNull,
+  Not,
   Repository,
   UpdateResult,
 } from "typeorm";
@@ -127,12 +129,17 @@ export class WinningTicketsService {
   }
 
   async findAllTicketsForCurrentGame(id: number): Promise<WinningTicket[]> {
-    const tickets = await this.ticketsRepo.find({
+    return this.ticketsRepo.find({
       relations: ["gift", "user"],
       where: { gameId: +id },
     });
+  }
 
-    return tickets;
+  async findWonTicketsForCurrentGame(id: number): Promise<WinningTicket[]> {
+    return this.ticketsRepo.find({
+      relations: ["user"],
+      where: { gameId: +id, userId: Not(IsNull()) },
+    });
   }
 
   async update(

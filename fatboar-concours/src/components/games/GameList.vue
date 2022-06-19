@@ -5,6 +5,7 @@
       title="Liste des jeux"
       :headers="headers"
       :loading="loading"
+      :drawing="drawing"
       :sortDesc="true"
       :drawBtn="true"
       :deleteBtn="false"
@@ -49,10 +50,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { formatDate, convertToCSV } from "@/helpers/utils";
+import { gameResource } from "@/resources";
 
 @Component
 export default class GameList extends Vue {
   public loading = false;
+  public drawing = false;
   public formatDate = formatDate;
   public convertToCSV = convertToCSV;
   public get headers() {
@@ -74,42 +77,26 @@ export default class GameList extends Vue {
   }
 
   public async drawJackpot(item) {
-    await this.$store.dispatch(
-      "ticketStore/fetchAllTicketsForCurrentGame",
-      item.id
-    );
-    const tickets = this.$store.getters["ticketStore/getAll"];
-
-    const wonTickets = tickets
-      .filter((ticket) => {
-        return ticket.user != null;
-      })
-      .map((ticket) => {
-        return {
-          numéro: ticket.number,
-          prénom: ticket.user.firstname,
-          nom: ticket.user.lastname,
-          email: ticket.user.email,
-          jeu: item.id,
-        };
-      });
-
-    const headers = ["numéro", "nom", "prénom", "email", "jeu"];
-    const csv = this.convertToCSV(wonTickets, headers);
-    const date = formatDate(new Date(), "P");
-    const csvName = `liste-tirage-au-sort-jeu-${item.id}-${date}.csv`;
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    var link = document.createElement("a");
-    if (link.download !== undefined) {
-      // feature detection
-      // Browsers that support HTML5 download attribute
-      var url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", csvName);
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    try {
+      this.drawing = true;
+      const csv = await gameResource.getCsvForDraw(item);
+      const date = formatDate(new Date(), "P");
+      const filename = `liste-tirage-au-sort-jeu-${item.id}-${date}.csv`;
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      var link = document.createElement("a");
+      if (link.download !== undefined) {
+        // feature detection
+        // Browsers that support HTML5 download attribute
+        var url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } finally {
+      this.drawing = false;
     }
   }
 
