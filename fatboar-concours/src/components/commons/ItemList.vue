@@ -35,7 +35,10 @@
           <slot :name="name" v-bind="slotData" />
         </template>
 
-        <template v-if="editBtn | deleteBtn" v-slot:[`item.actions`]="{ item }">
+        <template
+          v-if="exportBtn | drawBtn | editBtn | deleteBtn"
+          v-slot:[`item.actions`]="{ item }"
+        >
           <div class="d-flex flex-row justify-center">
             <v-btn v-if="editBtn" icon small class="mr-2" :to="editRoute(item)">
               <v-icon class="primary--text">mdi-pen</v-icon>
@@ -50,7 +53,8 @@
               <v-icon class="primary--text">mdi-file-export</v-icon>
             </v-btn>
             <v-btn
-              v-if="drawBtn"
+              v-if="drawBtn && isDrawable(item)"
+              :loading="drawing"
               icon
               small
               class="mr-2"
@@ -74,11 +78,12 @@
 </template>
 
 <script lang="ts">
-import { Model } from "@/models";
+import { Game, Model } from "@/models";
 import { ConfirmRef } from "@/types/confirm";
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 import { DataTableHeader } from "vuetify";
 import { formatDate } from "@/helpers/utils";
+import { isBefore } from "date-fns";
 
 @Component
 export default class ItemList extends Vue {
@@ -89,6 +94,7 @@ export default class ItemList extends Vue {
   @Prop({ type: Array, required: false }) readonly items?: Model[];
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
+  @Prop({ type: Boolean, default: false }) readonly drawing!: boolean;
   @Prop({ type: Boolean, default: true }) readonly addBtn!: boolean;
   @Prop({ type: Boolean, default: true }) readonly createBtn!: boolean;
   @Prop({ type: Boolean, default: true }) readonly editBtn!: boolean;
@@ -131,6 +137,24 @@ export default class ItemList extends Vue {
 
   exportCsv(item) {
     this.$emit("export", item);
+  }
+
+  isDrawable(game: Game) {
+    console.log({ isActivated: game.activated });
+    console.log({ jackpotDraw: game.jackpotDraw });
+    console.log({ ends: game.endsOn });
+    console.log({ isBefore: isBefore(game.endsOn, new Date()) });
+    console.log({
+      drawable:
+        !game.activated &&
+        game.jackpotDraw == null &&
+        isBefore(new Date(game.endsOn), new Date()),
+    });
+    return (
+      !game.activated &&
+      !game.jackpotDraw &&
+      isBefore(new Date(game.endsOn), new Date())
+    );
   }
 
   drawJackpot(item) {
