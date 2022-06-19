@@ -1,23 +1,12 @@
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnection, EntityManager } from "typeorm";
 import { CreateEmailingListDto } from "../dto/create-emailing-list.dto";
 import { UpdateEmailingListDto } from "../dto/update-emailing-list.dto";
 import { EmailingListController } from "../emailing-list.controller";
 
 describe("EmailingListController", () => {
-  let connection: Connection;
-
-  beforeAll((done) => {
-    createConnection({
-      type: "better-sqlite3",
-      synchronize: true,
-      entities: [__dirname + "**/*.entity.js"],
-      database: ":memory:",
-      dropSchema: true,
-    })
-      .then((newConnection) => (connection = newConnection))
-      .catch((error) => console.error(error))
-      .finally(done);
-  });
+  let connection = {
+    transaction: async (cb) => cb({} as EntityManager),
+  } as Connection;
 
   describe("findAll", () => {
     it("should be called one time", async () => {
