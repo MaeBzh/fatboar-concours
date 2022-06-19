@@ -1,7 +1,3 @@
-import { ClientGuard } from "./../authentication/guards/client-authentication.guard";
-import { JwtGuard } from "./../authentication/guards/jwt-authentication.guard";
-import { AdminGuard } from "./../authentication/guards/admin-authentication.guard";
-import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import {
   Body,
   Controller,
@@ -11,17 +7,19 @@ import {
   Post,
   Put,
   Request,
-  UseGuards,
+  UseGuards
 } from "@nestjs/common";
 import { ApiCreatedResponse } from "@nestjs/swagger";
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
+import { AdminGuard } from "src/authentication/guards/admin-authentication.guard";
+import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
+import { ClientGuard } from "./../authentication/guards/client-authentication.guard";
+import { JwtGuard } from "./../authentication/guards/jwt-authentication.guard";
+import { RequestWithUser } from "./../authentication/interfaces/request-with-user.interface";
 import { CreateWinningTicketDto } from "./dto/create-winning-ticket.dto";
 import { WinningTicket } from "./entities/winning-ticket.entity";
 import { WinningTicketsService } from "./winning-tickets.service";
-import { EmployeeGuard } from "src/authentication/guards/employee-authentication.guard";
-import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
-import { VerifyTicketGuard } from "./guards/verify-ticket.guard";
-import { AuthGuard } from "@nestjs/passport";
 
 @Controller("winning-tickets")
 @UseGuards(JwtGuard)
@@ -48,6 +46,7 @@ export class WinningTicketsController {
   }
 
   @Get("/my-tickets")
+  @UseGuards(ClientGuard)
   async findAllTicketsForSpecificUser(@Request() req: RequestWithUser) {
     return this.winningTicketsService.findAllTicketsForSpecificUser(req.user);
   }

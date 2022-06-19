@@ -1,5 +1,5 @@
-import { JwtGuard } from './../authentication/guards/jwt-authentication.guard';
-import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
+import { JwtGuard } from "./../authentication/guards/jwt-authentication.guard";
+import { AdminGuard } from "./../authentication/guards/admin-authentication.guard";
 import {
   Body,
   Controller,
@@ -8,6 +8,8 @@ import {
   Param,
   Post,
   Put,
+  Response,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -77,12 +79,27 @@ export class GamesController {
   async findCurrentGame() {
     return await this.gamesService.findCurrentGame();
   }
-  
 
   @Get(":id/stats")
   @UseGuards(AdminGuard)
   async getGameStats(@Param("id") id: number) {
     return await this.gamesService.getStats(id);
+  }
+
+  @Get(":id/csv")
+  @UseGuards(AdminGuard)
+  async ticketsToCsv(
+    @Param("id") id: number,
+    @Response({ passthrough: true }) res
+  ) {
+    const file = await this.gamesService.ticketsToCsv(id);
+    const date = new Date().toLocaleDateString();
+    const filename = `liste-tirage-au-sort-jeu-${id}-${date}.csv`;
+    res.set({
+      "Content-Type": "text/csv;charset=utf-8;",
+      "Content-Disposition": `attachment;filename="${filename}"`,
+    });
+    return new StreamableFile(file);
   }
 
   @Get(":id")
