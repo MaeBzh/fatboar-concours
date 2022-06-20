@@ -64,7 +64,7 @@ export class CreateGameDto {
 
   @ApiProperty()
   @IsDate()
-  rulesVAlidation?: Date;
+  rulesValidation?: Date;
 
   @ApiProperty()
   @IsNumber()

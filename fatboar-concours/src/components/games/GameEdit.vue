@@ -243,7 +243,6 @@ export default class GameEdit extends FileDownloadMixin {
     menuEndsOn: false,
   };
   public dates: string[] = [];
-  public currentGame!: Game;
   public downloadNewRules = false;
   public changeGifts = false;
   public changeJackpot = false;
@@ -279,8 +278,8 @@ export default class GameEdit extends FileDownloadMixin {
     return this.$store.getters["giftStore/getAllJackpotGifts"];
   }
   // activable only if a game is already activated and not finished
-  get canActivateImmediately() {
-    return !this.currentGame;
+  get currentGame() {
+    return this.$store.getters["gameStore/getCurrentGame"];
   }
 
   setDates(value: string[]) {
@@ -338,7 +337,6 @@ export default class GameEdit extends FileDownloadMixin {
     this.initialized = false;
     const gameId = +this.$route.params.id;
     this.$store.dispatch("giftStore/fetchAll").then(() => {
-      this.currentGame = this.$store.getters["gameStore/getCurrentGame"];
       this.$store
         .dispatch("gameStore/fetchOne", gameId)
         .then((game) => {
@@ -352,6 +350,7 @@ export default class GameEdit extends FileDownloadMixin {
         .finally(() => {
           this.loading = false;
           this.initialized = true;
+          this.$store.dispatch("gameStore/fetchCurrentGame");
         });
     });
   }

@@ -38,7 +38,7 @@ export class UsersController {
     type: User,
   })
   async create(@Body() createUserDto: CreateUserDto) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       createUserDto.sms = [true, "true", 1].includes(createUserDto.sms);
       createUserDto.newsletter = [true, "true", 1].includes(
         createUserDto.newsletter
@@ -55,7 +55,7 @@ export class UsersController {
     type: User,
   })
   async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.usersService.createEmployee(createEmployeeDto, manager);
     });
   }
@@ -72,7 +72,7 @@ export class UsersController {
     @Request() req: RequestWithUser
   ) {
     if (req.user.role.name === "admin") {
-      return await this.connection.transaction((manager: EntityManager) => {
+      return this.connection.transaction((manager: EntityManager) => {
         return this.usersService.update(id, updateEmployeeDto, manager);
       });
     } else {
@@ -143,7 +143,7 @@ export class UsersController {
     type: UpdateResult,
   })
   async updateRgpdConsent(@Param("id") id: number) {
-    return await this.connection.transaction((manager: EntityManager) => {
+    return this.connection.transaction((manager: EntityManager) => {
       return this.usersService.updateRgpdConsent(id, manager);
     });
   }
@@ -158,9 +158,8 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
     @Request() req: RequestWithUser
   ) {
-    console.log({reqId: req.user.id, id, role: req.user.role.name})
     if (req.user.id === id || req.user.role.name === "admin") {
-      return await this.connection.transaction((manager: EntityManager) => {
+      return this.connection.transaction((manager: EntityManager) => {
         updateUserDto.sms = [true, "true", 1].includes(updateUserDto.sms);
         updateUserDto.newsletter = [true, "true", 1].includes(
           updateUserDto.newsletter
@@ -179,7 +178,7 @@ export class UsersController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number) {
-    return await this.connection.transaction((manager: EntityManager) => {
+    return this.connection.transaction((manager: EntityManager) => {
       return this.usersService.remove(id, manager);
     });
   }
