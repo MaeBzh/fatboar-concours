@@ -1,3 +1,4 @@
+import { GameGift } from "./../game-gift/entities/game-gift.entity";
 import { WinningTicket } from "./../winning-tickets/entities/winning-ticket.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -38,7 +39,10 @@ export class GamesService {
 
     const { gameGifts, ...game } = createGameDto;
 
-    const createdGame: Game = await repo.save(game);
+    const createdGame: Game = await repo.save({
+      ...game,
+      rulesValidation: new Date(),
+    });
 
     const gameGiftPromises = gameGifts.map(async (gameGift) => {
       return this.gameGiftService.create(
@@ -51,20 +55,24 @@ export class GamesService {
       );
     });
 
-    const createdGameGifts = await Promise.all(gameGiftPromises);
-    const chunk: WinningTicket[] = [];
+    await Promise.all(gameGiftPromises);
 
+    return createdGame;
+  }
+
+  async createTickets(game: Game, tickets: number): Promise<void> {
+    const chunk: WinningTicket[] = [];
     const chunkSize = +(process.env.CREATE_TICKET_BULK_SIZE ?? 10000);
-    createdGameGifts.map(async (createdGameGift) => {
-      const nbTicketsToCreate =
-        +createGameDto.tickets * (+createdGameGift.winPercentage / 100);
+
+    const gameGifts = await this.gameGiftService.findByGame(game.id);
+
+    gameGifts.map(async ({ winPercentage, gift }) => {
+      const nbTicketsToCreate = +tickets * (+winPercentage / 100);
 
       for (let i = 0; i < nbTicketsToCreate; i++) {
-        chunk.push({
-          number: +`${Date.now()}${i}`,
-          game: createdGame,
-          gift: createdGameGift.gift,
-        } as WinningTicket);
+        const ticketNumber = +`${Date.now()}${i}`;
+        const winningTicket = { number: ticketNumber, game, gift };
+        chunk.push(winningTicket as WinningTicket);
 
         if (chunk.length >= chunkSize) {
           await this.ticketsService.bulk(chunk.splice(0, chunkSize));
@@ -75,10 +83,6 @@ export class GamesService {
     if (chunk.length) {
       await this.ticketsService.bulk(chunk.splice(0, chunk.length));
     }
-
-    // await Promise.all(promises);
-
-    return createdGame;
   }
 
   /**
@@ -122,17 +126,19 @@ export class GamesService {
   }
 
   async ticketsToCsv(id: number): Promise<Buffer> {
-    const wonTickets = await this.ticketsService.findWonTicketsForCurrentGame(id);
+    const wonTickets = await this.ticketsService.findWonTicketsForCurrentGame(
+      id
+    );
 
     const tickets = wonTickets.map((ticket) => {
-        return {
-          numéro: ticket.number,
-          prénom: ticket.user.firstname,
-          nom: ticket.user.lastname,
-          email: ticket.user.email,
-          jeu: id,
-        };
-      });
+      return {
+        numéro: ticket.number,
+        prénom: ticket.user.firstname,
+        nom: ticket.user.lastname,
+        email: ticket.user.email,
+        jeu: id,
+      };
+    });
 
     const headers = ["numéro", "nom", "prénom", "email", "jeu"];
     return this.convertToCSV(tickets, headers);
@@ -157,7 +163,7 @@ export class GamesService {
       str += line + "\r\n";
     }
 
-    return Buffer.from(str, 'utf-8');
+    return Buffer.from(str, "utf-8");
   }
 
   /**

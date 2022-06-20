@@ -51,7 +51,7 @@ export class GamesController {
       gameGifts: string;
     }
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    const createdGame = await this.connection.transaction(async (manager: EntityManager) => {
       // because of uploading file, data are sent as multipart,
       // so we can't received other type than string, we must JSON.parse and allow string type
       return this.gamesService.create(
@@ -65,25 +65,30 @@ export class GamesController {
         manager
       );
     });
+
+    // do not await winningTickets creation for performance purpose
+    this.gamesService.createTickets(createdGame, +createGameDto.tickets);
+
+    return createdGame;
   }
 
   @Get()
   @UseGuards(AdminGuard)
   async findAll() {
-    return await this.gamesService.findAll({
+    return this.gamesService.findAll({
       relations: ["gameGifts", "gameGifts.gift", "jackpotGift"],
     });
   }
 
   @Get("/currentGame")
   async findCurrentGame() {
-    return await this.gamesService.findCurrentGame();
+    return this.gamesService.findCurrentGame();
   }
 
   @Get(":id/stats")
   @UseGuards(AdminGuard)
   async getGameStats(@Param("id") id: number) {
-    return await this.gamesService.getStats(id);
+    return this.gamesService.getStats(id);
   }
 
   @Get(":id/csv")
@@ -105,7 +110,7 @@ export class GamesController {
   @Get(":id")
   @UseGuards(AdminGuard)
   async findOne(@Param("id") id: number) {
-    return await this.gamesService.findOne(id, {
+    return this.gamesService.findOne(id, {
       relations: ["gameGifts", "gameGifts.gift", "jackpotGift"],
     });
   }
@@ -135,7 +140,7 @@ export class GamesController {
       jackpotGift: string;
     }
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       const data = gameRules
         ? {
             ...updateGameDto,
@@ -166,7 +171,7 @@ export class GamesController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.gamesService.remove(id, manager);
     });
   }

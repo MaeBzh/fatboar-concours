@@ -140,16 +140,6 @@ export default class ItemList extends Vue {
   }
 
   isDrawable(game: Game) {
-    console.log({ isActivated: game.activated });
-    console.log({ jackpotDraw: game.jackpotDraw });
-    console.log({ ends: game.endsOn });
-    console.log({ isBefore: isBefore(game.endsOn, new Date()) });
-    console.log({
-      drawable:
-        !game.activated &&
-        game.jackpotDraw == null &&
-        isBefore(new Date(game.endsOn), new Date()),
-    });
     return (
       !game.activated &&
       !game.jackpotDraw &&

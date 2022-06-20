@@ -72,7 +72,6 @@ export class GameResource extends ApiResource<Game> {
 
   async getCsvForDraw(game: Game): Promise<any> {
     const response = await this.http.get(`${this.basePath}/${game.id}/csv`);
-    console.log("getCsvForDraw", { response });
     return response.data;
   }
 }
