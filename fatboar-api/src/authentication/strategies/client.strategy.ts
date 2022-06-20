@@ -16,7 +16,6 @@ export class ClientStrategy extends PassportStrategy(Strategy, "client") {
   async validate(payload: any): Promise<any> {
     try {
       const { sub } = payload;
-      console.log({payload, sub});
 
       const user = await this.usersService.findOne(sub, {
         relations: ["role"],
