@@ -27,7 +27,7 @@ export class TokenTypesController {
     type: TokenType,
   })
   async create(@Body() createTokenTypeDto: CreateTokenTypeDto) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.tokenTypesService.create(createTokenTypeDto, manager);
     });
   }

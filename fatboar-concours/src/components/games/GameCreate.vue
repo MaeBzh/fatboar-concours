@@ -146,7 +146,7 @@
               label="Activer ce jeu immédiatement (il ne doit y avoir aucun jeu en cours actuellement)"
               type="checkbox"
               outlined
-              :readonly="!canActivateImmediately"
+              :disabled="!!currentGame"
             ></v-checkbox>
           </validation-provider>
 
@@ -216,7 +216,6 @@ export default class GameCreate extends Vue {
   };
 
   public dates: string[] = [];
-  public currentGame: Game | null = null;
   public selectedGameGifts: GameGift[] = [];
   public totalPercentage = 0;
   public verifiedPercentage = false;
@@ -230,8 +229,8 @@ export default class GameCreate extends Vue {
   }
 
   // activable only if a game is already activated and not finished
-  get canActivateImmediately() {
-    return !this.currentGame;
+  get currentGame() {
+    return this.$store.getters["gameStore/getCurrentGame"];
   }
 
   public getFullGifts(giftIds: number[]): Gift[] {
@@ -315,7 +314,7 @@ export default class GameCreate extends Vue {
   }
 
   async mounted() {
-    this.currentGame = this.$store.getters["gameStore/currentGame"];
+    await this.$store.dispatch("gameStore/fetchCurrentGame");
     await this.$store.dispatch("giftStore/fetchAll");
     this.selectedGameGifts.push({ gift: this.gifts[0], winPercentage: 0 });
   }

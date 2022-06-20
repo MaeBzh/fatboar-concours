@@ -28,7 +28,7 @@ export class EmailingListService {
   ): Promise<EmailingList> {
     const users: User[] = await Promise.all(
       createEmailingListDto.userIds.map(async (id) => {
-        return await this.usersService.findOne(id);
+        return this.usersService.findOne(id);
       })
     );
     const repo = manager?.getRepository(EmailingList) || this.emailingRepo;

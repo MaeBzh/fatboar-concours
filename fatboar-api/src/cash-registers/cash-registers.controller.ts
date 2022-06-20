@@ -38,7 +38,7 @@ export class CashRegistersController {
   async create(
     @Body() createCashRegisterDto: CreateCashRegisterDto
   ): Promise<CashRegister> {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.cashRegistersService.create(createCashRegisterDto, manager);
     });
   }
@@ -49,7 +49,7 @@ export class CashRegistersController {
    */
   @Get()
   async findAll(): Promise<CashRegister[]> {
-    return await this.cashRegistersService.findAll({
+    return this.cashRegistersService.findAll({
       relations: ["restaurant"],
     });
   }
@@ -61,7 +61,7 @@ export class CashRegistersController {
    */
   @Get(":id")
   async findOne(@Param("id") id: number): Promise<CashRegister> {
-    return await this.cashRegistersService.findOne(id, {
+    return this.cashRegistersService.findOne(id, {
       relations: ["restaurant"],
     });
   }
@@ -101,7 +101,7 @@ export class CashRegistersController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number): Promise<DeleteResult> {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.cashRegistersService.remove(id, manager);
     });
   }

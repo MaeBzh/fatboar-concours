@@ -30,19 +30,19 @@ export class EmailingListController {
     type: EmailingList,
   })
   async create(@Body() createEmailingListDto: CreateEmailingListDto) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.emailingListService.create(createEmailingListDto, manager);
     });
   }
 
   @Get()
   async findAll() {
-    return await this.emailingListService.findAll({ relations: ["users"] });
+    return this.emailingListService.findAll({ relations: ["users"] });
   }
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    return await this.emailingListService.findOne(id, { relations: ["users"] });
+    return this.emailingListService.findOne(id, { relations: ["users"] });
   }
 
   @Put(":id")
@@ -54,7 +54,7 @@ export class EmailingListController {
     @Param("id") id: number,
     @Body() updateEmailingListDto: UpdateEmailingListDto
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.emailingListService.update(
         id,
         updateEmailingListDto,
@@ -69,7 +69,7 @@ export class EmailingListController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.emailingListService.remove(id, manager);
     });
   }

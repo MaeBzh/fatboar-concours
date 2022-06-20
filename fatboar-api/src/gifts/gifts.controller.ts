@@ -44,7 +44,7 @@ export class GiftsController {
     @UploadedFile() photo: Express.Multer.File,
     @Body() createdGiftDto: Omit<CreateGiftDto, "photo">
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       createdGiftDto.isJackpot = [true, "true", 1].includes(
         createdGiftDto.isJackpot
       );
@@ -61,12 +61,12 @@ export class GiftsController {
 
   @Get()
   async findAll() {
-    return await this.giftsService.findAll();
+    return this.giftsService.findAll();
   }
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    return await this.giftsService.findOne(id);
+    return this.giftsService.findOne(id);
   }
 
   @Put(":id")
@@ -86,7 +86,7 @@ export class GiftsController {
     @Body() updateGiftDto: Omit<UpdateGiftDto, "photo">,
     @UploadedFile() photo?: Express.Multer.File
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       const data = photo
         ? {
             ...updateGiftDto,
@@ -105,7 +105,7 @@ export class GiftsController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.giftsService.remove(id, manager);
     });
   }

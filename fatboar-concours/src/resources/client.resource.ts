@@ -18,7 +18,6 @@ export class ClientResource extends ApiResource<Client> {
     rgpdConsent,
     ...item
   }: Client): Promise<void> {
-    console.log("update", { item });
     await super.update(item as Client);
   }
 

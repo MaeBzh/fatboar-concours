@@ -30,19 +30,19 @@ export class RestaurantsController {
     type: Restaurant,
   })
   async create(@Body() createRestaurantDto: CreateRestaurantDto) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.restaurantsService.create(createRestaurantDto, manager);
     });
   }
 
   @Get()
   async findAll() {
-    return await this.restaurantsService.findAll();
+    return this.restaurantsService.findAll();
   }
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
-    return await this.restaurantsService.findOne(id);
+    return this.restaurantsService.findOne(id);
   }
 
   @Put(":id")
@@ -54,7 +54,7 @@ export class RestaurantsController {
     @Param("id") id: number,
     @Body() updateRestaurantDto: UpdateRestaurantDto
   ) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.restaurantsService.update(id, updateRestaurantDto, manager);
     });
   }
@@ -65,7 +65,7 @@ export class RestaurantsController {
     type: DeleteResult,
   })
   async remove(@Param("id") id: number) {
-    return await this.connection.transaction(async (manager: EntityManager) => {
+    return this.connection.transaction(async (manager: EntityManager) => {
       return this.restaurantsService.remove(id, manager);
     });
   }
