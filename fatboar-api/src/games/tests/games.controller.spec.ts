@@ -8,6 +8,7 @@ const gameService: any = {
   create: async () => {},
   update: async () => {},
   remove: async () => {},
+  createTickets: () => {},
 };
 
 const newGame = {
