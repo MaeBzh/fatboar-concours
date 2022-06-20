@@ -61,28 +61,28 @@ export class GamesService {
   }
 
   async createTickets(game: Game, tickets: number): Promise<void> {
-    const chunk: WinningTicket[] = [];
     const chunkSize = +(process.env.CREATE_TICKET_BULK_SIZE ?? 10000);
 
     const gameGifts = await this.gameGiftService.findByGame(game.id);
 
     gameGifts.map(async ({ winPercentage, gift }) => {
       const nbTicketsToCreate = +tickets * (+winPercentage / 100);
+      const chunk: WinningTicket[] = [];
 
       for (let i = 0; i < nbTicketsToCreate; i++) {
-        const ticketNumber = +`${Date.now()}${i}`;
-        const winningTicket = { number: ticketNumber, game, gift };
+        const number = +`${Date.now()}${i}`;
+        const winningTicket = { number, game, gift };
         chunk.push(winningTicket as WinningTicket);
 
         if (chunk.length >= chunkSize) {
           await this.ticketsService.bulk(chunk.splice(0, chunkSize));
         }
       }
-    });
 
-    if (chunk.length) {
-      await this.ticketsService.bulk(chunk.splice(0, chunk.length));
-    }
+      if (chunk.length) {
+        await this.ticketsService.bulk(chunk);
+      }
+    });
   }
 
   /**
