@@ -116,14 +116,13 @@ export class WinningTicketsService {
 
   async findRandomFreeTicket(game: Game): Promise<WinningTicket> {
     const result = await this.ticketsRepo
-      .createQueryBuilder()
-      .select("*")
-      .from(WinningTicket, "wt")
-      .where({ gameId: game.id })
-      .andWhere("wt.cashRegisterId is null")
-      .orderBy("RAND()")
-      .limit(1)
-      .execute();
+    .createQueryBuilder()
+    .select('id as id, number as number')
+    .where({ gameId: game.id })
+    .andWhere("cashRegisterId is null")
+    .orderBy("RAND()")
+    .limit(1)
+    .execute();
 
     return result.length ? result[0] : undefined;
   }
@@ -146,11 +145,9 @@ export class WinningTicketsService {
     id: number,
     data: Partial<WinningTicket>,
     manager?: EntityManager
-  ): Promise<WinningTicket> {
+  ): Promise<UpdateResult> {
     const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
-
-    await repo.update(id, data);
-    return repo.findOneOrFail(id, { relations: ["gift", "user"] });
+    return repo.update(id, data);
   }
 
   remove(id: number, manager?: EntityManager): Promise<DeleteResult> {
