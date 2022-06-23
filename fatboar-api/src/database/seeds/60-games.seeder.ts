@@ -90,7 +90,9 @@ export default class CreateGames implements Seeder {
             game,
             gift: createdGameGift.gift,
             cashRegister: cashRegister ?? null,
-            assignedOn: cashRegister ? "2022-06-02 00:00:00.000" : null,
+            assignedOn: cashRegister
+              ? `2022-06-${Math.floor(Math.random() * 31)} 00:00:00.000`
+              : null,
             user: user ?? null,
             withdrawnOn: user ? "2022-06-05 00:00:00.000" : null,
           }).make()

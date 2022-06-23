@@ -34,6 +34,7 @@ export class WinningTicketsCashRegisterController {
     @Body() amount: number,
     @Request() req: RequestWithCashRegister
   ) {
+    console.log('1');
     const currentGame = await this.gamesService.findCurrentGame();
     if (currentGame) {
       const ticket = await this.winningTicketsService.findRandomFreeTicket(
@@ -41,11 +42,12 @@ export class WinningTicketsCashRegisterController {
       );
       if (ticket) {
         return this.connection.transaction(async (manager: EntityManager) => {
-          return this.winningTicketsService.update(
+          await this.winningTicketsService.update(
             ticket.id,
             { cashRegister: req.cashRegister, amount, assignedOn: new Date() },
             manager
           );
+          return ticket.number;
         });
       }
     }
