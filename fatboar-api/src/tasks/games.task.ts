@@ -7,7 +7,7 @@ import { GamesService } from "../games/games.service";
 export class GameTask {
   constructor(private gameService: GamesService) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_5PM)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleCron() {
     this.endGame().then(() => this.startGame());
   }
@@ -16,10 +16,7 @@ export class GameTask {
     const currentGame = await this.gameService.findCurrentGame();
     if (currentGame) {
       if (isYesterday(new Date(currentGame.endsOn))) {
-        this.gameService.update(currentGame.id, {
-          ...currentGame,
-          activated: false,
-        });
+        this.gameService.updateGameActivation(currentGame.id, false);
       }
     }
   }
@@ -28,10 +25,13 @@ export class GameTask {
     const currentGame = await this.gameService.findCurrentGame();
     if (!currentGame) {
       const games = await this.gameService.findAll();
-      games.forEach((game) => {
+      games.every((game) => {
         if (isToday(new Date(game.startsOn))) {
-          this.gameService.update(game.id, { ...game, activated: true });
+          this.gameService.updateGameActivation(game.id, true);
+          return false; // break loop
         }
+
+        return true; // continue loop
       });
     }
   }

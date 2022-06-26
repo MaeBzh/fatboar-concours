@@ -115,6 +115,23 @@ export class GamesService {
     });
   }
 
+  /**
+   *
+   * @param id
+   * @param activated
+   * @param manager
+   * @returns
+   */
+   async updateGameActivation(
+    id: number,
+    activated: boolean,
+    manager?: EntityManager
+  ): Promise<UpdateResult> {
+    const repo = manager?.getRepository(Game) || this.gameRepo;    
+
+    return repo.update(id, {activated}); 
+  }
+
   async getStats(
     id: number
   ): Promise<{ used: number; unused: number; unassigned: number }> {
