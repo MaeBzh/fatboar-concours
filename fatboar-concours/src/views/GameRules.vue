@@ -1,5 +1,13 @@
 <template>
-    <embed :src="iframeSrcUrl" width="100%" :height="iframeHeight" />
+  <div>
+    <p class="text-center">
+        Un problème d'affichage ?
+        <v-btn text :href="gameRulesPdfUrl" download>
+          Télécharger le réglement au format PDF
+        </v-btn>
+    </p>
+    <iframe id="pdfViewer" :src="iframePdfUrl" />
+  </div>
 </template>
 <script lang="ts">
 import FileDownloadMixin from "@/mixins/file-download.mixin";
@@ -16,26 +24,30 @@ import { Component } from "vue-property-decorator";
 })
 export default class GameRules extends FileDownloadMixin {
   get gameRulesPdfUrl() {
-    
-    return this.currentGame ? this.getFileUrl(this.currentGame.gameRules) : '#';
+    return this.currentGame ? this.getFileUrl(this.currentGame.gameRules) : "#";
   }
 
-  get iframeSrcUrl() {
+  get iframePdfUrl() {
     return `https://docs.google.com/viewer?url=${this.gameRulesPdfUrl}&embedded=true`;
-  }
-
-  get iframeHeight() {
-    const element = document.getElementsByClassName("v-main__wrap")[0] as Element & {offsetHeight: number};
-
-    return `${element.offsetHeight}px`;
   }
 
   get currentGame() {
     return this.$store.getters["gameStore/getCurrentGame"];
   }
 
-  created() {
-    this.$store.dispatch("gameStore/fetchCurrentGame");
+  async mounted() {
+    await this.$store.dispatch("gameStore/fetchCurrentGame");
+    if (!this.currentGame) {
+      this.$router.push({ name: "home" });
+    }
   }
 }
 </script>
+
+<style scoped>
+#pdfViewer {
+  min-height: 80vh;
+  width: 100%;
+  border: none;
+}
+</style>

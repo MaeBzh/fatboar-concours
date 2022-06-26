@@ -19,36 +19,44 @@ const routes: RouteConfig[] = [
   {
     path: "/a-propos",
     name: "about",
+    meta: { footer: "A propos" },
     component: () => import("@/views/About.vue"),
   },
   {
     path: "/contact",
     name: "contact",
+    meta: { footer: "Contact"},
     component: () => import("@/views/Contact.vue"),
   },
   {
     path: "/mentions-legales",
     name: "legal",
+    meta: { footer: "Mentions légales"},
     component: () => import("@/views/Legal.vue"),
   },
   {
     path: "/donnees-personnelles",
     name: "personalData",
+    meta: { footer: "Données personnelles"},
     component: () => import("@/views/PersonalData.vue"),
   },
   {
     path: "/cgu",
     name: "tos",
+    meta: { footer: "Conditions d'utilisation"},
     component: () => import("@/views/CGU.vue"),
   },
   {
     path: "/reglement-du-jeu-concours",
     name: "gameRules",
+    meta: { onlyIfCurrentGame: true, footer: "Règlement du jeu" },
     component: () => import("@/views/GameRules.vue"),
+  
   },
   {
     path: "/faq",
     name: "faq",
+    meta: { footer: "FAQ"},
     component: () => import("@/views/FAQ.vue"),
   },
   // guarded routes
