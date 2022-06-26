@@ -179,8 +179,11 @@ export default class EmailingListCreate extends Vue {
     let clients: Client[] = this.clients;
 
     if (this.filters.departments.length) {
-      clients = this.clients.filter(({ zipcode }) => {
-        return this.filters.departments.includes(zipcode.substring(0, 2));
+      clients = this.clients.filter((client) => {
+        if(client.zipcode) {
+          return this.filters.departments.includes(client.zipcode.substring(0, 2));
+        }
+      
       });
     }
 

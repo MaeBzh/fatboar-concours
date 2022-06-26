@@ -70,9 +70,11 @@ export class WinningTicketsService {
 
   findOne(
     id: number,
-    options?: FindOneOptions<WinningTicket>
+    options?: FindOneOptions<WinningTicket>,
+    manager?: EntityManager
   ): Promise<WinningTicket> {
-    return this.ticketsRepo.findOneOrFail(id, options);
+    const repo = manager?.getRepository(WinningTicket) || this.ticketsRepo;
+    return repo.findOneOrFail(id, options);
   }
 
   async verifyTicket(
@@ -116,13 +118,13 @@ export class WinningTicketsService {
 
   async findRandomFreeTicket(game: Game): Promise<WinningTicket> {
     const result = await this.ticketsRepo
-    .createQueryBuilder()
-    .select('id as id, number as number')
-    .where({ gameId: game.id })
-    .andWhere("cashRegisterId is null")
-    .orderBy("RAND()")
-    .limit(1)
-    .execute();
+      .createQueryBuilder()
+      .select("id as id, number as number")
+      .where({ gameId: game.id })
+      .andWhere("cashRegisterId is null")
+      .orderBy("RAND()")
+      .limit(1)
+      .execute();
 
     return result.length ? result[0] : undefined;
   }

@@ -5,7 +5,6 @@ import { Connection } from "typeorm";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { CashRegistersModule } from "./cash-registers/cash-registers.module";
 import { DatabaseModule } from "./database/database.module";
-import { EmailingListUserModule } from "./emailing-list-user/emailing-list-user.module";
 import { EmailingListModule } from "./emailing-list/emailing-list.module";
 import { FileDownloaderModule } from "./file-downloader/file-downloader.module";
 import { GameGiftModule } from "./game-gift/game-gift.module";
@@ -33,7 +32,6 @@ import { WinningTicketsModule } from "./winning-tickets/winning-tickets.module";
     GamesModule,
     GameGiftModule,
     WinningTicketsModule,
-    EmailingListUserModule,
     AuthenticationModule,
     TokensModule,
     TokenTypesModule,

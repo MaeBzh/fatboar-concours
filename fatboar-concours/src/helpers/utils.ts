@@ -13,7 +13,7 @@ export const OuiNon = (value) => {
 export const convertToCSV = (objArray, headerList): string => {
   const array = typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
   let str = "";
-  let row = "S.No,";
+  let row = "No,";
   // tslint:disable-next-line: forin
   for (const index in headerList) {
     row += headerList[index] + ",";
