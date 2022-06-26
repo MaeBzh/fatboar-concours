@@ -15,14 +15,11 @@ export class EmailingList {
   @Column()
   name: string;
 
-  @ManyToMany(() => User, (user) => user.emailingLists)
+  @ManyToMany(() => User, { cascade: true })
   @JoinTable({
     name: "emailingListUser",
-    joinColumn: { name: "userId", referencedColumnName: "id" },
-    inverseJoinColumn: {
-      name: "emailingListId",
-      referencedColumnName: "id",
-    },
+    joinColumn: { name: "emailingListId", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "userId", referencedColumnName: "id" },
   })
   users: User[];
 

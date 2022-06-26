@@ -5,7 +5,6 @@ import { DeleteResult, EntityNotFoundError, QueryFailedError, Repository } from 
 import { CreateEmailingListDto } from '../dto/create-emailing-list.dto';
 import { UpdateEmailingListDto } from '../dto/update-emailing-list.dto';
 import { EmailingListService } from '../emailing-list.service';
-import { EmailingList } from '../entities/emailing-list.entity';
 import { EmailingListRepositoryMock } from './emailing-list.repository.mock';
 
 const database = {
@@ -48,7 +47,7 @@ describe('EmailingListsService', () => {
     databaseClone = { ...database };
     repo = new EmailingListRepositoryMock(databaseClone);   
     usersService = new UsersService(new UserRepositoryMock(databaseClone), roleService);
-    emailingListService = new EmailingListService(repo, usersService);
+    emailingListService = new EmailingListService(repo);
   });
 
   it('should be defined', () => {

@@ -61,17 +61,6 @@ export class User {
   })
   winningTickets?: WinningTicket[];
 
-  @ManyToMany(() => EmailingList, (emailingList) => emailingList.users)
-  @JoinTable({
-    name: "emailingListUser",
-    joinColumn: {
-      name: "emailingListId",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: { name: "userId", referencedColumnName: "id" },
-  })
-  emailingLists?: EmailingList[];
-
   @OneToMany(() => Token, (token) => token.user)
   tokens?: Token[];
 

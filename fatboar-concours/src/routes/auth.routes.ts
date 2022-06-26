@@ -5,6 +5,12 @@ export default [
     component: () => import("@/components/auth/Login.vue"),
   },
   {
+    path: "/login",
+    redirect: {
+      name: "login",
+    },
+  },
+  {
     path: "/inscription",
     name: "register",
     component: () => import("@/components/auth/Register.vue"),
