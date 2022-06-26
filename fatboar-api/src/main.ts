@@ -10,6 +10,10 @@ import * as fs from "fs";
 import helmet from "helmet";
 import { AllExceptionFilter } from "./all-exceptions.filter";
 import { AppModule } from "./app.module";
+import * as fs from "fs";
+import helmet from "helmet";
+import { AllExceptionFilter } from "./all-exceptions.filter";
+import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const privateKey = fs.readFileSync(
