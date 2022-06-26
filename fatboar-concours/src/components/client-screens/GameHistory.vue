@@ -47,7 +47,9 @@ export default class GameHistory extends FileDownloadMixin {
   public ouiNon = OuiNon;
 
   get tickets() {
-    return this.$store.getters["ticketStore/getAll"];
+    const tickets = this.$store.getters["ticketStore/getAll"];
+    const sortedTickets = tickets.sort((objA, objB) => new Date(objB.assignedOn).getTime() -new Date(objA.assignedOn).getTime());
+    return sortedTickets;
   }
 
   getGiftImage(filename: string): string {

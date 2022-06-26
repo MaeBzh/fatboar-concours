@@ -7,7 +7,7 @@ import {
   Post,
   Put,
   Request,
-  UseGuards
+  UseGuards,
 } from "@nestjs/common";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
@@ -63,7 +63,6 @@ export class WinningTicketsController {
     return this.winningTicketsService.findAllTicketsForCurrentGame(id);
   }
 
-  
   @Get("/verify-ticket/:number/:amount")
   @UseGuards(ThrottlerGuard)
   @Throttle(5, 300)
@@ -73,8 +72,8 @@ export class WinningTicketsController {
     @Request() req: RequestWithUser
   ): Promise<WinningTicket> {
     return this.winningTicketsService.verifyTicket(
-      number, 
-      amount, 
+      number,
+      amount,
       req.user.role.name === "client" ? req.user : undefined
     );
   }
@@ -87,17 +86,18 @@ export class WinningTicketsController {
   @UseGuards(ClientGuard)
   async updateUser(
     @Param("id") id: number,
-    @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,
+    @Body() { number, amount }: Pick<WinningTicket, "number" | "amount">,
     @Request() req: RequestWithUser
   ) {
     return this.connection.transaction(async (manager: EntityManager) => {
       // verify token before update by security
-      await this.winningTicketsService.verifyTicket(number, amount, req.user, id)
-      return this.winningTicketsService.update(
-        id,
-        {user: req.user},
-        manager
+      await this.winningTicketsService.verifyTicket(
+        number,
+        amount,
+        req.user,
+        id
       );
+      return this.winningTicketsService.update(id, { user: req.user }, manager);
     });
   }
 
@@ -109,17 +109,24 @@ export class WinningTicketsController {
   @UseGuards(EmployeeGuard)
   async updateWithdrawn(
     @Param("id") id: number,
-    @Body() {number, amount}: Pick<WinningTicket, "number" | "amount">,
+    @Body() { number, amount }: Pick<WinningTicket, "number" | "amount">
   ) {
     return this.connection.transaction(async (manager: EntityManager) => {
       // verify token before update by security
-      await this.winningTicketsService.verifyTicket(number, amount, undefined, id);
+      await this.winningTicketsService.verifyTicket(
+        number,
+        amount,
+        undefined,
+        id
+      );
 
-      return this.winningTicketsService.update(
+      await this.winningTicketsService.update(
         id,
-        {withdrawnOn: new Date()},
+        { withdrawnOn: new Date() },
         manager
       );
+
+      return this.winningTicketsService.findOne(id, { relations: ["gift", "user"] }, manager);
     });
   }
 
