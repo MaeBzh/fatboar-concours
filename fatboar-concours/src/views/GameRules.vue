@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <iframe :src="gameRulesPdf" style="width: 100%; height: 300px"> </iframe>
-  </div>
+    <embed :src="iframeSrcUrl" width="100%" :height="iframeHeight" />
 </template>
 <script lang="ts">
 import FileDownloadMixin from "@/mixins/file-download.mixin";
-import { Game } from "@/models";
 import { Component } from "vue-property-decorator";
 
 @Component({
@@ -18,15 +15,27 @@ import { Component } from "vue-property-decorator";
   },
 })
 export default class GameRules extends FileDownloadMixin {
-  public currentGame!: Game;
+  get gameRulesPdfUrl() {
+    
+    return this.currentGame ? this.getFileUrl(this.currentGame.gameRules) : '#';
+  }
 
-  get gameRulesPdf() {
-    return this.getFileUrl(this.currentGame.gameRules);
+  get iframeSrcUrl() {
+    return `https://docs.google.com/viewer?url=${this.gameRulesPdfUrl}&embedded=true`;
+  }
+
+  get iframeHeight() {
+    const element = document.getElementsByClassName("v-main__wrap")[0] as Element & {offsetHeight: number};
+
+    return `${element.offsetHeight}px`;
+  }
+
+  get currentGame() {
+    return this.$store.getters["gameStore/getCurrentGame"];
   }
 
   created() {
     this.$store.dispatch("gameStore/fetchCurrentGame");
-    this.currentGame = this.$store.getters["gameStore/getCurrentGame"];
   }
 }
 </script>
