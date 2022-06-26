@@ -1,13 +1,15 @@
 import * as dotenv from "dotenv";
 import { resolve } from "path";
 dotenv.config({ path: resolve(__dirname, "../.env") });
+
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as compression from "compression";
 import * as fs from "fs";
+import helmet from "helmet";
 import { AllExceptionFilter } from "./all-exceptions.filter";
 import { AppModule } from "./app.module";
-import * as compression from 'compression';
 
 async function bootstrap() {
   const privateKey = fs.readFileSync(
@@ -23,6 +25,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { httpsOptions });
   app.enableCors();
   app.setGlobalPrefix("api");
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
 
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));

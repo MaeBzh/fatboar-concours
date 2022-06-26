@@ -30,7 +30,7 @@ export class GameTask {
       const games = await this.gameService.findAll();
       games.forEach((game) => {
         if (isToday(new Date(game.startsOn))) {
-          this.gameService.update(currentGame.id, { ...game, activated: true });
+          this.gameService.update(game.id, { ...game, activated: true });
         }
       });
     }
