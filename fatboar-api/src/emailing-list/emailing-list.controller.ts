@@ -6,11 +6,11 @@ import {
   Param,
   Post,
   Put,
-  UseGuards
+  UseGuards,
 } from "@nestjs/common";
 import { ApiCreatedResponse } from "@nestjs/swagger";
 import { Connection, DeleteResult, EntityManager, UpdateResult } from "typeorm";
-import { AdminGuard } from './../authentication/guards/admin-authentication.guard';
+import { AdminGuard } from "./../authentication/guards/admin-authentication.guard";
 import { CreateEmailingListDto } from "./dto/create-emailing-list.dto";
 import { UpdateEmailingListDto } from "./dto/update-emailing-list.dto";
 import { EmailingListService } from "./emailing-list.service";
@@ -31,7 +31,14 @@ export class EmailingListController {
   })
   async create(@Body() createEmailingListDto: CreateEmailingListDto) {
     return this.connection.transaction(async (manager: EntityManager) => {
-      return this.emailingListService.create(createEmailingListDto, manager);
+      const emailingList = await this.emailingListService.create(
+        createEmailingListDto,
+        manager
+      );
+
+      return this.emailingListService.findOne(emailingList.id, {
+        relations: ["users"],
+      }, manager);
     });
   }
 

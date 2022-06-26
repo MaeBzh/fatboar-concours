@@ -46,7 +46,7 @@ describe("EmailingListController", () => {
 
   describe("create", () => {
     it("should be called one time", async () => {
-      const emailingListService: any = { create: async () => {} };
+      const emailingListService: any = { create: async () => ({id: 1}), findOne: async (id) => ({id}) };
       const emailingListController = new EmailingListController(
         emailingListService,
         connection

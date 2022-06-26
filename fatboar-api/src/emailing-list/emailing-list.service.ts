@@ -1,7 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../users/entities/user.entity";
-import { UsersService } from "../users/users.service";
 import {
   DeleteResult,
   EntityManager,
@@ -18,33 +16,34 @@ import { EmailingList } from "./entities/emailing-list.entity";
 export class EmailingListService {
   constructor(
     @InjectRepository(EmailingList)
-    private emailingRepo: Repository<EmailingList>,
-    private usersService: UsersService
+    private emailingRepo: Repository<EmailingList>
   ) {}
 
   async create(
     createEmailingListDto: CreateEmailingListDto,
     manager?: EntityManager
   ): Promise<EmailingList> {
-    const users: User[] = await Promise.all(
-      createEmailingListDto.userIds.map(async (id) => {
-        return this.usersService.findOne(id);
-      })
-    );
-    const repo = manager?.getRepository(EmailingList) || this.emailingRepo;
-    let emailingList = new EmailingList();
-    emailingList.name = createEmailingListDto.name;
-    emailingList.users = users;
-    emailingList.filters = createEmailingListDto.filters;
-    return repo.save(emailingList);
+    const emailingListRepo =
+      manager?.getRepository(EmailingList) || this.emailingRepo;
+
+    const { name, filters, userIds } = createEmailingListDto;
+
+    return emailingListRepo.save({
+      name,
+      filters,
+      users: userIds.map((id) => ({ id })),
+    });
   }
 
   findAll(options?: FindManyOptions): Promise<EmailingList[]> {
     return this.emailingRepo.find(options);
   }
 
-  findOne(id: number, options?: FindOneOptions): Promise<EmailingList> {
-    return this.emailingRepo.findOneOrFail(id, options);
+  findOne(id: number, options?: FindOneOptions, manager?: EntityManager): Promise<EmailingList> {
+    const emailingListRepo =
+      manager?.getRepository(EmailingList) || this.emailingRepo;
+    
+    return emailingListRepo.findOneOrFail(id, options);
   }
 
   update(

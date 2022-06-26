@@ -86,15 +86,15 @@ export default class CreateGames implements Seeder {
 
         chunk.push(
           await factory(WinningTicket)({
-            number: +`${Date.now()}${i}`,
+            number: +`${i}${Math.floor(Date.now() + Math.random() * 10)}`,
             game,
-            gift: createdGameGift.gift,
+            gift: createdGameGift.gift,            
             cashRegister: cashRegister ?? null,
             assignedOn: cashRegister
               ? `2022-06-${Math.floor(Math.random() * 31)} 00:00:00.000`
               : null,
             user: user ?? null,
-            withdrawnOn: user ? "2022-06-05 00:00:00.000" : null,
+            withdrawnOn: user ? `2022-06-${Math.floor(Math.random() * 31)} 00:00:00.000` : null,
           }).make()
         );
 
