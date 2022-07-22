@@ -8,7 +8,7 @@ pipeline {
             steps {
                 git branch: 'master',
                     credentialsId: '809ce604-7c6f-4a65-9b48-348ea079073d',
-                    url: 'https://github.com/MaeBzh/fatboar.git'
+                    url: 'https://github.com/MaeBzh/fatboar-concours.git'
                 sh 'cd ../ && ls'
             }
         }
