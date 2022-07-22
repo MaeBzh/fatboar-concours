@@ -14,9 +14,6 @@ jobs:
     steps:
       - name: Checkout  
         uses: actions/checkout@v3
-
-      - name: Test
-        run: cd fatboar-api && npm install && npm run test
       - name: Trigger Jenkins Job for testing
         uses: appleboy/jenkins-action@master
         with:
@@ -47,5 +44,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            curl -H "Accept:application/vnd.github.v3+json" https://api.github.com/repos/MaeBzh/fatboar/releases/assets/${{ steps.release_asset.outputs.id }}
+            curl -H "Accept:application/vnd.github.v3+json" https://api.github.com/repos/MaeBzh/fatboar-concours/releases/assets/${{ steps.release_asset.outputs.id }}
             ls
