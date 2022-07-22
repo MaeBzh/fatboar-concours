@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, preprod, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, preprod, develop ]
 
   workflow_dispatch:
 
@@ -12,40 +12,74 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout  
-        uses: actions/checkout@v3
-
-      - name: Test
-        run: cd fatboar-api && npm install && npm run test
-    # - name: Trigger Jenkins Job for testing
-    #   uses: appleboy/jenkins-action@master
-    #   with:
-    #     url: ${{ secrets.JENKINS_URL }}
-    #     user: ${{ secrets.JENKINS_USER }}
-    #     token: ${{ secrets.JENKINS_TOKEN }}
-    #     job: "fatboar-api" 
-  # release:
-  #   runs-on: ubuntu-latest
-  #   needs: tests
-  #   if: github.ref == 'refs/heads/main' 
-  #   steps:
-  #     - name: Create a release
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       uses: rymndhng/release-on-push-action@master
-  #       with:
-  #         bump_version_scheme: minor
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: release
-  #   if: github.ref == 'refs/heads/master'    
-  #   steps:
-  #     - name: Deploy on server
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         username: ${{ secrets.SSH_USER }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         script: |
-  #           curl -H "Accept:application/vnd.github.v3+json" https://api.github.com/repos/MaeBzh/fatboar/releases/assets/${{ steps.release_asset.outputs.id }}
-  #           ls
+      - name: triggerjenkinsjob
+        uses: mickeygoussetorg/trigger-jenkins-job@v1
+        with:
+          jenkins-server:  "${{ secrets.JENKINS_URL }}" # URL of the jenkins server. ex: http://myjenkins.acme.com:8080
+          jenkins-job: "fatboar-concours" # The name of the jenkins job to run
+          jenkins-username: "${{ secrets.JENKINS_USER }}" # user name for accessing jenkins
+          jenkins-pat: "${{ secrets.JENKINS_TOKEN }}" # personal Access token for accessing Jenkins
+          poll-time: 10 # how often (seconds) to poll the jenkins server for results
+          timeout-value: 600 # How long (seconds) to poll before timing out the action
+          verbose: true # true/false - turns on extra logging
+  release:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
+    steps:
+      - name: Create a release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: minor
+          tag_prefix: ""
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/prod.key
+          chmod 600 ~/.ssh/prod.key
+          cat >>~/.ssh/config <<END
+          Host prod
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/prod.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.PROD_SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+      - name: stop, update and restart api + front
+        run: ssh prod 'cd application && docker-compose stop api front && git fetch && git pull && docker-compose up -d api front'   
+  deploy-preprod:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: ${{ github.ref == 'refs/heads/preprod' && contains(join(needs.tests.result, ','), 'success') }}
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/preprod.key
+          chmod 600 ~/.ssh/preprod.key
+          cat >>~/.ssh/config <<END
+          Host preprod
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/preprod.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.PREPROD_SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.PREPROD_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.PREPROD_SSH_HOST }}
+          SSH_PORT: ${{ secrets.PREPROD_SSH_PORT }}
+      - name: stop, update and restart api + front
+        run: ssh preprod 'cd application && docker-compose stop api front && git fetch && git pull && docker-compose up -d api front'

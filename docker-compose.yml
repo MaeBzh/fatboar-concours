@@ -3,6 +3,7 @@ version: '3.8'
 services:  
     mariadb:
         image: mariadb:10.6.5
+        container_name: fatboar-db
         restart: always        
         env_file:
             - .env.docker
@@ -51,7 +52,7 @@ services:
         working_dir: /usr/src/app/fatboar-concours
         container_name: fatboar-concours
         ports:
-            - "8081:8081"
+            - "443:8080"
         volumes:
             - ./fatboar-concours:/usr/src/app/fatboar-concours
             - ./server.key:/usr/src/app/server.key
