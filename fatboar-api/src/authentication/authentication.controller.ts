@@ -24,6 +24,7 @@ import { RequestWithUser } from "./interfaces/request-with-user.interface";
 @Controller("authentication")
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}  
+  
 
   @Post("register")
   @ApiCreatedResponse({
