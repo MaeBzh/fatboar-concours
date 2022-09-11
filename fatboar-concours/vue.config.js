@@ -7,7 +7,7 @@ dotenv.config({ path: resolve(__dirname, ".env") });
 module.exports = {
   devServer: {
     compress: true,
-    port: 8081,
+    port: 8080,
     https: {
       key: fs.readFileSync("../server.key"),
       cert: fs.readFileSync("../server.cert"),

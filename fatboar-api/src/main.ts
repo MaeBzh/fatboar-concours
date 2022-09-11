@@ -12,17 +12,22 @@ import { AllExceptionFilter } from "./all-exceptions.filter";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
-  const privateKey = fs.readFileSync(
-    resolve(__dirname, "../../server.key"),
-    "utf8"
-  );
-  const certificate = fs.readFileSync(
-    resolve(__dirname, "../../server.cert"),
-    "utf8"
-  );
-  const httpsOptions = { key: privateKey, cert: certificate };
+  const isProduction = process.env.NODE_ENV === 'production';
+  let options = {};
+  
+  if(isProduction) {
+    const privateKey = fs.readFileSync(
+      resolve(__dirname, "../../server.key"),
+      "utf8"
+    );
+    const certificate = fs.readFileSync(
+      resolve(__dirname, "../../server.cert"),
+      "utf8"
+    );
+    options = { httpsOptions: { key: privateKey, cert: certificate } };
+  }
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, options);
   app.enableCors();
   app.setGlobalPrefix("api");
   app.use(
