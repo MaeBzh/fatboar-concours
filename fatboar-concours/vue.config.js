@@ -4,14 +4,10 @@ const dotenv = require("dotenv");
 const resolve = require("path").resolve;
 dotenv.config({ path: resolve(__dirname, ".env") });
 
-module.exports = {
+ var config = {
   devServer: {
     compress: true,
     port: 8080,
-    https: {
-      key: fs.readFileSync("../server.key"),
-      cert: fs.readFileSync("../server.cert"),
-    },
   },
   configureWebpack: {
     plugins: [
@@ -28,3 +24,18 @@ module.exports = {
     ],
   },
 };
+
+if(process.env.NODE_ENV === 'production') {
+  config = {
+    ...config,
+    devServer: {
+      ...config.devServer,
+      https: {
+        key: fs.readFileSync("../server.key"),
+        cert: fs.readFileSync("../server.cert"),
+      },
+    }
+  };
+}
+
+module.exports = config;
