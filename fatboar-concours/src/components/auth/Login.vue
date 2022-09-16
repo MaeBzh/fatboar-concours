@@ -111,7 +111,7 @@ export default class Login extends RedirectIfAuthenticatedMixin {
           );
         }
 
-        await this.$store.dispatch("authStore/login", this.login);
+        await this.$store.dispatch("authStore/logn", this.login);
 
         this.redirectIfAuthenticated();
       } catch (error) {
