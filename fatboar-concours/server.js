@@ -47,6 +47,6 @@ app.all("*", (_req, res) => {
 });
 
 var server = https.createServer(httpsOptions, app);
-server.listen(8081, function () {
-  console.log("Listening on port 8081");
+server.listen(8080, function () {
+  console.log("Listening on port 8080");
 });

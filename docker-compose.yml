@@ -8,7 +8,7 @@ services:
         env_file:
             - .env.docker
         ports:
-            - "3306:3306"
+            - 3306
         volumes:
             - mariadb:/var/lib/mysql
         networks: 
@@ -45,32 +45,38 @@ services:
             - mariadb
         command: sh -c "npm install
          && npm install -g @nestjs/cli ts-node \
-         && npm run prod"
+         && npm run ${API_NPM_RUN}"
 
     front:
         image: node:14
         working_dir: /usr/src/app/fatboar-concours
         container_name: fatboar-concours
+        env_file:
+            - .env.docker
         ports:
-            - "443:8080"
+            - "${FRONT_PORT}:8080"
         volumes:
             - ./fatboar-concours:/usr/src/app/fatboar-concours
             - ./server.key:/usr/src/app/server.key
             - ./server.cert:/usr/src/app/server.cert
         networks:
             - api 
-        command: sh -c "npm i && npm run prod" 
+        command: sh -c "npm i && npm run ${FRONT_NPM_RUN}" 
 
-#    matomo:
-#        image: matomo:4.10.1
-#        environment:
-#            - MATOMO_DATABASE_HOST=mariadb
-#        env_file:
-#            - .env.docker
-#        depends_on:
-#            - mariadb
-#        networks:
-#            - mariadb
+    telegraf:
+        image: telegraf:1.21
+        container_name: telegraf
+        restart: always
+        env_file:
+            - .env.docker
+        volumes:
+            - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /sys:/rootfs/sys:ro
+            - /proc:/rootfs/proc:ro
+            - /etc:/rootfs/etc:ro
+        ports:
+            - 8125:8125
 
 networks:
     api:
