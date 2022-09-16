@@ -2,7 +2,9 @@ name: CI develop
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 
   workflow_dispatch:
 
@@ -13,7 +15,7 @@ jobs:
       - name: triggerjenkinsjob
         uses: mickeygoussetorg/trigger-jenkins-job@v1
         with:
-          jenkins-server:  "${{ secrets.JENKINS_URL }}" # URL of the jenkins server. ex: http://myjenkins.acme.com:8080
+          jenkins-server: "${{ secrets.JENKINS_URL }}" # URL of the jenkins server. ex: http://myjenkins.acme.com:8080
           jenkins-job: "fatboar-concours" # The name of the jenkins job to run
           jenkins-username: "${{ secrets.JENKINS_USER }}" # user name for accessing jenkins
           jenkins-pat: "${{ secrets.JENKINS_TOKEN }}" # personal Access token for accessing Jenkins
