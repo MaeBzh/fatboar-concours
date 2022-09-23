@@ -27,13 +27,11 @@ pipeline {
                 script {
                     docker.image('newtmitch/sonar-scanner').inside('-v /var/run/docker.sock:/var/run/docker.sock --entrypoint="" --net root_jenkins-nw') {
                         sh '''/usr/local/bin/sonar-scanner \\
-                            -Dsonar.host.url=http://195.15.236.15:9000 \\
-                            -Dsonar.projectBaseDir=.\\
+                            -Dsonar.host.url=https://sonarcloud.io \\
+                            -Dsonar.organization=furious-ducks \\
                             -Dsonar.projectKey=fatboar-concours \\
-                            -Dsonar.projectName=fatboar-concours \\
-                            -Dsonar.sources=src/ \\
-                            -Dsonar.exclusions=dist/** \\
-                            -Dsonar.login=3d221b0cdb3e09d66ff542107b812d147a47c1af \\
+                            -Dsonar.sources=. \\
+                            -Dsonar.login=d7aa2c66b871e6ce223c47dccf342cc8d30a0106 \\
                             -Dsonar.verbose=true''' 
                     }
                 }
