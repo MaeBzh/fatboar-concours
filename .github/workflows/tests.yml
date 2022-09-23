@@ -13,4 +13,3 @@ jobs:
   quality:
     uses: ./.github/workflows/sonarqube.yml@main
     secrets: inherit
-  

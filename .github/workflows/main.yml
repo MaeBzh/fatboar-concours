@@ -17,6 +17,7 @@ jobs:
 
  deploy: 
     uses: ./.github/workflows/deploy.yml@main
+
     needs: release
     with:
       branchName: main
@@ -25,4 +26,5 @@ jobs:
       SSH_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
       SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
       SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+
    

@@ -16,4 +16,5 @@ jobs:
         uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: minor # for a major release or a patch, add "major" or "patch" in the commit message
+
           tag_prefix: ""

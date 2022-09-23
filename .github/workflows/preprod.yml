@@ -18,3 +18,4 @@ jobs:
       SSH_KEY: ${{ secrets.PREPROD_SSH_PRIVATE_KEY }}
       SSH_HOST: ${{ secrets.PREPROD_SSH_HOST }}
       SSH_PORT: ${{ secrets.PREPROD_SSH_PORT }}
+
