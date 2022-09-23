@@ -1,7 +1,7 @@
 name: reusable deploy workflow
 
 on:
-  workflow_call:       
+  workflow_call:
     secrets:
       SSH_USERNAME:
         required: true
@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     steps:
       - name: Configure SSH
         run: |
