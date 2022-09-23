@@ -1,14 +1,15 @@
-name: CI/CD quality
+name: reusable sonarqube workflow
 
 on:
-  push:
-    branches: [main, preprod, develop]
-  pull_request:
-    branches: [develop]
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+      SONAR_TOKEN:
+        required: true
 
 jobs:
-  quality:
-    name: SonarCloud
+  sonarqube:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

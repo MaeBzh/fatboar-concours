@@ -1,0 +1,38 @@
+name: reusable deploy workflow
+
+on:
+  workflow_call:
+    secrets:
+      SSH_USERNAME:
+        required: true
+      SSH_KEY:
+        required: true
+      SSH_HOST:
+        required: true
+      SSH_PORT:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
+          cat >>~/.ssh/config <<END
+          Host remote
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/private.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+      - name: stop, update and restart api + front
+        run: ssh remote 'cd application && docker-compose stop api front && git fetch && git pull && docker-compose up -d api front'

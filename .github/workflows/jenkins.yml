@@ -1,0 +1,26 @@
+name: reusable jenkins workflow
+
+on:
+  workflow_call:
+    secrets:
+      JENKINS_URL:
+        required: true
+      JENKINS_USER:
+        required: true
+      JENKINS_TOKEN:
+        required: true
+
+jobs:
+  jenkins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: triggerjenkinsjob
+        uses: mickeygoussetorg/trigger-jenkins-job@v1
+        with:
+          jenkins-server: "${{ secrets.JENKINS_URL }}" # URL of the jenkins server. ex: http://myjenkins.acme.com:8080
+          jenkins-job: "fatboar-concours" # The name of the jenkins job to run
+          jenkins-username: "${{ secrets.JENKINS_USER }}" # user name for accessing jenkins
+          jenkins-pat: "${{ secrets.JENKINS_TOKEN }}" # personal Access token for accessing Jenkins
+          poll-time: 10 # how often (seconds) to poll the jenkins server for results
+          timeout-value: 600 # How long (seconds) to poll before timing out the action
+          verbose: true # true/false - turns on extra logging
