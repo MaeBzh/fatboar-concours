@@ -2,7 +2,7 @@ name: CI/CD main
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   tests:
@@ -15,9 +15,8 @@ jobs:
     needs: tests
     secrets: inherit
 
- deploy: 
+  deploy: 
     uses: ./.github/workflows/deploy.yml@main
-
     needs: release
     with:
       branchName: main
