@@ -6,21 +6,25 @@ on:
 
 jobs:
   tests:
-    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml@main
+    uses: ./.github/workflows/jenkins.yml@main
+    secrets: inherit
 
   release:
-    uses: MaeBzh/fatboar-concours/.github/workflows/release.yml@main
+    uses: ./.github/workflows/release.yml@main
     if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
     needs: tests
+    secrets: inherit
 
  deploy: 
-    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml@main
+    uses: ./.github/workflows/deploy.yml@main
+
     needs: release
     with:
       branchName: main
     secrets:
-      sshUsername: ${{ secrets.PROD_SSH_USERNAME }}
-      sshKey: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
-      sshHost: ${{ secrets.PROD_SSH_HOST }}
-      sshPort: ${{ secrets.PROD_SSH_PORT }}
+      SSH_USERNAME: ${{ secrets.PROD_SSH_USERNAME }}
+      SSH_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+      SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+
    

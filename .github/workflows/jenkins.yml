@@ -1,3 +1,15 @@
+name: reusable jenkins workflow
+
+on:
+  workflow_call:
+    secrets:
+      JENKINS_URL:
+        required: true
+      JENKINS_USER:
+        required: true
+      JENKINS_TOKEN:
+        required: true
+
 jobs:
   jenkins:
     runs-on: ubuntu-latest
