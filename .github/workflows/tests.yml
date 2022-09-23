@@ -10,5 +10,4 @@ jobs:
   tests:
     uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml@main
   quality:
-    uses: MaeBzh/fatboar-concours/.github/workflows/sonarqube.yml@main
-  
+    uses: MaeBzh/fatboar-concours/.github/workflows/sonarqube.yml@main  
