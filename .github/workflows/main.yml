@@ -6,15 +6,15 @@ on:
 
 jobs:
   tests:
-    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml
+    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml@main
 
   release:
-    uses: MaeBzh/fatboar-concours/.github/workflows/release.yml
+    uses: MaeBzh/fatboar-concours/.github/workflows/release.yml@main
     if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
     needs: tests
 
  deploy: 
-    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml
+    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml@main
     needs: release
     with:
       branchName: main

@@ -6,11 +6,11 @@ on:
 
 jobs:
   tests:
-    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml
+    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml@main
 
   deploy:
     needs: tests
-    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml
+    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml@main
     if: ${{ github.ref == 'refs/heads/preprod' && contains(join(needs.tests.result, ','), 'success') }}
     secrets:
       sshUsername: ${{ secrets.PREPROD_SSH_USERNAME }}
