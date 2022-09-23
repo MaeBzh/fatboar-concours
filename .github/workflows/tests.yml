@@ -9,7 +9,13 @@ on:
 jobs:
   tests:
     uses: ./.github/workflows/jenkins.yml
-    secrets: inherit
+    secrets: 
+      JENKINS_URL: ${{ secrets.JENKINS_URL }}
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+
   quality:
     uses: ./.github/workflows/sonarqube.yml
-    secrets: inherit
+    secrets: 
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
