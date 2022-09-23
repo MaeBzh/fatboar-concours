@@ -6,17 +6,17 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/jenkins.yml@main
+    uses: ./.github/workflows/jenkins.yml
     secrets: inherit
 
   release:
-    uses: ./.github/workflows/release.yml@main
+    uses: ./.github/workflows/release.yml
     if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
     needs: tests
     secrets: inherit
 
   deploy: 
-    uses: ./.github/workflows/deploy.yml@main
+    uses: ./.github/workflows/deploy.yml
     needs: release
     with:
       branchName: main
