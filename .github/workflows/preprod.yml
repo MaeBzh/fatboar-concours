@@ -7,7 +7,10 @@ on:
 jobs:
   tests:
     uses: ./.github/workflows/jenkins.yml
-    secrets: inherit
+    secrets: 
+      JENKINS_URL: ${{ secrets.JENKINS_URL }}
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
 
   deploy:
     needs: tests
