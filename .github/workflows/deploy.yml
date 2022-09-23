@@ -1,0 +1,36 @@
+on:
+  workflow_call:       
+    secrets:
+      sshUsername:
+        required: true
+      sshKey:
+        required: true
+      sshHost:
+        required: true
+      sshPort:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
+          cat >>~/.ssh/config <<END
+          Host remote
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/private.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.sshUsername }}
+          SSH_KEY: ${{ secrets.sshKey }}
+          SSH_HOST: ${{ secrets.sshHost }}
+          SSH_PORT: ${{ secrets.sshPort }}
+      - name: stop, update and restart api + front
+        run: ssh remote 'cd application && docker-compose stop api front && git fetch && git pull && docker-compose up -d api front'

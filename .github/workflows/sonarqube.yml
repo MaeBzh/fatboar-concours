@@ -1,14 +1,5 @@
-name: CI/CD quality
-
-on:
-  push:
-    branches: [main, preprod, develop]
-  pull_request:
-    branches: [develop]
-
 jobs:
-  quality:
-    name: SonarCloud
+  sonarqube:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
