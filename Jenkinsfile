@@ -21,6 +21,6 @@ pipeline {
             steps {
                 sh 'cd fatboar-api && ls && npm install && npm test'
             }
-        }       
+        }
     }
 } 
