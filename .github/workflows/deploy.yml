@@ -1,13 +1,15 @@
+name: reusable deploy workflow
+
 on:
   workflow_call:       
     secrets:
-      sshUsername:
+      SSH_USERNAME:
         required: true
-      sshKey:
+      SSH_KEY:
         required: true
-      sshHost:
+      SSH_HOST:
         required: true
-      sshPort:
+      SSH_PORT:
         required: true
 
 jobs:
@@ -28,9 +30,9 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.sshUsername }}
-          SSH_KEY: ${{ secrets.sshKey }}
-          SSH_HOST: ${{ secrets.sshHost }}
-          SSH_PORT: ${{ secrets.sshPort }}
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
       - name: stop, update and restart api + front
         run: ssh remote 'cd application && docker-compose stop api front && git fetch && git pull && docker-compose up -d api front'
