@@ -8,8 +8,8 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/jenkins.yml@main
+    uses: ./.github/workflows/jenkins.yml
     secrets: inherit
   quality:
-    uses: ./.github/workflows/sonarqube.yml@main
+    uses: ./.github/workflows/sonarqube.yml
     secrets: inherit
