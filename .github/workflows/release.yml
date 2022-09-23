@@ -1,7 +1,14 @@
- release:
+name: reusable release workflow
+
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  release:
     runs-on: ubuntu-latest
-    needs: tests
-    if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
     steps:
       - name: Create a release
         env:

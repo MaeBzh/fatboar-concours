@@ -8,7 +8,9 @@ on:
 
 jobs:
   tests:
-    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml
+    uses: ./.github/workflows/jenkins.yml@main
+    secrets: inherit
   quality:
-    uses: MaeBzh/fatboar-concours/.github/workflows/sonarqube.yml
+    uses: ./.github/workflows/sonarqube.yml@main
+    secrets: inherit
   

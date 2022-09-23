@@ -6,14 +6,15 @@ on:
 
 jobs:
   tests:
-    uses: MaeBzh/fatboar-concours/.github/workflows/jenkins.yml
+    uses: ./.github/workflows/jenkins.yml@main
+    secrets: inherit
 
   deploy:
     needs: tests
-    uses: MaeBzh/fatboar-concours/.github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml@main
     if: ${{ github.ref == 'refs/heads/preprod' && contains(join(needs.tests.result, ','), 'success') }}
     secrets:
-      sshUsername: ${{ secrets.PREPROD_SSH_USERNAME }}
-      sshKey: ${{ secrets.PREPROD_SSH_PRIVATE_KEY }}
-      sshHost: ${{ secrets.PREPROD_SSH_HOST }}
-      sshPort: ${{ secrets.PREPROD_SSH_PORT }}
+      SSH_USERNAME: ${{ secrets.PREPROD_SSH_USERNAME }}
+      SSH_KEY: ${{ secrets.PREPROD_SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.PREPROD_SSH_HOST }}
+      SSH_PORT: ${{ secrets.PREPROD_SSH_PORT }}
