@@ -6,12 +6,15 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/jenkins.yml@main
-    secrets: inherit
+    uses: ./.github/workflows/jenkins.yml
+    secrets: 
+      JENKINS_URL: ${{ secrets.JENKINS_URL }}
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
 
   deploy:
     needs: tests
-    uses: ./.github/workflows/deploy.yml@main
+    uses: ./.github/workflows/deploy.yml
     if: ${{ github.ref == 'refs/heads/preprod' && contains(join(needs.tests.result, ','), 'success') }}
     secrets:
       SSH_USERNAME: ${{ secrets.PREPROD_SSH_USERNAME }}
