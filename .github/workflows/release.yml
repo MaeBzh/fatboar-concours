@@ -1,0 +1,20 @@
+name: reusable release workflow
+
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: minor # for a major release or a patch, add "major" or "patch" in the commit message
+
+          tag_prefix: ""

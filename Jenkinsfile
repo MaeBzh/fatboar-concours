@@ -22,25 +22,5 @@ pipeline {
                 sh 'cd fatboar-api && ls && npm install && npm test'
             }
         }
-        /*stage('SonarQube analysis') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'sonar-login', variable: 'login')]) {
-                        withCredentials([string(credentialsId: 'sonar-pwd', variable: 'password')]) {
-                            docker.image('newtmitch/sonar-scanner').inside('-v /var/run/docker.sock:/var/run/docker.sock --entrypoint="" --net root_jenkins-nw') {
-                                sh '''/usr/local/bin/sonar-scanner \\
-                                    -Dsonar.host.url=http://sonarqube:9000 \\
-                                    -Dsonar.projectBaseDir=.\\
-                                    -Dsonar.projectKey=fatboar-api \\
-                                    -Dsonar.projectName=fatboar-api \\
-                                    -Dsonar.login="${login}" \\
-                                    -Dsonar.password="${password}" \\
-                                    -Dsonar.verbose=true''' 
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
     }
 } 
