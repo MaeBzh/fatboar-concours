@@ -5,12 +5,12 @@ on:
     branches: [main]
 
 jobs:
-  tests:
-    uses: ./.github/workflows/jenkins.yml
-    secrets: 
-      JENKINS_URL: ${{ secrets.JENKINS_URL }}
-      JENKINS_USER: ${{ secrets.JENKINS_USER }}
-      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+  # tests:
+  #   uses: ./.github/workflows/jenkins.yml
+  #   secrets: 
+  #     JENKINS_URL: ${{ secrets.JENKINS_URL }}
+  #     JENKINS_USER: ${{ secrets.JENKINS_USER }}
+  #     JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
 
   release:
     uses: ./.github/workflows/release.yml
