@@ -5,17 +5,16 @@ on:
     branches: [main]
 
 jobs:
-  tests:
-    uses: ./.github/workflows/jenkins.yml
-    secrets: 
-      JENKINS_URL: ${{ secrets.JENKINS_URL }}
-      JENKINS_USER: ${{ secrets.JENKINS_USER }}
-      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+  # tests:
+  #   uses: ./.github/workflows/jenkins.yml
+  #   secrets: 
+  #     JENKINS_URL: ${{ secrets.JENKINS_URL }}
+  #     JENKINS_USER: ${{ secrets.JENKINS_USER }}
+  #     JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
 
   release:
     uses: ./.github/workflows/release.yml
-    if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
-    needs: tests
+    # if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
     secrets: 
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
