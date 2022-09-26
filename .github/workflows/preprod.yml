@@ -13,7 +13,6 @@ jobs:
   #     JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
 
   deploy:
-    needs: tests
     uses: ./.github/workflows/deploy.yml
     if: ${{ github.ref == 'refs/heads/preprod' && contains(join(needs.tests.result, ','), 'success') }}
     secrets:
