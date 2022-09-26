@@ -2,7 +2,6 @@ name: CI tests
 
 on:
   pull_request:
-    branches: [main, develop, preprod]
     types: [ opened, synchronize, reopened ]
 
 jobs:
