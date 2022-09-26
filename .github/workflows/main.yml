@@ -15,7 +15,6 @@ jobs:
   release:
     uses: ./.github/workflows/release.yml
     if: ${{ github.ref == 'refs/heads/main' && contains(join(needs.tests.result, ','), 'success') }}
-    needs: tests
     secrets: 
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
