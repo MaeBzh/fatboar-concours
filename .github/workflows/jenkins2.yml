@@ -21,7 +21,7 @@ jobs:
         with:
           git-branch: "${{ secrets.BRANCH_NAME }}" # Branch name
           jenkins-server: "${{ secrets.JENKINS_URL }}" # URL of the jenkins server. ex: http://myjenkins.acme.com:8080
-          jenkins-job: "fatboar-concours" # The name of the jenkins job to run
+          jenkins-job: "fatboar-concours2" # The name of the jenkins job to run
           jenkins-username: "${{ secrets.JENKINS_USER }}" # user name for accessing jenkins
           jenkins-pat: "${{ secrets.JENKINS_TOKEN }}" # personal Access token for accessing Jenkins
           poll-time: 10 # how often (seconds) to poll the jenkins server for results
