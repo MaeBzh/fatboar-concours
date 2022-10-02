@@ -1,0 +1,14 @@
+name: CI tests2
+
+on:
+  pull_request:
+    branches: [ develop, preprod, main ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  tests2:
+    uses: ./.github/workflows/jenkins2.yml
+    secrets: 
+      JENKINS_URL: ${{ secrets.JENKINS_URL }}
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
