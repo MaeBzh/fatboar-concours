@@ -9,14 +9,6 @@ on:
         required: true
       JENKINS_TOKEN:
         required: true
-      JENKINS_JOB:
-        default: "fatboar-concours2"
-      JENKINS_POLL:
-        default: 10
-      JENKINS_TIMEOUT:
-        default: 600
-      JENKINS_VERBOSE:
-        default: false
 
 jobs:
   jenkins:
@@ -26,14 +18,14 @@ jobs:
       - name: triggerjenkinsjob
         run: |
           #Parameters
-          urlOfJenkinsServer="${{ inputs.JENKINS_URL }}"
-          jenkinsJobName="${{ inputs.JENKINS_JOB }}"
           branchName="${{ github.ref }}"
-          pollTime=${{ inputs.JENKINS_POLL }}
-          timeoutValue=${{ inputs.JENKINS_TIMEOUT }}
-          verbose=${{ inputs.JENKINS_VERBOSE }}
+          urlOfJenkinsServer="${{ inputs.JENKINS_URL }}"
           userName=${{ inputs.JENKINS_USER }}
           password=${{ inputs.JENKINS_TOKEN }}
+          jenkinsJobName="fatboar-concours2"
+          pollTime=10
+          timeoutValue=600
+          verbose=false
           startTime=$(date)
           startTimeSeconds=$(date -d "$startTime" +%s) 
           endTime=$(date -d "$startTime + $timeoutValue seconds")
