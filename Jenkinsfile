@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-                git branch: '${params.BRANCH_NAME}',
+                git branch: "${params.BRANCH_NAME}",
                     credentialsId: '809ce604-7c6f-4a65-9b48-348ea079073d',
                     url: 'https://github.com/MaeBzh/fatboar-concours.git'
                 sh 'cd ../ && ls'
