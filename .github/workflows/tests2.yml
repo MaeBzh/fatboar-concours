@@ -1,4 +1,4 @@
-name: CI tests2
+name: CI tests
 
 on:
   pull_request:
@@ -12,3 +12,4 @@ jobs:
       JENKINS_URL: ${{ secrets.JENKINS_URL }}
       JENKINS_USER: ${{ secrets.JENKINS_USER }}
       JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+
