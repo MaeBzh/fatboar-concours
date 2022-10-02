@@ -21,11 +21,6 @@ pipeline {
             steps {
                 sh 'cd fatboar-api && ls && npm install && npm test'            
             }
-        } 
-        stage('perf') {
-            steps {
-                sh 'pip install bzt && bzt "./test/perf.jmx"'
-            }
-        } 
+        }
     }
 } 
