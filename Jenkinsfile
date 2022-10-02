@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'python3.9-nodejs16-alpine' }
+        docker { image 'nikolaik/python-nodejs:python3.9-nodejs16-alpine' }
     }
     
     stages {
