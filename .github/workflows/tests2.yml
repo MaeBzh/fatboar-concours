@@ -6,7 +6,7 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  tests:
+  tests2:
     uses: ./.github/workflows/jenkins2.yml
     secrets: 
       JENKINS_URL: ${{ secrets.JENKINS_URL }}

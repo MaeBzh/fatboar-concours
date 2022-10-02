@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  jenkins:
+  jenkins2:
     runs-on: ubuntu-latest
     steps:
       # source: https://github.com/mickeygoussetorg/trigger-jenkins-job/blob/main/action.yml
