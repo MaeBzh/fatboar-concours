@@ -10,7 +10,7 @@ pipeline {
         }
         stage('test perf') {
             steps {
-                sh ' bzt "fatboar-api/test/perf.jmx"'
+                sh 'bzt "fatboar-api/test/perf.jmx"'
             }
         } 
     }
