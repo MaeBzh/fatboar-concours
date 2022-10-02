@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'node:latest' }
+        docker { image 'python3.9-nodejs16-alpine' }
     }
     
     stages {
@@ -24,7 +24,7 @@ pipeline {
         } 
         stage('perf') {
             steps {
-                bzt "./test/perf.jmx"
+                sh 'pip install bzt && bzt "./test/perf.jmx"'
             }
         } 
     }
