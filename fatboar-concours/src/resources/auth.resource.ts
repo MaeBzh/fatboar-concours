@@ -11,7 +11,7 @@ export class AuthResource {
 
   async login(user: UserLogin): Promise<AuthUser> {
     const response: AxiosResponse = await this.http.post(
-      "authentication/logn",
+      "authentication/login",
       user
     );
     return response.data;
