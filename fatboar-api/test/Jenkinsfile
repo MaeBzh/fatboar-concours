@@ -1,0 +1,12 @@
+pipeline {
+    agent {
+        docker { image 'nikolaik/python-nodejs:python3.9-nodejs16-alpine' }
+    }
+    stages {
+        stage('perf') {
+            steps {
+                sh 'pip install Cmake bzt && bzt "fatboar-api/test/perf.jmx"'
+            }
+        } 
+    }
+} 
