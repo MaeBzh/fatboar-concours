@@ -12,7 +12,7 @@ jobs:
       JENKINS_URL: ${{ secrets.JENKINS_URL }}
       JENKINS_USER: ${{ secrets.JENKINS_USER }}
       JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
-      BRANCH_NAME: ${{ github.ref_name }}
+      BRANCH_NAME: ${{ github.head_ref }}
 
   quality:
     uses: ./.github/workflows/sonarqube.yml
