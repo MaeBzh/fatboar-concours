@@ -4,10 +4,14 @@ pipeline {
     }
     stages {
         stage('install bzt') {
-            sh 'pip install bzt'
+            steps {
+                sh 'pip install bzt'
+            }
         }
         stage('test perf') {
-            bzt "fatboar-api/test/perf.jmx"
+            steps {
+                sh 'bzt "fatboar-api/test/perf.jmx"'
+            }
         } 
     }
 } 
