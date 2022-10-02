@@ -1,12 +1,13 @@
 pipeline {
     agent {
-        docker { image 'nikolaik/python-nodejs:python3.9-nodejs16' }
+        docker { image 'blazemeter/taurus' }
     }
     stages {
-        stage('perf') {
-            steps {
-                sh 'pip install Cmake bzt && bzt "fatboar-api/test/perf.jmx"'
-            }
+        stage('install bzt') {
+            sh 'pip install bzt'
+        }
+        stage('test perf') {
+            bzt "fatboar-api/test/perf.jmx"
         } 
     }
 } 
