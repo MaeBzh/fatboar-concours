@@ -1,17 +1,7 @@
 name: reusable jenkins2 workflow
 
-on:
-  workflow_call:
-    secrets:
-      JENKINS_URL:
-        required: true
-      JENKINS_USER:
-        required: true
-      JENKINS_TOKEN:
-        required: true
-
 jobs:
-  jenkins:
+  jenkins2:
     runs-on: ubuntu-latest
     steps:
       # source: https://github.com/mickeygoussetorg/trigger-jenkins-job/blob/main/action.yml
@@ -19,9 +9,9 @@ jobs:
         run: |
           #Parameters
           branchName="${{ github.ref }}"
-          urlOfJenkinsServer="${{ inputs.JENKINS_URL }}"
-          userName=${{ inputs.JENKINS_USER }}
-          password=${{ inputs.JENKINS_TOKEN }}
+          urlOfJenkinsServer="${{ secrets.JENKINS_URL }}"
+          userName=${{ secrets.JENKINS_USER }}
+          password=${{ secrets.JENKINS_TOKEN }}
           jenkinsJobName="fatboar-concours2"
           pollTime=10
           timeoutValue=600
