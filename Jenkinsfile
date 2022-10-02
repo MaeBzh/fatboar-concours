@@ -1,12 +1,16 @@
 pipeline {
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'git branch to clone')
+    }
+
     agent {
-        docker { image 'nikolaik/python-nodejs:python3.9-nodejs16-alpine' }
+        docker { image 'node:latest' }
     }
     
     stages {
         stage('clone') {
             steps {
-                git branch: 'main',
+                git branch: '${params.BRANCH_NAME}',
                     credentialsId: '809ce604-7c6f-4a65-9b48-348ea079073d',
                     url: 'https://github.com/MaeBzh/fatboar-concours.git'
                 sh 'cd ../ && ls'
