@@ -19,13 +19,13 @@ pipeline {
         }
         stage('test') {
             steps {
-                sh 'cd fatboar-api && ls && npm install && npm test',                
+                sh 'cd fatboar-api && ls && npm install && npm test'            
             }
         } 
         stage('perf') {
             steps {
                 bzt "./test/perf.jmx"
             }
-        }
+        } 
     }
 } 
