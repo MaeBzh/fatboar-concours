@@ -4,7 +4,7 @@
       <validation-observer ref="form">
         <form @submit.prevent="submit">
           <v-card-title class="primary--text d-flex justify-center"
-            >🟢 CONNEXION</v-card-title
+            > CONNEXION</v-card-title
           >
           <v-divider class="primary mb-8"></v-divider>
           <v-card-text>
