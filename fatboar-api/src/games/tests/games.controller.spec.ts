@@ -43,6 +43,7 @@ describe("GameController", () => {
 
   describe("findAll", () => {
     it("should be called one time", async () => {
+      throw new Error();
       const gameController = new GamesController(gameService, {} as any);
 
       let gameServiceSpyFindAll = jest.spyOn(gameService, "findAll");
